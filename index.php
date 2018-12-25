@@ -1,0 +1,9 @@
+<?php
+require_once('conf/dbconfig.php');
+require_once('func/func.php');
+menu();
+menuAdmin();
+
+$login = getUserLogin();
+if ($login != null)
+echo "<div id='main'><center>Иди дальше не смотри сюда ^_^</div>";
