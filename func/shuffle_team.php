@@ -2,6 +2,9 @@
 require('../conf/dbconfig.php');
 
 $id_game = $_POST['start_game'];
+
+$conn->query("UPDATE `qualification` SET `r1`=NULL, `r2`=NULL, `r3`=NULL, `result`=NULL, `d1`=NULL, `d2`=NULL, `d3`=NULL, `difference`=NULL WHERE (`id_game`= $id_game)");
+
 $teams = $conn->query("SELECT qualification.id_team FROM qualification WHERE qualification.id_game = $id_game");
 $stmt = $conn->prepare("UPDATE `qualification` SET `key_team`=? WHERE (`id_team`=?) AND (`id_game`=?)");
 $stmt->bind_param('iii',$key_team, $id_team, $id_game);

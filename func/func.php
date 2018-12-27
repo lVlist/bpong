@@ -120,7 +120,7 @@ function edit($name)
 /* Выводит 3 раунда */
     function roundGame($round)
     {
-        global $sql, $conn, $value, $id_game;
+        global $sql, $conn, $value, $id_game, $q_game;
 
         $sql = "SELECT t1.team t1, Q.s1, Q.s2, t2.team t2, Q.round,t1.id AS id_t1, t2.id AS id_t2, Q.id AS id_match 
         FROM q_games Q

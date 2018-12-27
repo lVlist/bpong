@@ -2,7 +2,9 @@
 require('../conf/dbconfig.php');
 $id_game = $_GET['id'];
 
-if($_POST['limit_val1']){
+if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
+
+    $conn->query("DELETE FROM `final` WHERE (`id_game` = $id_game)");
 
     /* Определяем порядок команд */
     if($_GET['limit'] == 8){
@@ -46,7 +48,7 @@ if($_POST['limit_val1']){
         
     }
 
-    /* Записываем последующиие раунды без командам */
+    /* Записываем последующие раунды без команд */
     $stmt = $conn->prepare("INSERT INTO final (id_game, round, block,next_block) VALUES (?,?,?,?)"); 
     $stmt->bind_param('iiii',$id_game, $round, $block,$j);
 
@@ -100,8 +102,11 @@ if($_POST['limit_val1']){
         $round = $round+1;
         $block = 1;
         $stmt->execute();
-header('Location: ../admin/final.php?id='.$id_game);
-}    
+
+    header('Location: ../admin/final.php?id='.$id_game);
+}else{
+    header('Location: ../admin/limit.php?id='.$id_game.'&limit='.$_GET['limit'].'&msg='.count($_POST));
+}
 
 
 /* Записываем резульаты игры */

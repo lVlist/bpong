@@ -50,11 +50,11 @@ foreach ($qualification as $value)
     echo "</tr>";
 }
 echo "</table><br>";
-echo "Выбрать:<a href='limit.php?limit=8&id_game=$id_game'> 8 |</a>";
-echo "<a href='limit.php?limit=12&id_game=$id_game'> 12 |</a>";
-echo "<a href='limit.php?limit=16&id_game=$id_game'> 16 |</a>";
-echo "<a href='limit.php?limit=24&id_game=$id_game'> 24 |</a>";
-echo "<a href='limit.php?limit=32&id_game=$id_game'> 32</a> команды для финала<br>";
+echo "Выбрать:<a href='limit.php?limit=8&id=$id_game'> 8 |</a>";
+echo "<a href='limit.php?limit=12&id=$id_game'> 12 |</a>";
+echo "<a href='limit.php?limit=16&id=$id_game'> 16 |</a>";
+echo "<a href='limit.php?limit=24&id=$id_game'> 24 |</a>";
+echo "<a href='limit.php?limit=32&id=$id_game'> 32</a> команды для финала<br>";
 echo "</div>";
 
 

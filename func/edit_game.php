@@ -67,3 +67,14 @@ if($_POST['del_team'])
     $conn->query("DELETE FROM `qualification` WHERE (`id_game` = $id_game) AND (`id_team` = $id_team)");
     header('Location: ../admin/create.php?id='.$id_game);
 }
+
+
+if($_POST['del_game'])
+{
+    $id_game = $_POST['del_game'];
+    $conn->query("DELETE FROM `qualification` WHERE (`id_game` = $id_game)");
+    $conn->query("DELETE FROM `q_games` WHERE (`id_game` = $id_game)");
+    $conn->query("DELETE FROM `final` WHERE (`id_game` = $id_game)");
+    $conn->query("DELETE FROM `games` WHERE (`id` = $id_game)");
+    header('Location: ../index.php');
+}

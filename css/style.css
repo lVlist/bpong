@@ -163,6 +163,10 @@ td {
 	text-transform: none;
 }
 
+.submit.-dis{
+	background-color: grey;
+}
+
 .modalDialog {
 	position: fixed;
 	font-family: Arial, Helvetica, sans-serif;

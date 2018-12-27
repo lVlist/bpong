@@ -22,11 +22,25 @@ WHERE games.id = $id_game");
 $game = $edit_view->fetch_assoc();
 
 echo "<div id='create-block'>
-    <form action='http://".$_SERVER['HTTP_HOST']."/func/shuffle_team.php' method='POST'>
-        <input type='hidden' name='start_game' value='".$id_game."'>
-        <input class ='submit -addteam' type='submit' value='НАЧАТЬ ТУРНИР'><br>
-    </form>
-    <form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST'>
+    <form action='http://".$_SERVER['HTTP_HOST']."/func/shuffle_team.php' method='POST' style='float: left; margin-bottom: 5px'>
+        <input type='hidden' name='start_game' value='".$id_game."'>";
+        if ($edit_view->num_rows >= 4){
+            echo "<input class ='submit -addteam' type='submit' value='НАЧАТЬ ТУРНИР'>";
+        }else{
+            echo "<input class ='submit -addteam -dis' type='submit' value='НАЧАТЬ ТУРНИР' disabled>";
+        }
+        
+    echo "</form>
+    <form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST' style='float: right;'>
+        <input type='hidden' name='del_game' value='".$id_game."'>
+        <input class ='submit -addteam' type='submit' value='УДАЛИТЬ ТУРНИР'><br>
+    </form>";
+    if ($game['team'] == NULL){
+        echo "<p style='margin: 5px 0;clear: both;'>В турнире зарегестрированно 0 команд</p>";
+    }else{
+        echo "<p style='margin: 5px 0;clear: both;'>В турнире зарегестрированно ".$edit_view->num_rows." команд</p>";
+    }
+    echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST'>
         <input type='hidden' name='upd_game' value='".$id_game."'>
         Турнир: <input class='input-team' type='text' name='game' value='".$game['game']."'>  
         <input class ='submit -addteam' type='submit' value='ИЗМЕНИТЬ'><br>

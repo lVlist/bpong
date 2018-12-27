@@ -10,7 +10,7 @@ echo "<div id='main'>";
 if ($login != null)
 {
     $limit = $_GET['limit'];
-    $id_game = $_GET['id_game'];
+    $id_game = $_GET['id'];
 
     if($_GET)
     {
@@ -23,6 +23,11 @@ if ($login != null)
     }
 
 echo "<div id='block'>";
+
+    if($_GET['msg']){
+        echo "<p style='color:red'>Было выбранно ".$_GET['msg']." команд из ".$_GET['limit']."</p>";
+    }
+
     echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/final.php?id=".$id_game."&limit=".$limit."' method='POST'>";
     echo "<input class ='submit -addteam -del' type='submit' value='Выбрать'>";
     
