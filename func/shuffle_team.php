@@ -24,43 +24,61 @@ $conn->query("DELETE FROM `q_games` WHERE (`id_game` = $id_game)");
 $stmt = $conn->prepare("INSERT INTO q_games (id_game, key_team1, key_team2, round) VALUES (?,?,?,?)"); 
 $stmt->bind_param('iiii',$id_game, $t1, $t2, $round);
 
-/* Раунд 1 */
-foreach ($teams_id as $key => $value)
-{
-    $round = 1;
-    if($key%2 == 0)  //Проверяем четный ключ или нет
-    {
-        $t1 = $value;  //команда 1
+$count = count($teams_id)/2;
+
+/* Проверяем играла ли команда в другом туре */
+function checkTeam($round_current, $round_old){
+    global $count;
+    for($i=0;$i<=$count-1;$i++){
+        $count_old = count($round_old[0]);
+        for($j=0;$j<=$count_old-1;$j++){
+            if($round_current[0][$i] == $round_old[0][$j] && $round_current[1][$i] == $round_old[1][$j]){
+                $bool = false;
+                break;
+            }elseif($round_current[0][$i] == $round_old[1][$j] && $round_current[1][$i] == $round_old[0][$j]){
+                $bool = false;
+                break;
+            }else{
+                $bool = true;
+            }
+        }
+        if ($bool === false) break;
+    }
+    return $bool;
+}
+
+/* Рандомим команды */
+$array_team = NULL;
+$quantity_round = 3; //количество раундов
+
+for ($i=1;$i<=$quantity_round;$i++){
+    if($array_team === NULL){
+        shuffle($teams_id);
+        $round_team = array_chunk($teams_id, $count);
+        for($c=0;$c<=$count-1;$c++){
+            $t1 = $round_team[0][$c];
+            $t2 = $round_team[1][$c];
+            $round = $i;
+            $stmt->execute(); //запись в базу
+        }
     }else{
-        $t2 = $value;  //команда 2
-        $stmt->execute();
+        do{
+            shuffle($teams_id);
+            $round_team = array_chunk($teams_id, $count);
+        }while(checkTeam($round_team, $array_team) === false);
+
+        for($c=0;$c<=$count-1;$c++){
+            $t1 = $round_team[0][$c];
+            $t2 = $round_team[1][$c];
+            $round = $i;
+            $stmt->execute(); //запись в базу
+        }
+    }
+    
+    /* Записываем прошлый тур в массив */
+    for($c=0;$c<=$count-1;$c++){
+        $array_team[0][] .= $round_team[0][$c];
+        $array_team[1][] .= $round_team[1][$c];
     }
 }
-
-/* Раунд 2 */
-$count = count($teams_id)/2; //половиним количество команд
-$half = array_chunk($teams_id, $count); //разбивает массив на части, размер каждой части($count)
-
-for ($i=0;$i<$count;$i++)
-{
-    $round = 2;
-        $t1 = $half[0][$i];  //команда 1
-        $t2 = $half[1][$i];  //команда 2
-    $stmt->execute();
-}
-
-/* Раунд 3 */
-$revers1 = array_reverse($half[0]); //переворачиваю первую половину команд
-$revers2 = array_reverse($half[1]); //переворачиваю вторую половину команд
-$pop = array_shift($revers2);         //удаляет первый элемент массива и возвращает его
-$revers2[] = $pop;      //записывает первый элемент массива в конец массива
-
-for ($i=0;$i<$count;$i++)
-{
-    $round = 3;
-        $t1 = $revers2[$i];  //команда 1
-        $t2 = $revers1[$i];  //команда 2
-    $stmt->execute();
-}
-
 header('Location: ../admin/qualification.php?id='.$id_game);
