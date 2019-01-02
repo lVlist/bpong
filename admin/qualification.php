@@ -62,11 +62,62 @@ echo "</div>";
 
 
 /* Выводим 3 тура */
+
+$sql = "SELECT t1.team t1, Q.s1, Q.s2, t2.team t2, Q.round,t1.id AS id_t1, t2.id AS id_t2, Q.id AS id_match 
+FROM q_games Q
+JOIN qualification AS id_t1 ON id_t1.key_team = Q.key_team1
+JOIN qualification AS id_t2 ON id_t2.key_team = Q.key_team2
+JOIN teams t1 ON t1.id = id_t1.id_team
+JOIN teams t2 ON t2.id = id_t2.id_team
+WHERE id_t1.id_game = $id_game AND id_t2.id_game = $id_game AND Q.id_game = $id_game";
+
+/* Выборка 3 туров */
+$q_game = $conn->query($sql);
+
 echo "<div id='block'>";
-    roundGame(1);
-    roundGame(2);
-    roundGame(3);
+
+for($t=1;$t<=3;$t++){
+    echo "<h3>Тур ".$t."</h3>";
+    echo "<table>";
+    foreach ($q_game as $value){
+        if ($value['round'] == $t){
+            echo "<tr>";
+                echo "<td class='tour-td'>".$value['t1']."</td>";
+                if (!$value['s1']&&!$value['s2']){
+                    //если нет результатов запись
+                    echo "<td colspan='2' align='center' width='61px'>";
+                        edit("<img width='15px' src='http://".$_SERVER['HTTP_HOST']."/img/edit.png'>");
+                    echo "</td>";
+                }else{
+                    //Очки первой команды
+                    if($value['s1']>$value['s2']){
+                        echo "<td align='center' class='score-td -color'>";
+                            edit($value['s1']);
+                        echo "</td>";
+                    }else{
+                        echo "<td align='center' class='score-td'>";
+                            edit($value['s1']);
+                        echo "</td>";
+                    }
+                    //Очки второй команды
+                    if($value['s2']>$value['s1']){
+                        echo "<td align='center' class='score-td -color'>";
+                            edit($value['s2']);
+                        echo "</td>";
+                    }else{
+                        echo "<td align='center' class='score-td'>";
+                            edit($value['s2']);
+                        echo "</td>";
+                    }
+                }//end if
+                echo "<td align='right' class='tour-td'>".$value['t2']."</td>";
+            echo "</tr>";
+        }//end if
+    }//end foreach
+    echo "</table>";
+}//end for
 echo "</div'>";
+
 }else{
     echo "Доступ запрещен!";
 }
