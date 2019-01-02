@@ -11,6 +11,7 @@ if($_GET){
 }else{
     die;
 }
+
 $_SESSION['id_game'] = $id_game;
 
 echo "<div id='main'>";

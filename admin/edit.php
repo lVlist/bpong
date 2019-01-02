@@ -8,7 +8,6 @@ $login = getUserLogin();
 echo "<div id='main'>";
 if ($login != null)
 {
-
     if($_GET){
         $id_game = (int)$_GET['id_game'];
     }else{
@@ -27,8 +26,7 @@ echo "<div id='create'>
     Название турнира: <input class='input-block' type='text' name='game' value='".$game['game']."'> Команды:";
     $team = '';
     $id_team = '';
-    foreach($edit_view as $value)
-    {
+    foreach($edit_view as $value){
         $id_team .= $value['id_team'].",";
         $team .= $value['team']."\n";
     }

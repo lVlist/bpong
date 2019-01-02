@@ -5,15 +5,13 @@ menu();
 menuAdmin();
 $login = getUserLogin();
 
-
 echo "<div id='main'>";
 if ($login != null)
 {
     $limit = $_GET['limit'];
     $id_game = $_GET['id'];
 
-    if($_GET)
-    {
+    if($_GET){
         $stmt= $conn->query("SELECT teams.team, teams.id, qualification.result, qualification.difference FROM qualification
         INNER JOIN teams ON teams.id = qualification.id_team
         WHERE qualification.id_game = $id_game
@@ -23,7 +21,6 @@ if ($login != null)
     }
 
 echo "<div id='block'>";
-
     if($_GET['msg']){
         echo "<p style='color:red'>Было выбранно ".$_GET['msg']." команд из ".$_GET['limit']."</p>";
     }
@@ -40,11 +37,9 @@ echo "<div id='block'>";
                 <td>Выборка</td>
             </tr>";
 
-        $i=0;foreach ($stmt as $value)
-        {
+        $i=0;foreach ($stmt as $value){
         $i++;
-            if($i <= $_GET['limit'])
-            {
+            if($i <= $_GET['limit']){
                 echo "<tr>
                         <td align='center'>".$i."</td>
                         <td style='min-width: 200px;'>".$value['team']."</td>
@@ -78,9 +73,8 @@ echo "<div id='block'>";
     echo "<div id='block'>";
     $team = '';
     foreach ($stmt as $value){
-
-            $team .= $value['team']."\n";
-        }
+         $team .= $value['team']."\n";
+    }
     $team = substr($team, 0, -2);
 echo "<textarea class='input-block' name='teams' rows='40' cols='100'>".$team."</textarea>";
     echo "</div'>";

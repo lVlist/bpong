@@ -17,10 +17,12 @@ $last_game = $id_last_game->fetch_assoc();
     }
 
 /* Общая таблица 3 туров */
-$qualification = $conn->query("SELECT teams.team, qualification.r1, qualification.r2, qualification.r3, qualification.result, qualification.difference, games.game FROM qualification
-                            INNER JOIN teams ON teams.id = qualification.id_team INNER JOIN games ON games.id = qualification.id_game
-                            WHERE qualification.id_game = $id_game
-                            ORDER BY qualification.result DESC, qualification.difference DESC");
+$qualification = 
+    $conn->query("SELECT teams.team, qualification.r1, qualification.r2, qualification.r3, qualification.result, 
+    qualification.difference, games.game FROM qualification
+    INNER JOIN teams ON teams.id = qualification.id_team INNER JOIN games ON games.id = qualification.id_game
+    WHERE qualification.id_game = $id_game
+    ORDER BY qualification.result DESC, qualification.difference DESC");
 
 /* Получаем название турнира */
 $game = $qualification->fetch_assoc();
@@ -31,14 +33,13 @@ if ($login != null){
 /* Общая таблица 3 туров */
 echo "<div id='block'>";
 echo "<table>";
-echo "<h3>Турнир: ".$game."  <a href='create.php?id=".$id_game."'><img width='16px' src='http://".$_SERVER['HTTP_HOST']."/img/edit.png'></a></h3>";
-echo "<tr align ='center'>";
-echo "<td>№</td><td>Команда</td><td>Тур 1</td><td>Тур 2</td><td>Тур 3</td><td>Итого</td><td>Разница</td>";
-echo "</tr>";
+    echo "<h3>Турнир: ".$game."  <a href='create.php?id=".$id_game."'><img width='16px' src='http://".$_SERVER['HTTP_HOST']."/img/edit.png'></a></h3>";
+    echo "<tr align ='center'>";
+        echo "<td>№</td><td>Команда</td><td>Тур 1</td><td>Тур 2</td><td>Тур 3</td><td>Итого</td><td>Разница</td>";
+    echo "</tr>";
 
 $i = 1;
-foreach ($qualification as $value)
-{
+foreach ($qualification as $value){
     echo "<tr align = 'center'>";
         echo "<td>".$i++."</td>";
         echo "<td>".$value['team']."</td>";
