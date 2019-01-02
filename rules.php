@@ -1,5 +1,6 @@
 <?php
 require_once('func/func.php');
+require_once('func/header.php');
 menu();
 menuAdmin();
 
