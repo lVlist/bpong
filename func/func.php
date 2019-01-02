@@ -235,7 +235,7 @@ function finalEdit($s, $r){
     echo "<div id='finalEdit' class='modalDialog'>
         <div><a href='#close' title='Закрыть' class='close'>x</a>
             <h3>Результаты матча</h3>
-            <form action='http://".$_SERVER['HTTP_HOST']."/func/final.php' method='POST'>
+            <form action='http://".$_SERVER['HTTP_HOST']."/func/final_game.php' method='POST'>
             <table width='300px'>";
             foreach ($final as $val)
                 {
