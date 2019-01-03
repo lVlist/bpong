@@ -63,13 +63,11 @@ echo "</div>";
 
 /* Выводим 3 тура */
 
-$sql = "SELECT t1.team t1, Q.s1, Q.s2, t2.team t2, Q.round,t1.id AS id_t1, t2.id AS id_t2, Q.id AS id_match 
-FROM q_games Q
-JOIN qualification AS id_t1 ON id_t1.key_team = Q.key_team1
-JOIN qualification AS id_t2 ON id_t2.key_team = Q.key_team2
-JOIN teams t1 ON t1.id = id_t1.id_team
-JOIN teams t2 ON t2.id = id_t2.id_team
-WHERE id_t1.id_game = $id_game AND id_t2.id_game = $id_game AND Q.id_game = $id_game";
+$sql = "SELECT Q.id AS id_match, t1.team AS t1, Q.s1, Q.s2, t2.team AS t2, Q.round, t1.id AS id_t1, t2.id AS id_t2
+FROM q_games AS Q
+INNER JOIN teams t1 ON t1.id = Q.id_t1
+INNER JOIN teams t2 ON t2.id = Q.id_t2
+WHERE Q.id_game = $id_game";
 
 /* Выборка 3 туров */
 $q_game = $conn->query($sql);
