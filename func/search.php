@@ -4,7 +4,7 @@ require('../conf/dbconfig.php');
 if(!empty($_POST["referal"])){ //Принимаем данные
 
     $referal = "{$_POST['referal']}%";
-    $stmt = $conn -> prepare("SELECT * from teams WHERE team != 'Команда' AND team LIKE (?)");
+    $stmt = $conn -> prepare("SELECT * from teams WHERE team != ' ' AND team LIKE (?)");
     $stmt->bind_param("s", $referal);
     $stmt->execute();
     $db_referal = $stmt->get_result();
