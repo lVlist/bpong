@@ -83,57 +83,75 @@ function getUserLogin()
 }
 
 /* финал кнопки редактирования */
-function finalEdit($s, $r){
-    global $conn, $value, $sql, $r_final2, $id_game;
+function finalEdit($s, $winLose){
+    global $conn, $value, $sql, $r_final2, $id_game, $last_round;
   
     if (isset($_GET['id_match']))
     {$id_match = $_GET['id_match'];}else{$id_match = $value['id'];}
 
-    if (!$value['s1']&&!$value['s2'])
-    {
-        echo "<div class='final -score'>
-        <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'><img width='13px' src='http://".$_SERVER['HTTP_HOST']."/img/edit_score.png'></a>
-        </div>";
-    }elseif($r == 1){
-        echo "<div class='final -score -color'>
-        <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'>".$value[$s]."</a>
-        </div>";
-    }elseif($r == 2){
-        echo "<div class='final -score'>
-        <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'>".$value[$s]."</a>
-        </div>";
+    if (!$value['s1']&&!$value['s2']){
+
+        if($value['round'] == $last_round['round']){
+            echo "<div class='final -score -final'>
+            <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'><img width='13px' src='http://".$_SERVER['HTTP_HOST']."/img/edit_score.png'></a>
+            </div>";
+        }else{
+            echo "<div class='final -score'>
+            <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'><img width='13px' src='http://".$_SERVER['HTTP_HOST']."/img/edit_score.png'></a>
+            </div>";
+        }
+    }elseif($winLose == 1){
+        
+        if($value['round'] == $last_round['round']){
+            echo "<div class='final -score -color -final'>
+            <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'>".$value[$s]."</a>
+            </div>";
+        }else{
+            echo "<div class='final -score -color'>
+            <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'>".$value[$s]."</a>
+            </div>";
+        }
+    }elseif($winLose == 2){
+        if($value['round'] == $last_round['round']){
+            echo "<div class='final -score -final'>
+            <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'>".$value[$s]."</a>
+            </div>";
+        }else{
+            echo "<div class='final -score'>
+            <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'>".$value[$s]."</a>
+            </div>";
+        }
     }
 
     /* Матчи для таблицы редактиования */
     $final = $conn->query($sql);
-
+    
     echo "<div id='finalEdit' class='modalDialog'>
         <div><a href='#close' title='Закрыть' class='close'>x</a>
             <h3>Результаты матча</h3>
             <form action='http://".$_SERVER['HTTP_HOST']."/func/final_game.php' method='POST'>
             <table width='300px'>";
-            foreach ($final as $val)
-                {
-                    if($id_match == $val['id']){
-                        echo "<input type='hidden' name='id_match' value='".$id_match."'>
-                              <input type='hidden' name='id_game'  value='".$id_game."'>
-                              <input type='hidden' name='round'  value='".$val['round']."'>
-                              <input type='hidden' name='id_t1'  value='".$val['id_t1']."'>
-                              <input type='hidden' name='id_t2'  value='".$val['id_t2']."'>
-                              <input type='hidden' name='block'  value='".$val['block']."'>
-                              <input type='hidden' name='next_block'  value='".$val['next_block']."'>
-                        <tr>
-                            <td>".$val['t1']."</td>
-                            <td width='70px'><input type='number' autocomplete='off' class='form-control -dark ' name='s1' value='".$val['s1']."'></td>
-                        </tr>
-                        <tr>
-                            <td>".$val['t2']."</td>
-                            <td width='70px'><input type='number' autocomplete='off' class='form-control -dark ' name='s2' value='".$val['s2']."'></td>
-                        </tr>";
-                    }
+            foreach ($final as $val){
+                if($id_match == $val['id']){
+                    echo "<input type='hidden' name='id_match' value='".$id_match."'>
+                            <input type='hidden' name='id_game'  value='".$id_game."'>
+                            <input type='hidden' name='round'  value='".$val['round']."'>
+                            <input type='hidden' name='id_t1'  value='".$val['id_t1']."'>
+                            <input type='hidden' name='id_t2'  value='".$val['id_t2']."'>
+                            <input type='hidden' name='block'  value='".$val['block']."'>
+                            <input type='hidden' name='next_block'  value='".$val['next_block']."'>
+                    <tr>
+                        <td>".$val['t1']."</td>
+                        <td width='70px'><input type='number' autocomplete='off' class='form-control -dark ' name='s1' value='".$val['s1']."'></td>
+                    </tr>
+                    <tr>
+                        <td>".$val['t2']."</td>
+                        <td width='70px'><input type='number' autocomplete='off' class='form-control -dark ' name='s2' value='".$val['s2']."'></td>
+                    </tr>";
                 }
-             echo "</table>
-             <input class ='submit' type='submit' value='Сохранить'></form>
+            }
+            echo "</table>
+            <input class ='submit' type='submit' value='Сохранить'></form>
         </div>
     </div>";   
 }

@@ -311,12 +311,19 @@ nav{
 .final.-even3 {margin-bottom: 230px;}
 .final.-even4 {margin-bottom: 520px;}
 .final.-even5 {margin-bottom: 20px;}
+.final.-final8 {margin-bottom: 5px;}
 
 #even1 {float: left; display: block; margin: 10px;}
 #even2 {float: left; display: block; margin: 50px 10px 10px 10px;}
 #even3 {float: left; display: block; margin: 120px 10px 10px 10px;}
 #even4 {float: left; display: block; margin: 260px 10px 10px 10px;}
 #even5 {float: left; display: block; margin: 550px 10px 10px 10px;}
+
+#final8 {float: left; display: block; margin: 120px 10px 10px 10px;}
+#final12 {float: left; display: block; margin: 120px 10px 10px 10px;}
+#final16 {float: left; display: block; margin: 260px 10px 10px 10px;}
+#final24 {float: left; display: block; margin: 260px 10px 10px 10px;}
+#final32 {float: left; display: block; margin: 550px 10px 10px 10px;}
 
 
 .final.-score {
@@ -330,6 +337,12 @@ nav{
 
 .final.-score.-color {
 	background-color: #2E8B57;
+}
+
+.final.-score.-final {
+	border-radius: 0px;
+	margin-left: 2px;
+
 }
 
 

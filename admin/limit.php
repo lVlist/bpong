@@ -7,7 +7,7 @@ menuAdmin();
 $login = getUserLogin();
 
 echo "<div id='main'>";
-if ($login != null)
+if($login != null)
 {
     $limit = $_GET['limit'];
     $id_game = $_GET['id'];
@@ -26,7 +26,11 @@ echo "<div id='block'>";
         echo "<p style='color:red'>Было выбранно ".$_GET['msg']." команд из ".$_GET['limit']."</p>";
     }
 
-    echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/final.php?id=".$id_game."&limit=".$limit."' method='POST'>";
+    if($limit == 8 OR $limit == 16 OR $limit == 32){
+        echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/final.php?id=".$id_game."&limit=".$limit."&final=3' method='POST'>";
+    }elseif($limit == 12 OR $limit == 24){
+        echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/final2.php?id=".$id_game."&limit=".$limit."&final=3' method='POST'>";
+    }
     echo "<input class ='submit -addteam -del' type='submit' value='Выбрать'>";
     
         echo "<table>";
