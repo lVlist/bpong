@@ -8,10 +8,6 @@ $final = $conn->query("SELECT IF (s1>s2, id_t2,id_t1) as teams, round FROM final
 $final_team = $final->fetch_assoc();
 var_dump($final);
 
-$thursday
-
-$saturday
-
 foreach ($final as $value){
     var_dump($value);
 }
