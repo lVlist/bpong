@@ -37,8 +37,8 @@ if($_POST['id_match'])
     $last_round = $id_last_round->fetch_assoc();
 
     /* Записываем команду в следующий раунд */
-    $stmt = $conn->prepare("UPDATE `final` SET `id_t1`=?, `id_t2`=? WHERE (`round`=?) AND (`block`=?)"); 
-    $stmt->bind_param('iiii',$t1, $t2, $next_round, $next_block);
+    $stmt = $conn->prepare("UPDATE `final` SET `id_t1`=?, `id_t2`=? WHERE (`id_game`=?) AND (`round`=?) AND (`block`=?)"); 
+    $stmt->bind_param('iiiii',$t1, $t2, $id_game, $next_round, $next_block);
 
     
     /* Определяем и записываем выйгревшею команду в следующий раунд */
@@ -88,8 +88,6 @@ if($_POST['id_match'])
                     $stmt->execute();
                     $next_block = $next_block +1;
                 }
-
-                /* Финал */
             }else{
                 /* 3 место */
                 $t2 = $id_t1;
@@ -133,5 +131,45 @@ if($_POST['id_match'])
         }
     }
 
+    /* Считаем и записываем статистику финала */
+
+    // Команда 1
+    $wins = 0; $wins_over = 0; $losses = 0; $losses_over = 0;
+    if ($s1 > $s2){if($s1 == 10){$wins=1;}else{$wins_over=1;}}
+    if ($s1 < $s2){if($s1 >= 10){$losses_over=1;}else{$losses=1;}}
+    $id_team = $id_t1;
+
+    $stmt = $conn->query("SELECT id_game, id_team, round, block FROM statistics_final");
+
+    foreach($stmt as $value){
+        if($value['id_game'] == $id_game AND $value['id_team'] == $id_t1 AND $value['round'] == $round AND $value['block'] == $block){
+            $conn->query("DELETE FROM `statistics_final` 
+            WHERE (`id_game` = $id_game) AND (`id_team` = $id_t1) AND (`round` = $round) AND (`block` = $block)");
+            break;
+        }
+    }
+
+    $conn->query("INSERT INTO statistics_final (id_game, id_team, round, block, wins, losses, wins_over, losses_over) 
+    VALUES ($id_game, $id_team, $round, $block, $wins, $losses, $wins_over, $losses_over)");
+
+    // Команда 2
+    $wins = 0; $wins_over = 0; $losses = 0; $losses_over = 0;
+    if ($s2 > $s1){if($s2 == 10){$wins=1;}else{$wins_over=1;}}
+    if ($s2 < $s1){if($s2 >= 10){$losses_over=1;}else{$losses=1;}}
+    $id_team = $id_t2;
+
+    $stmt = $conn->query("SELECT id_game, id_team, round, block FROM statistics_final");
+
+    foreach($stmt as $value){
+        if($value['id_game'] == $id_game AND $value['id_team'] == $id_t2 AND $value['round'] == $round AND $value['block'] == $block){
+            $conn->query("DELETE FROM `statistics_final` 
+            WHERE (`id_game` = $id_game) AND (`id_team` = $id_t2) AND (`round` = $round) AND (`block` = $block)");
+            break;
+        }
+    }
+
+    $conn->query("INSERT INTO statistics_final (id_game, id_team, round, block, wins, losses, wins_over, losses_over) 
+    VALUES ($id_game, $id_team, $round, $block, $wins, $losses, $wins_over, $losses_over)");
+ 
     header('Location: ../admin/final.php?id='.$id_game);
 }

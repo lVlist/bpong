@@ -25,6 +25,11 @@ if(!empty($_POST["referal"])){ //Принимаем данные
             <input class ='submit -addteam' type='submit' value='Добавить'>
             </form>";
             }
+            echo "<form action='../func/edit_game.php' method='POST'>
+            <input type='hidden' name='new_team' value='".$_POST["referal"]."'>
+            <input type='hidden' name='id_game' value='".$_SESSION['id_game']."'>
+            <input class ='submit -addteam' type='submit' value='Создать команду'>
+            </form>";
     }
 }
 ?>

@@ -25,12 +25,6 @@ if ($login != null){
                                     WHERE id_game = $id_game ORDER BY round DESC LIMIT 1");
     $last_round = $id_last_round->fetch_assoc();
 
-    /*echo "<table style='margin:5px;'><tr>";
-    echo "<td style='text-align: center'>
-    Победитель: 2-ое место: 3-ое место:
-    </td>";
-    echo "</tr></table>";*/
-
     echo "<table style='margin:5px;'><tr>";
         for($i=1;$i<=$last_round['round'];$i++){
             if($i == $last_round['round']){
@@ -103,11 +97,7 @@ if ($login != null){
 
 
     echo "<div id='".$finalStyle."'>";
-    if($last_round['s1'] === NULL || $last_round['s2'] === NULL){
-            echo "<div style='margin: 5px 0px'>Финал:</div>";
-    }else{
-            echo "<div style='margin: 5px 0px'>Финал:</div>";
-    }
+    echo "<div style='margin: 5px 0px'>Финал:</div>";
     
     foreach($final as $value){
         if($value['round'] == $last_round['round']){
@@ -146,6 +136,16 @@ if ($login != null){
             }     
         }
     }
+    echo "<form action='../func/statistics_game.php' method='POST'>
+        <input type='hidden' name='id' value='".$id_game."'>
+        <input type='hidden' name='thursday' value='thursday'>
+        <input class ='submit -addteam' type='submit' value='Завершить четверг'>
+        </form>";
+    echo "<form action='../func/statistics_game.php' method='POST'>
+        <input type='hidden' name='id' value='".$id_game."'>
+        <input type='hidden' name='saturday' value='saturday'>
+        <input class ='submit -addteam' type='submit' value='Завершить Субботу'>
+        </form>";
     echo "</div>";
 }
 echo "</div>";

@@ -37,20 +37,17 @@ if($_POST['add_team']){
     $team = $conn->query("SELECT qualification.id_team FROM qualification WHERE qualification.id_game = $id_game");
     $error = "";
     foreach ($team as $value){
-        //echo $value['id_team']."-".$id_team."<br>";
         if($value['id_team'] == $id_team){
             $error = true;
             break;
         }
     }
-    //echo $error; die;
     if($error == true){
         header('Location: ../admin/create.php?id='.$id_game.'&mes=err');
     }else{
         $conn->query("INSERT INTO qualification (id_game, id_team) VALUES ($id_game, $id_team)");
         header('Location: ../admin/create.php?id='.$id_game);
     }
-    
 }
 
 /* Удаление команды */
