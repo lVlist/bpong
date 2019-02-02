@@ -92,14 +92,12 @@ if($_POST['thursday']){
 
 $i=0;
 
-
 $stmt = $conn->prepare("UPDATE `statistics` SET `points`=? WHERE (`id_game`=?) AND (`id_team`=?)"); 
 $stmt->bind_param('iii', $points, $id_game, $id_team);
 
 /* 1 место */
-$final_id_teams = $conn->query("SELECT id_t1, s1, s2, id_t2, block
-FROM final WHERE id_game = $id_game AND
-round = (SELECT round FROM final ORDER BY round DESC LIMIT 1)");
+$final_id_teams = $conn->query("SELECT id_t1, s1, s2, id_t2, block FROM final 
+WHERE id_game = $id_game AND round = (SELECT round FROM final ORDER BY round DESC LIMIT 1)");
 
 //определяю кто выйграл 2 игры
 $t1 = 0; $t2 = 0;
@@ -129,12 +127,8 @@ if ($t1 > $t2){
 }
 
 /* 3 место */
-$final_id_teams = $conn->query("SELECT
-IF ((s1 > s2),id_t1,id_t2) AS id_team
-FROM final
-WHERE
-id_game = $id_game AND
-round = (SELECT round FROM final ORDER BY round DESC LIMIT 1) - 1");
+$final_id_teams = $conn->query("SELECT IF ((s1 > s2),id_t1,id_t2) AS id_team FROM final
+WHERE id_game = $id_game AND round = (SELECT round FROM final ORDER BY round DESC LIMIT 1) - 1");
 $final_id_team = $final_id_teams->fetch_assoc();
 
 //записываем
@@ -142,12 +136,9 @@ $id_team = $final_id_team['id_team'];
 $points = $array_points[$i++];
 $stmt->execute();
 
-/* Финал кроме 3,2,1 места*/
-$final_id_teams = $conn->query("SELECT 
-IF ((s1 > s2),id_t2,id_t1) AS id_team
-FROM final
-WHERE
-final.id_game = $id_game AND
+/* Финал кроме 3,2,1 места (делаю выборку по командам которые проиграли) */
+$final_id_teams = $conn->query("SELECT IF ((s1 > s2),id_t2,id_t1) AS id_team FROM final
+WHERE final.id_game = $id_game AND
 final.round != (SELECT round FROM final ORDER BY round DESC LIMIT 1) AND
 final.round != (SELECT round FROM final ORDER BY round DESC LIMIT 1)-2
 ORDER BY round DESC");
@@ -158,13 +149,12 @@ foreach($final_id_teams as $value){
 	$stmt->execute();
 }
 
-/* Команды кфалификации */
+/* Команды кфалификации (делаю выборку команд которые не прошли в финал) */
 $qualification_id_teams = $conn->query("SELECT id_team FROM qualification
-WHERE id_game = $id_game AND
-id_team NOT IN (
-SELECT id_t1 FROM final WHERE id_game = $id_game AND round = 1
-UNION ALL
-SELECT id_t2 FROM final WHERE id_game = $id_game AND round = 1)
+WHERE id_game = $id_game AND id_team NOT IN (
+	SELECT id_t1 FROM final WHERE id_game = $id_game AND round = 1
+	UNION ALL
+	SELECT id_t2 FROM final WHERE id_game = $id_game AND round = 1)
 ORDER BY result DESC, difference DESC");
 
 foreach($qualification_id_teams as $value){

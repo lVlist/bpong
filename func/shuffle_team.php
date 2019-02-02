@@ -19,7 +19,7 @@ foreach($teams as $value){
 }
 
 /* Записываем команды в статистику финала */
-$stmt = $conn->prepare("INSERT INTO statistics_final (id_game, id_team) VALUES (?,?)"); 
+$stmt = $conn->prepare("INSERT INTO statistics (id_game, id_team) VALUES (?,?)"); 
 $stmt->bind_param('ii',$id_game, $id_team);
 foreach($teams as $val){
     $id_team = $val['id_team'];

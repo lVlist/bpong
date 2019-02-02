@@ -16,7 +16,7 @@ $sql = "SELECT final.id, t1.team t1, final.s1, final.s2, t2.team t2, final.round
         final.block, final.next_block, final.id_t1, final.id_t2 FROM final
         INNER JOIN teams t1 ON t1.id = IFNULL(final.id_t1, 1)
         INNER JOIN teams t2 ON t2.id = IFNULL(final.id_t2, 1)
-        WHERE final.id_game = $id_game";
+        WHERE final.id_game = $id_game ORDER BY id ASC";
 $final = $conn->query("$sql");
 
 echo "<div id='final'>";
@@ -136,6 +136,7 @@ if ($login != null){
             }     
         }
     }
+    
     echo "<form action='../func/statistics_game.php' method='POST'>
         <input type='hidden' name='id' value='".$id_game."'>
         <input type='hidden' name='thursday' value='thursday'>

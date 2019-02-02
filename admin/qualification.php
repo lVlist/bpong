@@ -109,6 +109,13 @@ for($t=1;$t<=3;$t++){
                     }
                 }//end if
                 echo "<td align='right' class='tour-td'>".$value['t2']."</td>";
+                echo "<td>
+                    <form action='../func/tabke.php' method='POST'>
+                    <input type='text' class ='form-control -dark' name='table' value='Стол'>
+                    <input type='hidden' name='id_game' value='".$_SESSION['id_game']."'>
+                    <input class ='submit -addteam' type='submit' value='Сохранить'>
+                    </form>
+                </td>";
             echo "</tr>";
         }//end if
     }//end foreach

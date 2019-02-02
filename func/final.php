@@ -47,7 +47,7 @@ if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
         }
         
     }
-
+    
     /* Записываем последующие раунды без команд */
     $stmt = $conn->prepare("INSERT INTO final (id_game, round, block,next_block) VALUES (?,?,?,?)"); 
     $stmt->bind_param('iiii',$id_game, $round, $block,$j);
