@@ -63,7 +63,7 @@ echo "</div>";
 
 /* Выводим 3 тура */
 
-$sql = "SELECT Q.id AS id_match, t1.team AS t1, Q.s1, Q.s2, t2.team AS t2, Q.round, t1.id AS id_t1, t2.id AS id_t2
+$sql = "SELECT Q.id AS id_match, t1.team AS t1, Q.s1, Q.s2, t2.team AS t2, Q.round, Q.table, t1.id AS id_t1, t2.id AS id_t2
 FROM q_games AS Q
 INNER JOIN teams t1 ON t1.id = Q.id_t1
 INNER JOIN teams t2 ON t2.id = Q.id_t2
@@ -109,13 +109,18 @@ for($t=1;$t<=3;$t++){
                     }
                 }//end if
                 echo "<td align='right' class='tour-td'>".$value['t2']."</td>";
-                echo "<td>
-                    <form action='../func/tabke.php' method='POST'>
-                    <input type='text' class ='form-control -dark' name='table' value='Стол'>
-                    <input type='hidden' name='id_game' value='".$_SESSION['id_game']."'>
-                    <input class ='submit -addteam' type='submit' value='Сохранить'>
-                    </form>
-                </td>";
+                if($value['s1'] == NULL AND $value['s2'] == NULL){
+                    echo "<td>
+                        <form action='../func/edit.php' method='POST'>
+                        <input type='hidden' name='id_game' value='".$id_game."'>
+                        <input type='hidden' name='id_match' value='".$value['id_match']."'>
+                        <input type='text' class ='form-table' name='table' value='".$value['table']."'>
+                        <input class ='submit -table' type='submit' value='OK'>
+                        </form>
+                    </td>";
+                }else{
+                    echo "<td style='width: 50px; text-align: center;'>".$value['table']."</td>";
+                }
             echo "</tr>";
         }//end if
     }//end foreach

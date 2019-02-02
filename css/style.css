@@ -123,6 +123,16 @@ td {
     text-align: center;
 }
 
+.form-table{
+	width: 20px;;
+    background-color: #353a46;
+	border: 2px solid #1e232f;
+	text-align: center;
+	color: #d8d8d8;
+	font-size: 9pt;
+	padding: 1px;
+}
+
 .login {
 	background-color: #353a46;
     border: 2px solid #1e232f;
@@ -148,6 +158,13 @@ td {
 	border: 1px solid transparent;
 	position: relative;
 	display: block;
+}
+
+.submit.-table{
+	margin: 0;
+	padding: 2px;
+	font-size: 6pt;
+	display: inline;
 }
 
 .submit.-addteam{
