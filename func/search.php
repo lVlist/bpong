@@ -11,15 +11,17 @@ if(!empty($_POST["referal"])){ //Принимаем данные
     $row = $db_referal->num_rows;
     
     if ($row === 0){
+            $team = htmlspecialchars($_POST["referal"], ENT_QUOTES);
             echo "<form action='../func/edit_game.php' method='POST'>
-            <input type='hidden' name='new_team' value='".$_POST["referal"]."'>
+            <input type='hidden' name='new_team' value='".$team."'>
             <input type='hidden' name='id_game' value='".$_SESSION['id_game']."'>
             <input class ='submit -addteam' type='submit' value='Создать команду'>
             </form>";
+
     }else{
         while ($row = $db_referal -> fetch_array()) {
             echo "<form action='../func/edit_game.php' method='POST'>
-            <input class='input-team' type='text' name='team' value='".$row['team']."' readonly>
+            <input class='input-team' type='text' name='team' value=".$row['team']." readonly>
             <input type='hidden' name='add_team' value='".$row['id']."'>
             <input type='hidden' name='id_game' value='".$_SESSION['id_game']."'>
             <input class ='submit -addteam' type='submit' value='Добавить'>

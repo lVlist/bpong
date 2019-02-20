@@ -3,8 +3,10 @@ require('../conf/dbconfig.php');
 
 /* Записываем  название турнира */ 
 if ($_POST['new_game']){
+    $new_game = $_POST['new_game'];
+    $date = date("Y-m-d");
     $game = $conn->prepare("INSERT INTO games (game, date) VALUES (?,?)");
-    $game->bind_param('ss',htmlspecialchars($_POST['new_game']), date("Y-m-d"));
+    $game->bind_param('ss', $new_game, $date);
     $game->execute();
     $id_game = $game->insert_id;
     header('Location: ../admin/create.php?id='.$id_game);
@@ -21,8 +23,11 @@ if($_POST['upd_game']){
 /* Создание команды и запись в турнир */
 if($_POST['new_team']){
     //Создаем команду
-    $team = $_POST['new_team'];
+    //var_dump($_POST['new_team']);die;
+    $team = htmlspecialchars_decode($_POST['new_team'], ENT_HTML5);
+    $team = $conn->real_escape_string($team);
     $conn->query("INSERT INTO teams (team) VALUES ('$team')");
+
     //Добавляем ее в турнир
     $id_team = $conn->insert_id;
     $id_game = $_POST['id_game'];

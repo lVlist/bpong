@@ -48,7 +48,7 @@ echo "<div id='create-block'>
         <input class ='submit -addteam' type='submit' value='ИЗМЕНИТЬ'><br>
     </form>
         Добавить команду:
-        <input type='text' name='team' placeholder='Название команды' value='' class='team input-team'  autocomplete='off'>
+        <input type='text' name='team' placeholder='Название команды' class='team input-team'  autocomplete='off'>
         <input type='hidden' name='team' value='".$id_game."'>
         <div class='search_result'></div>";
         if($_GET['mes'] == 'err'){
@@ -72,7 +72,7 @@ echo "<div id='create-block'>";
         }else{
             echo "<tr>";
             echo "<td align='center'>".$i++."</td>";
-            echo "<td style='min-width: 200px;'>".strip_tags($value['team'])."</td>";
+            echo "<td style='min-width: 200px;'>".$value['team']."</td>";
             echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST'>
             <input type='hidden' name='del_team' value='".$value['id_team']."'>
             <input type='hidden' name='id_game' value='".$value['id_game']."'>

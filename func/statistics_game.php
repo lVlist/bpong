@@ -97,7 +97,7 @@ $stmt->bind_param('iii', $points, $id_game, $id_team);
 
 /* 1 место */
 $final_id_teams = $conn->query("SELECT id_t1, s1, s2, id_t2, block FROM final 
-WHERE id_game = $id_game AND round = (SELECT round FROM final ORDER BY round DESC LIMIT 1)");
+WHERE id_game = $id_game AND round = (SELECT round FROM final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1)");
 
 //определяю кто выйграл 2 игры
 $t1 = 0; $t2 = 0;
@@ -128,7 +128,7 @@ if ($t1 > $t2){
 
 /* 3 место */
 $final_id_teams = $conn->query("SELECT IF ((s1 > s2),id_t1,id_t2) AS id_team FROM final
-WHERE id_game = $id_game AND round = (SELECT round FROM final ORDER BY round DESC LIMIT 1) - 1");
+WHERE id_game = $id_game AND round = (SELECT round FROM final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1) - 1");
 $final_id_team = $final_id_teams->fetch_assoc();
 
 //записываем
@@ -139,8 +139,8 @@ $stmt->execute();
 /* Финал кроме 3,2,1 места (делаю выборку по командам которые проиграли) */
 $final_id_teams = $conn->query("SELECT IF ((s1 > s2),id_t2,id_t1) AS id_team FROM final
 WHERE final.id_game = $id_game AND
-final.round != (SELECT round FROM final ORDER BY round DESC LIMIT 1) AND
-final.round != (SELECT round FROM final ORDER BY round DESC LIMIT 1)-2
+final.round != (SELECT round FROM final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1) AND
+final.round != (SELECT round FROM final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1)-2
 ORDER BY round DESC");
 
 foreach($final_id_teams as $value){
