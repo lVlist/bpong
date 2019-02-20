@@ -1,4 +1,5 @@
 <?php
+/* Финал 12-24 */
 require('../conf/dbconfig.php');
 $id_game = $_GET['id'];
 
