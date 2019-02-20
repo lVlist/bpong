@@ -23,10 +23,10 @@ if($_POST['upd_game']){
 /* Создание команды и запись в турнир */
 if($_POST['new_team']){
     //Создаем команду
-    //var_dump($_POST['new_team']);die;
+    $date = date('Y');
     $team = htmlspecialchars_decode($_POST['new_team'], ENT_HTML5);
     $team = $conn->real_escape_string($team);
-    $conn->query("INSERT INTO teams (team) VALUES ('$team')");
+    $conn->query("INSERT INTO teams (team, date) VALUES ('$team', '$date')");
 
     //Добавляем ее в турнир
     $id_team = $conn->insert_id;

@@ -36,7 +36,13 @@ echo "<div id='block'>";
 echo "<table>";
     echo "<h3>Турнир: ".$game."  <a href='create.php?id=".$id_game."'><img width='16px' src='http://".$_SERVER['HTTP_HOST']."/img/edit.png'></a></h3>";
     echo "<tr align ='center'>";
-        echo "<td>№</td><td>Команда</td><td>Тур 1</td><td>Тур 2</td><td>Тур 3</td><td>Итого</td><td>Разница</td>";
+        echo "<td>№</td>
+        <td>Команда</td>
+        <td>Тур 1</td>
+        <td>Тур 2</td>
+        <td>Тур 3</td>
+        <td>Итого</td>
+        <td>Разница</td>";
     echo "</tr>";
 
 $i = 1;
@@ -62,7 +68,6 @@ echo "</div>";
 
 
 /* Выводим 3 тура */
-
 $sql = "SELECT Q.id AS id_match, t1.team AS t1, Q.s1, Q.s2, t2.team AS t2, Q.round, Q.table, t1.id AS id_t1, t2.id AS id_t2
 FROM q_games AS Q
 INNER JOIN teams t1 ON t1.id = Q.id_t1
