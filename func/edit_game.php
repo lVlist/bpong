@@ -55,7 +55,7 @@ if($_POST['add_team']){
     }
 }
 
-/* Удаление команды */
+/* Удаление команды из турнира */
 if($_POST['del_team']){
     $id_game = $_POST['id_game'];
     $id_team = $_POST['del_team'];

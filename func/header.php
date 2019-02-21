@@ -9,6 +9,7 @@ echo "
 <title>Beer Pong Minsk - Бир Понг Минск - Аренда Beer Pong - Турниры по Beer Pong</title>
     <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
     <script src='../js/search.js'></script>
+    <script src='../js/teams.js'></script>
     <link rel='shortcut icon' href='http://".$_SERVER['HTTP_HOST']."/css/favicon.ico' type='image/x-icon'/>
     <link href='http://".$_SERVER['HTTP_HOST']."/css/style.css?ver=2.2' rel='stylesheet'>
   <meta charset='utf-8'>
@@ -51,15 +52,16 @@ function menuAdmin(){
                     echo "<li class='admin-li'>ADMIN MENU: </li>";
                     echo "<li><a href='http://".$_SERVER['HTTP_HOST']."/admin/tournaments.php'>ТУРНИРЫ</a></li>";
                     echo "<a href='#openModal'>СОЗДАТЬ ТУРНИР</a>
-                    <div id='openModal' class='modalDialog'>
-                        <div style='padding: 10px'>
-                        <a href='#close' title='Закрыть' class='close'>X</a>                            
-                            <form action='../func/edit_game.php' method='POST'>
-                                <input class='input-block' type='text' name='new_game' class='login' placeholder='Название турнира'  autocomplete='off'>                     
-                                <input class='submit' type='submit' value='СОЗДАТЬ'>
-                            </form>
-                        </div>
-                    </div>";
+                        <div id='openModal' class='modalDialog'>
+                            <div style='padding: 10px'>
+                            <a href='#close' title='Закрыть' class='close'>X</a>                            
+                                <form action='../func/edit_game.php' method='POST'>
+                                    <input class='input-block' type='text' name='new_game' class='login' placeholder='Название турнира'  autocomplete='off'>                     
+                                    <input class='submit' type='submit' value='СОЗДАТЬ'>
+                                </form>
+                            </div>
+                        </div>";
+                    echo "<li><a href='http://".$_SERVER['HTTP_HOST']."/admin/teams.php'>КОМАНДЫ</a></li>";
                     echo "<li><a href='http://".$_SERVER['HTTP_HOST']."/admin/qualification.php'>ТЕКУЩИЙ ТУРНИР</a></li>";
                 }
                 echo "</ul>
