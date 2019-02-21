@@ -10,7 +10,7 @@ $login = getUserLogin();
 echo "<div id='main'>";
 if ($login != null){
     echo "<div id='create-block'>";
-    echo "Команда:
+    echo "Выберите команду:
     <input type='text' name='team' placeholder='Название команды' class='team input-team'  autocomplete='off'>
     <div class='search_hal9va'></div>";
     echo "</div>";
