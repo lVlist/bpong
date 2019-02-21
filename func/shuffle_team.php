@@ -10,6 +10,7 @@ $conn->query("UPDATE `qualification` SET `r1`=NULL, `r2`=NULL, `r3`=NULL, `resul
 $conn->query("DELETE FROM `q_games` WHERE (`id_game` = $id_game)");
 
 /* Чистим таблицу статистики финала */
+$conn->query("DELETE FROM `statistics` WHERE (`id_game` = $id_game)");
 $conn->query("DELETE FROM `statistics_final` WHERE (`id_game` = $id_game)");
 
 /* Получаем массив команд для рандома */

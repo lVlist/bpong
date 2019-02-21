@@ -10,6 +10,7 @@ echo "
     <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
     <script src='../js/search.js'></script>
     <script src='../js/teams.js'></script>
+    <script src='../js/hal9va.js'></script>
     <link rel='shortcut icon' href='http://".$_SERVER['HTTP_HOST']."/css/favicon.ico' type='image/x-icon'/>
     <link href='http://".$_SERVER['HTTP_HOST']."/css/style.css?ver=2.2' rel='stylesheet'>
   <meta charset='utf-8'>

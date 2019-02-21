@@ -1,4 +1,5 @@
 <?php
+session_start();
 require('../conf/dbconfig.php');
 if(!empty($_POST["referal"])){ //Принимаем данные
 
@@ -9,11 +10,11 @@ if(!empty($_POST["referal"])){ //Принимаем данные
     $db_referal = $stmt->get_result();
    
     while ($row = $db_referal -> fetch_array()) {
-        echo "<form action='../func/teams.php' method='POST'>
-        <input class='input-team' type='text' name='team' value='".htmlspecialchars($row['team'], ENT_QUOTES)."' autocomplete='off'>
+        echo "<form action='../func/hal9va.php' method='POST'>
+        <input class='input-team' type='text' name='team' value='".htmlspecialchars($row['team'], ENT_QUOTES)."' readonly>
         <input type='hidden' name='id_team' value='".$row['id']."'>
-        <input class ='submit -addteam' type='submit' name='edit_team' value='Изменить'>
-        <input class ='submit -addteam' type='submit' name='del_team'value='Удалить'>
+        <input type='hidden' name='id_game' value='".$_SESSION['id_game']."'>
+        <input class ='submit -addteam' type='submit' name='edit_hal9va' value='Заменить'>
         </form>";
     }
 }

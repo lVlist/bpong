@@ -33,6 +33,12 @@ echo "<div id='create-block'>
         }
         
     echo "</form>
+
+    <form action='http://".$_SERVER['HTTP_HOST']."/admin/hal9va.php' method='POST' style='float: left; margin-bottom: 5px'>
+    <input type='hidden' name='start_game' value='".$id_game."'>";
+            echo "&nbsp<input class ='submit -addteam' type='submit' value='ЗАМЕНИТЬ ХАЛЯВУ'>"; 
+    echo "</form>
+
     <form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST' style='float: right;'>
         <input type='hidden' name='del_game' value='".$id_game."'>
         <input class ='submit -addteam' type='submit' value='УДАЛИТЬ ТУРНИР'><br>
