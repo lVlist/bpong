@@ -11,7 +11,7 @@ echo "<div id='main'>";
 if ($login != null){
     echo "<div id='create-block'>";
     echo "Команда:
-    <input type='text' name='team' placeholder='Название команды' class='team input-team'  autocomplete='off'>
+    <input type='text' name='team' placeholder='Название команды' class='team input-team' autocomplete='off'>
     <div class='search_teams'></div>";
     echo "</div>";
 }else{

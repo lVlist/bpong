@@ -8,7 +8,7 @@ echo "
 <head>
 <title>Beer Pong Minsk - Бир Понг Минск - Аренда Beer Pong - Турниры по Beer Pong</title>
     <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
-    <script src='../js/search.js'></script>
+    <script src='../js/create.js'></script>
     <script src='../js/teams.js'></script>
     <script src='../js/hal9va.js'></script>
     <link rel='shortcut icon' href='http://".$_SERVER['HTTP_HOST']."/css/favicon.ico' type='image/x-icon'/>

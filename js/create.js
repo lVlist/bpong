@@ -9,15 +9,15 @@ $(function(){
                 data: {'referal':this.value,},
                 response: 'text',
                 success: function(data){
-                    $(".search_result").html(data).fadeIn(); //Выводим полученые данные в списке
+                    $(".search_create").html(data).fadeIn(); //Выводим полученые данные в списке
                     
                 }
             })
         }
     })
     
-    $(".search_result").hover(function(){
+    $(".search_create").hover(function(){
         $(".team").blur(); //Убираем фокус с input
     })
 
-})z
+})

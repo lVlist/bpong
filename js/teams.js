@@ -16,7 +16,7 @@ $(function(){
         }
     })
     
-    $(".search_result").hover(function(){
+    $(".search_teams").hover(function(){
         $(".team").blur(); //Убираем фокус с input
     })
 

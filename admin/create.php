@@ -30,37 +30,38 @@ echo "<div id='create-block'>
             echo "<input class ='submit -addteam' type='submit' value='НАЧАТЬ ТУРНИР'>";
         }else{
             echo "<input class ='submit -addteam -dis' type='submit' value='НАЧАТЬ ТУРНИР' disabled>";
-        }
-        
+        }      
     echo "</form>
 
     <form action='http://".$_SERVER['HTTP_HOST']."/admin/hal9va.php' method='POST' style='float: left; margin-bottom: 5px'>
-    <input type='hidden' name='start_game' value='".$id_game."'>";
-            echo "&nbsp<input class ='submit -addteam' type='submit' value='ЗАМЕНИТЬ ХАЛЯВУ'>"; 
-    echo "</form>
+    <input type='hidden' name='start_game' value='".$id_game."'>
+    &nbsp<input class ='submit -addteam' type='submit' value='ЗАМЕНИТЬ ХАЛЯВУ'>
+    </form>"; 
 
-    <form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST' style='float: right;'>
+    echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST' style='float: right;'>
         <input type='hidden' name='del_game' value='".$id_game."'>
         <input class ='submit -addteam' type='submit' value='УДАЛИТЬ ТУРНИР'><br>
     </form>";
+
     if ($game['team'] == NULL){
         echo "<p style='margin: 5px 0;clear: both;'>В турнире зарегестрированно 0 команд</p>";
     }else{
         echo "<p style='margin: 5px 0;clear: both;'>В турнире зарегестрированно ".$edit_view->num_rows." команд</p>";
     }
+    
     echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST'>
         <input type='hidden' name='upd_game' value='".$id_game."'>
         Турнир: <input class='input-team' type='text' name='game' value='".$game['game']."'>  
         <input class ='submit -addteam' type='submit' value='ИЗМЕНИТЬ'><br>
     </form>
         Добавить команду:
-        <input type='text' name='team' placeholder='Название команды' class='team input-team'  autocomplete='off'>
+        <input type='text' name='team' placeholder='Название команды' class='team input-team' autocomplete='off'>
         <input type='hidden' name='team' value='".$id_game."'>
-        <div class='search_result'></div>";
+        <div class='search_create'></div>";
         if($_GET['mes'] == 'err'){
             echo "<p style='color:red'>Данная команда уже зарегистрирована в турнире!!</p>";
         }
-      echo "</div>";
+echo "</div>";
 
 echo "<div id='create-block'>";
         echo "<table>";
