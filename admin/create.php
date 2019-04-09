@@ -31,12 +31,7 @@ echo "<div id='create-block'>
         }else{
             echo "<input class ='submit -addteam -dis' type='submit' value='НАЧАТЬ ТУРНИР' disabled>";
         }      
-    echo "</form>
-
-    <form action='http://".$_SERVER['HTTP_HOST']."/admin/hal9va.php' method='POST' style='float: left; margin-bottom: 5px'>
-    <input type='hidden' name='start_game' value='".$id_game."'>
-    &nbsp<input class ='submit -addteam' type='submit' value='ЗАМЕНИТЬ ХАЛЯВУ'>
-    </form>"; 
+    echo "</form>"; 
 
     echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST' style='float: right;'>
         <input type='hidden' name='del_game' value='".$id_game."'>
@@ -67,7 +62,7 @@ echo "<div id='create-block'>";
         echo "<table>";
     echo "<tr>";
     echo "<td>№</td>
-        <td colspan='2' align='center'>Команды участники</td>";
+        <td colspan='3' align='center'>Команды участники</td>";
         echo "</tr>";
     $i = 1;
     foreach($edit_view as $value){
@@ -80,11 +75,19 @@ echo "<div id='create-block'>";
             echo "<tr>";
             echo "<td align='center'>".$i++."</td>";
             echo "<td style='min-width: 200px;'>".$value['team']."</td>";
+            
+            echo "<form action='http://".$_SERVER['HTTP_HOST']."/admin/edit_team.php' method='POST'>
+                <input type='hidden' name='edit_team' value='".$value['id_team']."'>
+                <input type='hidden' name='id_game' value='".$value['id_game']."'>
+                <td style='padding: 2px 10px;'><input class ='submit -addteam -del' type='submit' value='Заменить'></td>
+                </form>";
+
             echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST'>
-            <input type='hidden' name='del_team' value='".$value['id_team']."'>
-            <input type='hidden' name='id_game' value='".$value['id_game']."'>
-            <td style='padding: 2px 10px;'><input class ='submit -addteam -del' type='submit' value='X'></td>
+                <input type='hidden' name='del_team' value='".$value['id_team']."'>
+                <input type='hidden' name='id_game' value='".$value['id_game']."'>
+                <td style='padding: 2px 10px;'><input class ='submit -addteam -del' type='submit' value='X'></td>
             </form>";
+            
             echo "</tr>";
         }
     }

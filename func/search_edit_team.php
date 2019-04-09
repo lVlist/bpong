@@ -10,11 +10,12 @@ if(!empty($_POST["referal"])){ //Принимаем данные
     $db_referal = $stmt->get_result();
    
     while ($row = $db_referal -> fetch_array()) {
-        echo "<form action='../func/hal9va.php' method='POST'>
+        echo "<form action='../func/edit_team.php' method='POST'>
         <input class='input-team' type='text' name='team' value='".htmlspecialchars($row['team'], ENT_QUOTES)."' readonly>
         <input type='hidden' name='id_team' value='".$row['id']."'>
+        <input type='hidden' name='edit_team' value='".$_SESSION['edit_team']."'>
         <input type='hidden' name='id_game' value='".$_SESSION['id_game']."'>
-        <input class ='submit -addteam' type='submit' name='edit_hal9va' value='Заменить'>
+        <input class ='submit -addteam' type='submit' name='editTeam' value='Заменить'>
         </form>";
     }
 }
