@@ -80,52 +80,89 @@ $q_game = $conn->query($sql);
 echo "<div id='block'>";
 
 for($t=1;$t<=3;$t++){
-    echo "<h3>Тур ".$t."</h3>";
+
+    //проверяем завершился тур или нет
+    foreach ($q_game as $value){
+        if($value['round'] == 1 AND $value['s1'] === NULL){
+            $r1 = true;
+            break;
+        }elseif($value['round'] == 1 AND $value['s1'] != NULL){
+            $r1 = false;
+        }
+    }
+    foreach ($q_game as $value){
+        if($value['round'] == 2 AND $value['s1'] === NULL){
+            $r2 = true;
+            break;
+        }elseif($value['round'] == 2 AND $value['s1'] != NULL){
+            $r2 = false;
+        }
+    }
+
+    //определение порядка вывода туров взависимости от завершения тура
+    if ($r1 == true){
+        $round = [1 => 1, 2 => 2, 3 => 3];
+    }elseif($r2 == false){
+        $round = [1 => 3, 2 => 1, 3 => 2];
+    }elseif($r1 == false){
+        $round = [1 => 2, 2 => 3, 3 => 1];
+    }
+
+    //выводим туры
+    echo "<h3>Тур ".$round[$t]."</h3>";
     echo "<table>";
     foreach ($q_game as $value){
-        if ($value['round'] == $t){
+        if ($value['round'] == $round[$t]){
             echo "<tr>";
+
+                //Название первой команды
                 echo "<td class='tour-td'>".$value['t1']."</td>";
-                if (!$value['s1']&&!$value['s2']){
-                    //если нет результатов запись
-                    echo "<td colspan='2' align='center' width='61px'>";
-                        edit("<img width='15px' src='http://".$_SERVER['HTTP_HOST']."/img/edit.png'>");
-                    echo "</td>";
-                }else{
-                    //Очки первой команды
-                    if($value['s1']>$value['s2']){
-                        echo "<td align='center' class='score-td -color'>";
-                            edit($value['s1']);
+
+                    //Очки
+                    if (!$value['s1']&&!$value['s2']){
+                        //запись результатов
+                        echo "<td colspan='2' align='center' width='61px'>";
+                            edit("<img width='15px' src='http://".$_SERVER['HTTP_HOST']."/img/edit.png'>");
                         echo "</td>";
                     }else{
-                        echo "<td align='center' class='score-td'>";
-                            edit($value['s1']);
-                        echo "</td>";
-                    }
-                    //Очки второй команды
-                    if($value['s2']>$value['s1']){
-                        echo "<td align='center' class='score-td -color'>";
-                            edit($value['s2']);
-                        echo "</td>";
-                    }else{
-                        echo "<td align='center' class='score-td'>";
-                            edit($value['s2']);
-                        echo "</td>";
-                    }
-                }//end if
+                        //Очки первой команды
+                        if($value['s1']>$value['s2']){
+                            echo "<td align='center' class='score-td -color'>";
+                                edit($value['s1']);
+                            echo "</td>";
+                        }else{
+                            echo "<td align='center' class='score-td'>";
+                                edit($value['s1']);
+                            echo "</td>";
+                        }
+                        //Очки второй команды
+                        if($value['s2']>$value['s1']){
+                            echo "<td align='center' class='score-td -color'>";
+                                edit($value['s2']);
+                            echo "</td>";
+                        }else{
+                            echo "<td align='center' class='score-td'>";
+                                edit($value['s2']);
+                            echo "</td>";
+                        }
+                    }//end if
+
+                //Название второй команды
                 echo "<td align='right' class='tour-td'>".$value['t2']."</td>";
+                
+                //За каким столом играют
                 if($value['s1'] == NULL AND $value['s2'] == NULL){
                     echo "<td>
                         <form action='../func/edit.php' method='POST'>
-                        <input type='hidden' name='id_game' value='".$id_game."'>
-                        <input type='hidden' name='id_match' value='".$value['id_match']."'>
-                        <input type='text' class ='form-table' name='table' value='".$value['table']."'>
-                        <input class ='submit -table' type='submit' value='OK'>
+                            <input type='hidden' name='id_game' value='".$id_game."'>
+                            <input type='hidden' name='id_match' value='".$value['id_match']."'>
+                            <input type='text' class ='form-table' name='table' value='".$value['table']."'>
+                            <input class ='submit -table' type='submit' value='OK'>
                         </form>
                     </td>";
                 }else{
                     echo "<td style='width: 50px; text-align: center;'>".$value['table']."</td>";
-                }
+                }//end if
             echo "</tr>";
         }//end if
     }//end foreach
