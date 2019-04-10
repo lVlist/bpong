@@ -1,7 +1,6 @@
 <?php
-session_start();
 require('../conf/dbconfig.php');
-//var_dump($_POST);die;
+
 if(!empty($_POST["referal"])){ //Принимаем данные
 
     $referal = "{$_POST['referal']}%";
@@ -15,7 +14,7 @@ if(!empty($_POST["referal"])){ //Принимаем данные
     if ($row === 0){
             echo "<form action='../func/edit_game.php' method='POST'>
             <input type='hidden' name='new_team' value='".$team."'>
-            <input type='hidden' name='id_game' value='".$_SESSION['id_game']."'>
+            <input type='hidden' name='id_game' value='".$_POST['id_game']."'>
             <input class ='submit -addteam' type='submit' value='Создать команду'>
             </form>";
 
@@ -24,13 +23,13 @@ if(!empty($_POST["referal"])){ //Принимаем данные
             echo "<form action='../func/edit_game.php' method='POST'>
             <input class='input-team' type='text' name='team' value='".htmlspecialchars($row['team'], ENT_QUOTES)."' readonly>
             <input type='hidden' name='add_team' value='".$row['id']."'>
-            <input type='hidden' name='id_game' value='".$_SESSION['id_game']."'>
+            <input type='hidden' name='id_game' value='".$_POST['id_game']."'>
             <input class ='submit -addteam' type='submit' value='Добавить'>
             </form>";
             }
             echo "<form action='../func/edit_game.php' method='POST'>
             <input type='hidden' name='new_team' value='".$team."'>
-            <input type='hidden' name='id_game' value='".$_SESSION['id_game']."'>
+            <input type='hidden' name='id_game' value='".$_POST['id_game']."'>
             <input class ='submit -addteam' type='submit' value='Создать команду'>
             </form>";
     }

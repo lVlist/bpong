@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once('../conf/dbconfig.php');
 require_once('../func/func.php');
 require_once('../func/header.php');
@@ -7,13 +6,13 @@ menu();
 menuAdmin();
 $login = getUserLogin();
 
-$_SESSION['edit_team'] = $_POST['edit_team'];
-
 echo "<div id='main'>";
 if ($login != null){
     echo "<div id='create-block'>";
     echo "Выберите команду:
-    <input type='text' name='team' placeholder='Название команды' class='team input-team'  autocomplete='off'>
+    <input type='text'  class='edit_team input-team' placeholder='Название команды' autocomplete='off'>
+    <input type='hidden' id='team' value='".$_POST['edit_team']."'>
+    <input type='hidden' id='game' value='".$_POST['id_game']."'>
     <div class='search_edit_team'></div>";
     echo "</div>";
 }else{

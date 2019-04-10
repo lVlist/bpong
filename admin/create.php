@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once('../conf/dbconfig.php');
 require_once('../func/func.php');
 require_once('../func/header.php');
@@ -12,8 +11,6 @@ if($_GET){
 }else{
     die;
 }
-
-$_SESSION['id_game'] = $id_game;
 
 echo "<div id='main'>";
 if ($login != null){
@@ -50,8 +47,8 @@ echo "<div id='create-block'>
         <input class ='submit -addteam' type='submit' value='ИЗМЕНИТЬ'><br>
     </form>
         Добавить команду:
-        <input type='text' name='team' placeholder='Название команды' class='team input-team' autocomplete='off'>
-        <input type='hidden' name='team' value='".$id_game."'>
+        <input type='text' class='team input-team' placeholder='Название команды' autocomplete='off'>
+        <input type='hidden' id='game' value='".$id_game."'>
         <div class='search_create'></div>";
         if($_GET['mes'] == 'err'){
             echo "<p style='color:red'>Данная команда уже зарегистрирована в турнире!!</p>";
@@ -59,38 +56,37 @@ echo "<div id='create-block'>
 echo "</div>";
 
 echo "<div id='create-block'>";
-        echo "<table>";
-    echo "<tr>";
-    echo "<td>№</td>
-        <td colspan='3' align='center'>Команды участники</td>";
-        echo "</tr>";
-    $i = 1;
-    foreach($edit_view as $value){
-        if($value['team'] == NULL){
-            echo "<tr>";
-            echo "
-            <td colspan='3' align='center' style='min-width: 280px;'>Добавьте команды!</td>";
-            echo "</tr>";
-        }else{
-            echo "<tr>";
-            echo "<td align='center'>".$i++."</td>";
-            echo "<td style='min-width: 200px;'>".$value['team']."</td>";
-            
-            echo "<form action='http://".$_SERVER['HTTP_HOST']."/admin/edit_team.php' method='POST'>
-                <input type='hidden' name='edit_team' value='".$value['id_team']."'>
-                <input type='hidden' name='id_game' value='".$value['id_game']."'>
-                <td style='padding: 2px 10px;'><input class ='submit -addteam -del' type='submit' value='Заменить'></td>
-                </form>";
+    echo "<table>";
+        echo "<tr>";
+            echo "<td>№</td>
+                <td colspan='3' align='center'>Команды участники</td>";
+                echo "</tr>";
+                $i = 1;
+                foreach($edit_view as $value){
+                    if($value['team'] == NULL){
+                        echo "<tr>";
+                        echo "
+                        <td colspan='3' align='center' style='min-width: 280px;'>Добавьте команды!</td>";
+                        echo "</tr>";
+                    }else{
+                        echo "<tr>";
+                        echo "<td align='center'>".$i++."</td>";
+                        echo "<td style='min-width: 200px;'>".$value['team']."</td>";
+                        
+                        echo "<form action='http://".$_SERVER['HTTP_HOST']."/admin/edit_team.php' method='POST'>
+                            <input type='hidden' name='edit_team' value='".$value['id_team']."'>
+                            <input type='hidden' name='id_game' value='".$value['id_game']."'>
+                            <td style='padding: 2px 10px;'><input class ='submit -addteam -del' type='submit' value='Заменить'></td>
+                            </form>";
 
-            echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST'>
-                <input type='hidden' name='del_team' value='".$value['id_team']."'>
-                <input type='hidden' name='id_game' value='".$value['id_game']."'>
-                <td style='padding: 2px 10px;'><input class ='submit -addteam -del' type='submit' value='X'></td>
-            </form>";
-            
-            echo "</tr>";
-        }
-    }
+                        echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST'>
+                            <input type='hidden' name='del_team' value='".$value['id_team']."'>
+                            <input type='hidden' name='id_game' value='".$value['id_game']."'>
+                            <td style='padding: 2px 10px;'><input class ='submit -addteam -del' type='submit' value='X'></td>
+                        </form>";
+                     }
+                }
+        echo "</tr>";
     echo "</table>";
 echo "</div>";
 echo "</div>";
@@ -98,3 +94,4 @@ echo "</div>";
     echo "Доступ запрещен!";
 }
 echo "</div>";
+?>
