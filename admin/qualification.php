@@ -121,7 +121,7 @@ for($t=1;$t<=3;$t++){
                     //Очки
                     if (!$value['s1']&&!$value['s2']){
                         //запись результатов
-                        echo "<td colspan='2' align='center' width='61px'>";
+                        echo "<td colspan='2' align='center' width='45px'>";
                             edit("<img width='15px' src='http://".$_SERVER['HTTP_HOST']."/img/edit.png'>");
                         echo "</td>";
                     }else{
