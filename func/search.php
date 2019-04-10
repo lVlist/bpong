@@ -1,6 +1,7 @@
 <?php
 session_start();
 require('../conf/dbconfig.php');
+//var_dump($_POST);die;
 if(!empty($_POST["referal"])){ //Принимаем данные
 
     $referal = "{$_POST['referal']}%";
