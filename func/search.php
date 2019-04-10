@@ -10,9 +10,9 @@ if(!empty($_POST["referal"])){ //Принимаем данные
     $stmt->execute();
     $db_referal = $stmt->get_result();
     $row = $db_referal->num_rows;
+    $team = htmlspecialchars($_POST["referal"], ENT_QUOTES);
     
     if ($row === 0){
-            $team = htmlspecialchars($_POST["referal"], ENT_QUOTES);
             echo "<form action='../func/edit_game.php' method='POST'>
             <input type='hidden' name='new_team' value='".$team."'>
             <input type='hidden' name='id_game' value='".$_SESSION['id_game']."'>
@@ -29,7 +29,7 @@ if(!empty($_POST["referal"])){ //Принимаем данные
             </form>";
             }
             echo "<form action='../func/edit_game.php' method='POST'>
-            <input type='hidden' name='new_team' value='".$_POST["referal"]."'>
+            <input type='hidden' name='new_team' value='".$team."'>
             <input type='hidden' name='id_game' value='".$_SESSION['id_game']."'>
             <input class ='submit -addteam' type='submit' value='Создать команду'>
             </form>";
