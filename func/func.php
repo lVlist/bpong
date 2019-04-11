@@ -59,7 +59,7 @@ function edit($name)
 /* Логин */
 function checkAuth($login,$password)
 {
-    $users = require __DIR__."/usersDB.php";
+    $users = require $_SERVER['DOCUMENT_ROOT'] . '/conf/usersDB.php';
 
     foreach ($users as $user) {
         if ($user['login'] === $login  && $user['password'] === $password) 

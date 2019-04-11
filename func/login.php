@@ -3,7 +3,7 @@ if (!empty($_POST)) {
     require('func.php');
 
     $login = $_POST['login'];
-    $password = $_POST['password'];
+    $password = md5($_POST['password']);
 
     if (checkAuth($login, $password)) {
         setcookie('login', $login, 0, '/');

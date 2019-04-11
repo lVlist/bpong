@@ -28,7 +28,7 @@ echo "
                     <div id='openModal' class='modalDialog'>
                         <div style='padding: 10px'>
                         <a href='#close' title='Закрыть' class='close'>X</a>                            
-                            <form action='func/login.php' method='POST'>
+                            <form action='http://".$_SERVER['HTTP_HOST']."/func/login.php' method='POST'>
                                 <input type='text' name='login' id='login' class='login' placeholder='Пользователь'  autocomplete='off'>                        
                                 <input type='password' name='password' id='password' class='login' placeholder='Пароль'  autocomplete='off'>                        
                                 <input class='submit' type='submit' value='ВОЙТИ'>
