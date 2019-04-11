@@ -79,7 +79,7 @@ if($_POST['changeTeam']){
         $conn->query("UPDATE `q_games` SET `id_t2`= '$id_team' WHERE (`id_t2`= $change_team) AND (`id_game`= $id_game)");
         $conn->query("UPDATE `qualification` SET `id_team`= '$id_team' WHERE (`id_team`= $change_team) AND (`id_game`= $id_game)");
         $conn->query("UPDATE `statistics` SET `id_team`= '$id_team' WHERE (`id_team`= $change_team) AND (`id_game`= $id_game)");
-        header('Location: ../admin/qualification.php?id='.$id_game);
+        header('Location: ../admin/create.php?id='.$id_game);
     }
 }
 
