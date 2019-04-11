@@ -21,11 +21,6 @@ $conn->query("UPDATE `qualification` SET `r1`=NULL, `r2`=NULL, `r3`=NULL, `resul
 /* Удаляем 3 тура при редактировании */
 $conn->query("DELETE FROM `q_games` WHERE (`id_game` = $id_game)");
 
-/* Чистим таблицу статистики финала */
-$conn->query("DELETE FROM `statistics` WHERE (`id_game` = $id_game)");
-
-
-
 /* Рандомим и записываем 3 тура */
 $stmt = $conn->prepare("INSERT INTO q_games (id_game, id_t1, id_t2, round) VALUES (?,?,?,?)"); 
 $stmt->bind_param('iiii',$id_game, $t1, $t2, $round);
