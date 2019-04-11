@@ -31,7 +31,7 @@ if ($login != null){
 
                 <form action='http://".$_SERVER['HTTP_HOST']."/func/shuffle_team.php' method='POST' style='float: left; margin-bottom: 5px'>
                 <input type='hidden' name='start_game' value='".$id_game."'>
-                &nbsp<input class ='submit -addteam' type='submit' value='РЕДАКТИРОВАТЬ ТЕКУЩИЙ ТУРНИР'>
+                &nbsp<input class ='submit -addteam' type='submit' value='ИЗМЕНИТЬ ТЕКУЩИЙ ТУРНИР'>
                 </form>";  
 
             echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST' style='float: right;'>
@@ -57,6 +57,16 @@ if ($login != null){
                 if($_GET['mes'] == 'err'){
                     echo "<p style='color:red'>Данная команда уже зарегистрирована в турнире!!</p>";
                 }
+
+            /* Замена команды */
+            if($_POST['change_team'] != NULL){            
+                echo "<br><br><br>Заменить <b>{$_POST['team']}</b> на:<br>";
+                echo "Выберите команду:
+                <input type='text'  class='change_team input-team' placeholder='Название команды' autocomplete='off'>
+                <input type='hidden' id='team' value='".$_POST['change_team']."'>
+                <input type='hidden' id='game' value='".$_POST['id_game']."'>
+                <div class='search_change_team'></div>";
+            }
         echo "</div>";
 
         /* Таблица команд */
@@ -95,19 +105,6 @@ if ($login != null){
                 echo "</tr>";
             echo "</table>";
         echo "</div>";
-
-        /* Замена команды */
-        if($_POST['change_team'] != NULL){
-            
-            echo "<div id='create-block'>";
-                echo "Заменить <b>{$_POST['team']}</b> на:<br>";
-                echo "Выберите команду:
-                <input type='text'  class='change_team input-team' placeholder='Название команды' autocomplete='off'>
-                <input type='hidden' id='team' value='".$_POST['change_team']."'>
-                <input type='hidden' id='game' value='".$_POST['id_game']."'>
-                <div class='search_change_team'></div>";
-            echo "</div>";
-        }
     }else{
         die;
     }

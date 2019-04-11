@@ -125,7 +125,7 @@ if ($t1 > $t2){
 	$points = $array_points[$i++];
 	$stmt->execute();
 }
-//var_dump($i);die;
+
 /* 3 место */
 $final_id_teams = $conn->query("SELECT IF ((s1 > s2),id_t1,id_t2) AS id_team FROM final
 WHERE id_game = $id_game AND round = (SELECT round FROM final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1) - 1");
@@ -149,7 +149,7 @@ foreach($final_id_teams as $value){
 	$stmt->execute();
 }
 
-/* Команды кфалификации (делаю выборку команд которые не прошли в финал) */
+/* Команды квалификации (делаю выборку команд которые не прошли в финал) */
 $qualification_id_teams = $conn->query("SELECT id_team FROM qualification
 WHERE id_game = $id_game AND id_team NOT IN (
 	SELECT team
