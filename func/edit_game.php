@@ -28,10 +28,14 @@ if($_POST['new_team']){
     $team = $conn->real_escape_string($team);
     $conn->query("INSERT INTO teams (team, date) VALUES ('$team', '$date')");
 
-    //Добавляем ее в турнир
+    //Добавляем её в турнир
     $id_team = $conn->insert_id;
     $id_game = $_POST['id_game'];
     $conn->query("INSERT INTO qualification (id_game, id_team) VALUES ($id_game, $id_team)");
+
+    //Записываем её в статистику
+    $conn->query("INSERT INTO statistics (id_game, id_team) VALUES ($id_game, $id_team)");
+
     header('Location: ../admin/create.php?id='.$id_game);
 }
 
@@ -53,6 +57,9 @@ if($_POST['add_team']){
         $conn->query("INSERT INTO qualification (id_game, id_team) VALUES ($id_game, $id_team)");
         header('Location: ../admin/create.php?id='.$id_game);
     }
+
+    //Записываем её в статистику
+    $conn->query("INSERT INTO statistics (id_game, id_team) VALUES ($id_game, $id_team)");
 }
 
 /* Замена команды в турнире */
@@ -88,6 +95,9 @@ if($_POST['del_team']){
     $id_game = $_POST['id_game'];
     $id_team = $_POST['del_team'];
     $conn->query("DELETE FROM `qualification` WHERE (`id_game` = $id_game) AND (`id_team` = $id_team)");
+
+    //удаление из статистики
+    $conn->query("DELETE FROM `statistics` WHERE (`id_game` = $id_game) AND (`id_team` = $id_team)");
     header('Location: ../admin/create.php?id='.$id_game);
 }
 
