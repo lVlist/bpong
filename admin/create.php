@@ -19,8 +19,13 @@ if ($login != null){
         $game = $edit_view->fetch_assoc();
 
         /* Редактирование турнира */
-        echo "<div id='create-block'>
-            <form action='http://".$_SERVER['HTTP_HOST']."/func/shuffle_team.php' method='POST' style='float: left; margin-bottom: 5px'>
+        echo "<div id='create-block'>";
+        
+            if($_GET['mes'] == 'even'){
+                echo "<p style='color:red'>В турнире нечетное количество команд!</p>";
+            }
+
+            echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/shuffle_team.php' method='POST' style='float: left; margin-bottom: 5px'>
                 <input type='hidden' name='start_game' value='".$id_game."'>";
                 if ($edit_view->num_rows >= 4){
                     echo "<input class ='submit -addteam' type='submit' value='НАЧАТЬ НОВЫЙ ТУРНИР'>";
@@ -29,8 +34,8 @@ if ($login != null){
                 }      
             echo "</form>
 
-                <form action='http://".$_SERVER['HTTP_HOST']."/func/shuffle_team.php' method='POST' style='float: left; margin-bottom: 5px'>
-                <input type='hidden' name='start_game' value='".$id_game."'>
+                <form action='http://".$_SERVER['HTTP_HOST']."/func/edit_shuffle.php' method='POST' style='float: left; margin-bottom: 5px'>
+                <input type='hidden' name='edit_game' value='".$id_game."'>
                 &nbsp<input class ='submit -addteam' type='submit' value='ИЗМЕНИТЬ ТЕКУЩИЙ ТУРНИР'>
                 </form>";  
 

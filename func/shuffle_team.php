@@ -3,6 +3,17 @@ require('../conf/dbconfig.php');
 
 $id_game = $_POST['start_game'];
 
+/* Получаем массив команд для рандома */
+$teams = $conn->query("SELECT id_team FROM qualification WHERE id_game = $id_game");
+foreach($teams as $value){
+    $teams_id[] .= $value['id_team']; //массив команд для рандома
+}
+
+/* Проверяем четное количество команд или нет */
+if(count($teams_id)%2 == 1){
+    header('Location: ../admin/create.php?id='.$id_game.'&mes=even');
+}
+
 /* затираем результаты при редактировании турнира */
 $conn->query("UPDATE `qualification` SET `r1`=NULL, `r2`=NULL, `r3`=NULL, `result`=NULL, `d1`=NULL, `d2`=NULL, `d3`=NULL, `difference`=NULL WHERE (`id_game`= $id_game)");
 
@@ -11,21 +22,7 @@ $conn->query("DELETE FROM `q_games` WHERE (`id_game` = $id_game)");
 
 /* Чистим таблицу статистики финала */
 $conn->query("DELETE FROM `statistics` WHERE (`id_game` = $id_game)");
-$conn->query("DELETE FROM `statistics_final` WHERE (`id_game` = $id_game)");
 
-/* Получаем массив команд для рандома */
-$teams = $conn->query("SELECT id_team FROM qualification WHERE id_game = $id_game");
-foreach($teams as $value){
-    $teams_id[] .= $value['id_team']; //массив команд для рандома
-}
-
-/* Записываем команды в статистику финала */
-$stmt = $conn->prepare("INSERT INTO statistics (id_game, id_team) VALUES (?,?)"); 
-$stmt->bind_param('ii',$id_game, $id_team);
-foreach($teams as $val){
-    $id_team = $val['id_team'];
-    $stmt->execute();
-}
 
 
 /* Рандомим и записываем 3 тура */
