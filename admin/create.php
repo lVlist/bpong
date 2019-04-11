@@ -39,10 +39,10 @@ if ($login != null){
                 <input class ='submit -addteam' type='submit' value='УДАЛИТЬ ТУРНИР'><br>
             </form>";
 
-            if ($game['team'] == NULL){
-                echo "<p style='margin: 5px 0;clear: both;'>В турнире зарегестрированно 0 команд</p>";
+            if ($game['team'] === NULL){
+                echo "<p style='margin: 5px 0;clear: both;'>В турнире нет команд</p>";
             }else{
-                echo "<p style='margin: 5px 0;clear: both;'>В турнире зарегестрированно ".$edit_view->num_rows." команд</p>";
+                echo "<p style='margin: 5px 0;clear: both;'>В турнире зарегестрированно ". $edit_view->num_rows . getNumEnding($edit_view->num_rows, array(' команда', ' команды', ' команд')). "</p>";
             }
             
             echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST'>
