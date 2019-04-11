@@ -12,6 +12,7 @@ foreach($teams as $value){
 /* Проверяем четное количество команд или нет */
 if(count($teams_id)%2 == 1){
     header('Location: ../admin/create.php?id='.$id_game.'&mes=even');
+    die;
 }
 
 /* затираем результаты при редактировании турнира */
