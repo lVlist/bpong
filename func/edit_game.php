@@ -94,10 +94,23 @@ if($_POST['changeTeam']){
 if($_POST['del_team']){
     $id_game = $_POST['id_game'];
     $id_team = $_POST['del_team'];
+    $check_team = $conn->query("SELECT r1 FROM qualification WHERE id_game = $id_game AND id_team = $id_team")->fetch_assoc();
+
+    if($check_team['r1'] != NULL){
+        header('Location: ../admin/create.php?id='.$id_game.'&mes=point');
+        die;
+    }
+
+    //удаление из таблицы
     $conn->query("DELETE FROM `qualification` WHERE (`id_game` = $id_game) AND (`id_team` = $id_team)");
 
     //удаление из статистики
     $conn->query("DELETE FROM `statistics` WHERE (`id_game` = $id_game) AND (`id_team` = $id_team)");
+
+    //удаление из туров
+    $conn->query("DELETE FROM `q_games` WHERE (`id_game` = $id_game) AND (`id_t1` = $id_team)");
+    $conn->query("DELETE FROM `q_games` WHERE (`id_game` = $id_game) AND (`id_t2` = $id_team)");
+
     header('Location: ../admin/create.php?id='.$id_game);
 }
 

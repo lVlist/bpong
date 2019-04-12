@@ -23,8 +23,10 @@ if ($login != null){
         
             if($_GET['mes'] == 'even'){
                 echo "<p style='color:red'>В турнире нечетное количество команд!</p>";
+            }elseif($_GET['mes'] == 'point'){
+                echo "<p style='color:red'>Команда принимает участие в турнире!</p>";
             }
-
+            
             echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/shuffle_team.php' method='POST' style='float: left; margin-bottom: 5px'>
                 <input type='hidden' name='start_game' value='".$id_game."'>";
                 if ($edit_view->num_rows >= 4){
