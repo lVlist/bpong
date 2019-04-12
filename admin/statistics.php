@@ -19,7 +19,7 @@ if ($login != null){
         hit_cups, got_cups, difference_cups
         FROM statistics 
         INNER JOIN teams ON teams.id = statistics.id_team
-        WHERE statistics.id_game = $id_game AND statistics.id_team != 31
+        WHERE statistics.id_game = $id_game AND teams.team != 'ХАЛЯВА'
         ORDER BY points DESC, percent DESC, difference_cups DESC");
 
         echo "<table>";
