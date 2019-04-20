@@ -26,7 +26,7 @@ FROM(
 	SUM(difference_cups) as difference_cups
 	FROM statistics 
 	INNER JOIN teams ON teams.id = statistics.id_team
-	WHERE statistics.id_team != 'ХАЛЯВА'
+	WHERE statistics.id_team != 'ХАЛЯВА' AND teams.type = 'main'
 	GROUP BY id_team
 ) as s
 ORDER BY points DESC, percent DESC, difference_cups DESC");
