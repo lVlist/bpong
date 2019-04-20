@@ -54,7 +54,17 @@ function menuAdmin(){
                             <div style='padding: 10px'>
                             <a href='#close' title='Закрыть' class='close'>X</a>                            
                                 <form action='../func/edit_game.php' method='POST'>
-                                    <input class='input-block' type='text' name='new_game' class='login' placeholder='Название турнира'  autocomplete='off'>                     
+                                    <input class='input-block' type='text' name='new_game' class='login' placeholder='Название турнира'  autocomplete='off'><br>
+                                    <center>";
+                                    if($_GET['mes'] == 'type'){
+                                        echo "<p style='color:red'>Выберите тип!</p>";
+                                    }
+                                    echo "                                   
+                                    <input type='radio' name='type' value='sat'> Суббота
+                                    <input type='radio' name='type' value='thu'> Четверг
+                                    <input type='radio' name='type' value='king'> King
+                                    <input type='radio' name='type' value='queen'> Queen
+                                    </center>
                                     <input class='submit' type='submit' value='СОЗДАТЬ'>
                                 </form>
                             </div>

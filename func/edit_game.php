@@ -3,10 +3,16 @@ require('../conf/dbconfig.php');
 
 /* Записываем  название турнира */ 
 if ($_POST['new_game']){
+
+    if(!$_POST['type']){
+        header('Location: ../index.php?mes=type#openModal');
+    }
+    //var_dump($_POST);die;
     $new_game = $_POST['new_game'];
     $date = date("Y-m-d");
-    $game = $conn->prepare("INSERT INTO games (game, date) VALUES (?,?)");
-    $game->bind_param('ss', $new_game, $date);
+    $type = $_POST['type'];
+    $game = $conn->prepare("INSERT INTO games (game, type, date) VALUES (?,?,?)");
+    $game->bind_param('sss', $new_game, $type, $date);
     $game->execute();
     $id_game = $game->insert_id;
     header('Location: ../admin/create.php?id='.$id_game);
