@@ -7,7 +7,6 @@ if ($_POST['new_game']){
     if(!$_POST['type']){
         header('Location: ../index.php?mes=type#openModal');
     }
-    //var_dump($_POST);die;
     $new_game = $_POST['new_game'];
     $date = date("Y-m-d");
     $type = $_POST['type'];
@@ -29,15 +28,24 @@ if($_POST['upd_game']){
 
 /* Создание команды и запись в турнир */
 if($_POST['new_team']){
+    $id_game = $_POST['id_game'];
+    
+    //определяем тип команды
+    $types = $conn->query("SELECT type FROM games WHERE games.id = $id_game")->fetch_assoc();
+    if($types['type'] == 'sat' OR $types['type'] == 'thu'){
+        $type = 'main';
+    }else{
+        $type = $types['type'];
+    }
+
     //Создаем команду
     $date = date('Y');
     $team = htmlspecialchars_decode($_POST['new_team'], ENT_HTML5);
     $team = $conn->real_escape_string($team);
-    $conn->query("INSERT INTO teams (team, date) VALUES ('$team', '$date')");
+    $conn->query("INSERT INTO teams (team, type, date) VALUES ('$team', '$type', '$date')");
 
     //Добавляем её в турнир
     $id_team = $conn->insert_id;
-    $id_game = $_POST['id_game'];
     $conn->query("INSERT INTO qualification (id_game, id_team) VALUES ($id_game, $id_team)");
 
     //Записываем её в статистику
