@@ -74,6 +74,11 @@ td{
 	color: #d8d8d8;;
 }
 
+.input-team.-type{
+	width: 40px;
+	text-align: center
+}
+
 #main{
 	width: 90%;
 	margin: 10px auto;

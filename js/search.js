@@ -49,7 +49,7 @@ $(function(){
             $.ajax({
                 type: 'post',
                 url: "../func/search.php", //Путь к обработчику
-                data: {'edit_team':this.value,},
+                data: {'edit_team':this.value},
                 response: 'text',
                 success: function(data){
                     $(".search_teams").html(data).fadeIn(); //Выводим полученые данные в списке
