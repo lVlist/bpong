@@ -83,11 +83,10 @@ foreach ($qualification_games as $value){
 
 
 /* Очки за место */
-
-if($_POST['thursday']){
-	$array_points = [10,8,6,5,4,4,4,4,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1];
-}elseif($_POST['saturday']){
-	$array_points = [50,40,35,30,25,25,25,25,20,20,20,20,20,20,20,20,15,15,15,15,15,15,15,15,10,10,10,10,10,10,10,10,5,5,5,5,5,5,5,5,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3];
+$type = $conn->query("SELECT type FROM games WHERE games.id = $id_game")->fetch_assoc();
+$array_score = $conn->query("SELECT * FROM score ORDER BY sat DESC");
+foreach($array_score as $value){
+    $array_points[] = $value[$type['type']];
 }
 
 $i=0;

@@ -139,13 +139,7 @@ if ($login != null){
     
     echo "<form action='../func/statistics_game.php' method='POST'>
         <input type='hidden' name='id' value='".$id_game."'>
-        <input type='hidden' name='thursday' value='thursday'>
-        <input class ='submit -addteam' type='submit' value='Завершить четверг'>
-        </form>";
-    echo "<form action='../func/statistics_game.php' method='POST'>
-        <input type='hidden' name='id' value='".$id_game."'>
-        <input type='hidden' name='saturday' value='saturday'>
-        <input class ='submit -addteam' type='submit' value='Завершить Субботу'>
+        <input class ='submit -addteam' type='submit' value='Завершить турнир'>
         </form>";
     echo "</div>";
 }

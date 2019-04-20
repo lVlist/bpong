@@ -15,6 +15,7 @@ if ($_POST['new_game']){
     $game->bind_param('sss', $new_game, $type, $date);
     $game->execute();
     $id_game = $game->insert_id;
+    setcookie("typeGame", $type);
     header('Location: ../admin/create.php?id='.$id_game);
 }
 
