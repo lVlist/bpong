@@ -13,6 +13,7 @@ li{
 	list-style: none;
 	display: flex;
 }
+
 header{
 	background-color: black;
 	padding: 10px 0px;
@@ -33,19 +34,19 @@ a{
     text-decoration: none;
 }
 
-A:hover{
+a:hover{
     color: #949494;
 }
 
 
-table {
+table{
     font-size: 14px;
 	border-collapse: collapse; 
 	background-color: #303542;
 	margin: auto;
 }
 
-td {
+td{
     padding: 4px 7px;
     border: 1px solid #23252d;
 }
@@ -121,6 +122,15 @@ td {
 	min-height: 40px;
 	border : 2px solid #1e232f;
     text-align: center;
+}
+
+.form-score {
+	background-color: #353a46;
+	border : 2px solid #1e232f;
+	color: #d8d8d8;
+	text-align: center;
+	width: 40px;
+	min-height: 20px;
 }
 
 .form-table{
