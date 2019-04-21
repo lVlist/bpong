@@ -6,6 +6,12 @@ menu();
 menuAdmin();
 
 $login = getUserLogin();
+if($_GET['type']){
+    $type = $_GET['type'];
+}else{
+    $type = 'main';
+}
+
 
 echo "<div id='main'>";
 if ($login != null){
@@ -26,10 +32,14 @@ FROM(
 	SUM(difference_cups) as difference_cups
 	FROM statistics 
 	INNER JOIN teams ON teams.id = statistics.id_team
-	WHERE statistics.id_team != 'ХАЛЯВА' AND teams.type = 'main'
+	WHERE statistics.id_team != 'ХАЛЯВА' AND teams.type = '$type'
 	GROUP BY id_team
 ) as s
 ORDER BY points DESC, percent DESC, difference_cups DESC");
+
+    echo "<center><a href='?type=main' class='type'>Основной</a> ";
+    echo "<a href='?type=king' class='type'>KING</a> ";
+    echo "<a href='?type=queen' class='type'>QUEEN</a></center><br>";
 
     echo "<table>";
     echo "<tr>";
