@@ -19,7 +19,7 @@ echo "<div id='main'>";
                 echo "<tr>
                 <td align='center'>".$i++."</td>
                 <td>".$date."</td>
-                <td><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
+                <td width='150px'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
                 <td><a href='final.php?id=".$value['id']."'>Финал</td>
                 <td><a href='statistics.php?id=".$value['id']."'>Результаты турнира</td>
                 </tr>";
@@ -38,7 +38,7 @@ echo "<div id='main'>";
                 echo "<tr>
                 <td align='center'>".$i++."</td>
                 <td>".$date."</td>
-                <td><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
+                <td width='150px'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
                 <td><a href='final.php?id=".$value['id']."'>Финал</td>
                 <td><a href='statistics.php?id=".$value['id']."'>Результаты турнира</td>
                 </tr>";
@@ -55,7 +55,7 @@ echo "<div id='main'>";
                 echo "<tr>
                 <td align='center'>".$i++."</td>
                 <td>".$date."</td>
-                <td><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
+                <td width='150px'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
                 <td><a href='final.php?id=".$value['id']."'>Финал</td>
                 <td><a href='statistics.php?id=".$value['id']."'>Результаты турнира</td>
                 </tr>";
@@ -72,7 +72,7 @@ echo "<div id='main'>";
                 echo "<tr>
                 <td align='center'>".$i++."</td>
                 <td>".$date."</td>
-                <td><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
+                <td width='150px'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
                 <td><a href='final.php?id=".$value['id']."'>Финал</td>
                 <td><a href='statistics.php?id=".$value['id']."'>Результаты турнира</td>
                 </tr>";

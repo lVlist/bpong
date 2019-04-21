@@ -21,7 +21,7 @@ echo "
     <nav role='navigation'>
             <ul class='main-menu'>
                 <li><a href='/'>ГЛАВНАЯ</a></li>                
-                <li><a href='/statistics.php?id=1'>CТАТИСТИКА</a></li>
+                <li><a href='/statistics.php'>CТАТИСТИКА</a></li>
                 <li><a href='/rules.php'>ПРАВИЛА</a></li>";
                 if ($login === null){
                     echo "<a href='#openModal'>ВОЙТИ</a>
