@@ -29,13 +29,22 @@ if($_POST['upd_game']){
 /* Создание команды и запись в турнир */
 if($_POST['new_team']){
     $id_game = $_POST['id_game'];
-    
+
     //определяем тип команды
     $types = $conn->query("SELECT type FROM games WHERE games.id = $id_game")->fetch_assoc();
     if($types['type'] == 'sat' OR $types['type'] == 'thu'){
         $type = 'main';
     }else{
         $type = $types['type'];
+    }
+
+    //проверка на одинаковые названия
+    $teams = $conn->query("SELECT team FROM teams WHERE type = '$type'");
+    foreach($teams as $value){
+        if($value['team'] == $_POST['new_team']){
+            header('Location: ../admin/create.php?id='.$id_game.'&mes=team');
+            die;
+        }
     }
 
     //Создаем команду

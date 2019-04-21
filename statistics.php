@@ -37,7 +37,7 @@ FROM(
 ) as s
 ORDER BY points DESC, percent DESC, difference_cups DESC");
 
-    echo "<center><a href='?type=main' class='type'>Основной</a> ";
+    echo "<center><a href='?type=main' class='type'>MAIN</a> ";
     echo "<a href='?type=king' class='type'>KING</a> ";
     echo "<a href='?type=queen' class='type'>QUEEN</a></center><br>";
 

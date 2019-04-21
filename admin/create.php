@@ -63,6 +63,8 @@ if ($login != null){
                 <div class='search_create'></div>";
                 if($_GET['mes'] == 'err'){
                     echo "<p style='color:red'>Данная команда уже зарегистрирована в турнире!!</p>";
+                }elseif($_GET['mes'] == 'team'){
+                    echo "<p style='color:red'>Команда с таким названием существует!!</p>";
                 }
 
             /* Замена команды */
