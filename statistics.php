@@ -34,9 +34,9 @@ FROM(
 	SUM(hit_cups) as hit_cups, 
 	SUM(got_cups) as got_cups, 
 	SUM(difference_cups) as difference_cups
-	FROM statistics 
-	INNER JOIN teams ON teams.id = statistics.id_team
-	WHERE teams.team != 'ХАЛЯВА' AND teams.type = '$type'
+	FROM $dbt_statistics  ST
+	INNER JOIN $dbt_teams T ON T.id = ST.id_team
+	WHERE T.team != 'ХАЛЯВА' AND T.type = '$type'
 	GROUP BY id_team
 ) as s
 ORDER BY points DESC, percent DESC, difference_cups DESC");
