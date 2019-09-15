@@ -7,14 +7,14 @@ if(!empty($_POST["add_team"])){
     $referal = "{$_POST['add_team']}%";
     $id_game = $_POST['id_game'];
 
-    $types = $conn->query("SELECT type FROM games WHERE games.id = $id_game")->fetch_assoc();
+    $types = $conn->query("SELECT type FROM $dbt_games Q WHERE Q.id = $id_game")->fetch_assoc();
     if($types['type'] == 'sat' OR $types['type'] == 'thu'){
         $type = 'main';
     }else{
         $type = $types['type'];
     }
 
-    $stmt = $conn -> prepare("SELECT * from teams WHERE id != 1 AND date = year(curdate()) AND type = '$type' AND team LIKE (?)");
+    $stmt = $conn -> prepare("SELECT * from $dbt_teams WHERE id != 1 AND date = year(curdate()) AND type = '$type' AND team LIKE (?)");
     $stmt->bind_param("s", $referal);
     $stmt->execute();
 
@@ -51,14 +51,14 @@ if(!empty($_POST["change_team"])){
     $referal = "{$_POST['change_team']}%";
     $id_game = $_POST['id_game'];
 
-    $types = $conn->query("SELECT type FROM games WHERE games.id = $id_game")->fetch_assoc();
+    $types = $conn->query("SELECT type FROM $dbt_games Q WHERE Q.id = $id_game")->fetch_assoc();
     if($types['type'] == 'sat' OR $types['type'] == 'thu'){
         $type = 'main';
     }else{
         $type = $types['type'];
     }
 
-    $stmt = $conn -> prepare("SELECT * from teams WHERE id != 1 AND date = year(curdate()) AND type = '$type' AND team LIKE (?)");
+    $stmt = $conn -> prepare("SELECT * from $dbt_teams WHERE id != 1 AND date = year(curdate()) AND type = '$type' AND team LIKE (?)");
     $stmt->bind_param("s", $referal);
     $stmt->execute();
     $db_referal = $stmt->get_result();
@@ -80,7 +80,7 @@ if(!empty($_POST["edit_team"])){ //Принимаем данные
     $referal = "{$_POST['edit_team']}%";
     $type = $_POST['type_game'];
 
-    $stmt = $conn -> prepare("SELECT * from teams WHERE id != 1 AND date = year(curdate()) AND team LIKE (?)");
+    $stmt = $conn -> prepare("SELECT * from $dbt_teams WHERE id != 1 AND date = year(curdate()) AND team LIKE (?)");
     $stmt->bind_param("s", $referal);
     $stmt->execute();
     $db_referal = $stmt->get_result();

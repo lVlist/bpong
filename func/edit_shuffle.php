@@ -3,14 +3,15 @@ require('../conf/dbconfig.php');
 $id_game = $_POST['edit_game'];
 
 /* Получаем массив из общей таблицы */
-$teams = $conn->query("SELECT id_team FROM qualification WHERE id_game = $id_game");
+$teams = $conn->query("SELECT id_team FROM $dbt_qualification WHERE id_game = $id_game");
 foreach($teams as $value){
     $teams_id[] .= $value['id_team'];
 }
 
 /* Получаем массив из первого тура */
-$round1 = $conn->query("SELECT id_t1 as id_team FROM q_games WHERE id_game = $id_game AND round = 1
-UNION ALL SELECT id_t2 as id_team FROM q_games WHERE id_game = $id_game AND round = 1");
+$round1 = $conn->query("SELECT id_t1 as id_team FROM $dbt_q_games WHERE id_game = $id_game AND round = 1
+                        UNION ALL 
+                        SELECT id_t2 as id_team FROM $dbt_q_games WHERE id_game = $id_game AND round = 1");
 foreach($round1 as $value){
     $round1_id[] .= $value['id_team'];
 }
@@ -32,10 +33,10 @@ if(empty($new_id)){
 }
 
 /* Удаляем 2,3 тур */
-$conn->query("DELETE FROM `q_games` WHERE (`id_game` = $id_game AND `round` IN(2,3))");
+$conn->query("DELETE FROM `$dbt_q_games` WHERE (`id_game` = $id_game AND `round` IN(2,3))");
 
 /* Записываем новые команды в конец 1 тура */
-$stmt = $conn->prepare("INSERT INTO q_games (id_game, id_t1, id_t2, round) VALUES (?,?,?,?)"); 
+$stmt = $conn->prepare("INSERT INTO $dbt_q_games (id_game, id_t1, id_t2, round) VALUES (?,?,?,?)"); 
 $stmt->bind_param('iiii',$id_game, $t1, $t2, $round);
 $round_team = array_chunk($new_id, $count);
 
@@ -46,14 +47,14 @@ for($c=0;$c<=$count-1;$c++){
     $stmt->execute(); //запись в базу
 }
 
-$round1_new = $conn->query("SELECT id_t1, id_t2 FROM q_games WHERE id_game = $id_game AND round = 1");
+$round1_new = $conn->query("SELECT id_t1, id_t2 FROM $dbt_q_games WHERE id_game = $id_game AND round = 1");
 foreach($round1_new as $value){
     $array_team[0][] .= $value['id_t1'];
     $array_team[1][] .= $value['id_t2'];
 }
 
 /* Рандомим и записываем 2,3 тур */
-$stmt = $conn->prepare("INSERT INTO q_games (id_game, id_t1, id_t2, round) VALUES (?,?,?,?)"); 
+$stmt = $conn->prepare("INSERT INTO $dbt_q_games (id_game, id_t1, id_t2, round) VALUES (?,?,?,?)"); 
 $stmt->bind_param('iiii',$id_game, $t1, $t2, $round);
 
 $count = count($teams_id)/2;

@@ -4,7 +4,7 @@ require('../conf/dbconfig.php');
 $id_game = $_POST['start_game'];
 
 /* Получаем массив команд для рандома */
-$teams = $conn->query("SELECT id_team FROM qualification WHERE id_game = $id_game");
+$teams = $conn->query("SELECT id_team FROM $dbt_qualification WHERE id_game = $id_game");
 foreach($teams as $value){
     $teams_id[] .= $value['id_team']; //массив команд для рандома
 }
@@ -16,13 +16,13 @@ if(count($teams_id)%2 == 1){
 }
 
 /* затираем результаты при редактировании турнира */
-$conn->query("UPDATE `qualification` SET `r1`=NULL, `r2`=NULL, `r3`=NULL, `result`=NULL, `d1`=NULL, `d2`=NULL, `d3`=NULL, `difference`=NULL WHERE (`id_game`= $id_game)");
+$conn->query("UPDATE `$dbt_qualification` SET `r1`=NULL, `r2`=NULL, `r3`=NULL, `result`=NULL, `d1`=NULL, `d2`=NULL, `d3`=NULL, `difference`=NULL WHERE (`id_game`= $id_game)");
 
 /* Удаляем 3 тура при редактировании */
-$conn->query("DELETE FROM `q_games` WHERE (`id_game` = $id_game)");
+$conn->query("DELETE FROM `$dbt_q_games` WHERE (`id_game` = $id_game)");
 
 /* Рандомим и записываем 3 тура */
-$stmt = $conn->prepare("INSERT INTO q_games (id_game, id_t1, id_t2, round) VALUES (?,?,?,?)"); 
+$stmt = $conn->prepare("INSERT INTO $dbt_q_games (id_game, id_t1, id_t2, round) VALUES (?,?,?,?)"); 
 $stmt->bind_param('iiii',$id_game, $t1, $t2, $round);
 
 $count = count($teams_id)/2;

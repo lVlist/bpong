@@ -123,7 +123,7 @@ function finalEdit($s, $winLose){
         }
     }
 
-    /* Матчи для таблицы редактиования */
+    /* Матчи для таблицы редактирования */
     $final = $conn->query($sql);
     
     echo "<div id='finalEdit' class='modalDialog'>

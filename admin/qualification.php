@@ -9,7 +9,7 @@ $login = getUserLogin();
 if ($login != null){
     
     //получения id игры методом GET если нету последний id из БД
-    $id_last_game = $conn -> query ("SELECT games.id FROM games ORDER BY games.id DESC LIMIT 1");
+    $id_last_game = $conn -> query ("SELECT G.id FROM $dbt_games G ORDER BY G.id DESC LIMIT 1");
     $last_game = $id_last_game->fetch_assoc();
 
     if (isset($_GET['id'])){
@@ -22,11 +22,12 @@ if ($login != null){
 
         /* Общая таблица 3 туров */
         $qualification = 
-            $conn->query("SELECT teams.team, qualification.r1, qualification.r2, qualification.r3, qualification.result, 
-            qualification.difference, games.game FROM qualification
-            INNER JOIN teams ON teams.id = qualification.id_team INNER JOIN games ON games.id = qualification.id_game
-            WHERE qualification.id_game = $id_game
-            ORDER BY qualification.result DESC, qualification.difference DESC");
+            $conn->query("SELECT T.team, Q.r1, Q.r2, Q.r3, Q.result, Q.difference, G.game 
+            FROM $dbt_qualification Q
+            INNER JOIN $dbt_teams T ON T.id = Q.id_team 
+            INNER JOIN $dbt_games G ON G.id = Q.id_game
+            WHERE Q.id_game = $id_game
+            ORDER BY Q.result DESC, Q.difference DESC");
 
         /* Получаем название турнира */
         $game = $qualification->fetch_assoc();
@@ -39,13 +40,13 @@ if ($login != null){
         echo "<table>";
             echo "<h3>Турнир: ".$game."  <a href='create.php?id=".$id_game."'><img width='16px' src='http://".$_SERVER['HTTP_HOST']."/img/edit.png'></a></h3>";
             echo "<tr align ='center'>";
-                echo "<td>№</td>
-                <td>Команда</td>
-                <td>Тур 1</td>
-                <td>Тур 2</td>
-                <td>Тур 3</td>
-                <td>Итого</td>
-                <td>Разница</td>";
+                echo "  <td>№</td>
+                        <td>Команда</td>
+                        <td>Тур 1</td>
+                        <td>Тур 2</td>
+                        <td>Тур 3</td>
+                        <td>Итого</td>
+                        <td>Разница</td>";
             echo "</tr>";
 
         $i = 1;
@@ -72,9 +73,9 @@ if ($login != null){
 
         /* Выводим 3 тура */
         $sql = "SELECT Q.id AS id_match, t1.team AS t1, Q.s1, Q.s2, t2.team AS t2, Q.round, Q.table, t1.id AS id_t1, t2.id AS id_t2
-        FROM q_games AS Q
-        INNER JOIN teams t1 ON t1.id = Q.id_t1
-        INNER JOIN teams t2 ON t2.id = Q.id_t2
+        FROM $dbt_q_games AS Q
+        INNER JOIN $dbt_teams t1 ON t1.id = Q.id_t1
+        INNER JOIN $dbt_teams t2 ON t2.id = Q.id_t2
         WHERE Q.id_game = $id_game";
 
         /* Выборка 3 туров */

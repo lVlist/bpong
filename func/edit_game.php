@@ -10,11 +10,11 @@ if ($_POST['new_game']){
     $new_game = $_POST['new_game'];
     $date = date("Y-m-d");
     $type = $_POST['type'];
-    $game = $conn->prepare("INSERT INTO games (game, type, date) VALUES (?,?,?)");
+    $game = $conn->prepare("INSERT INTO $dbt_games (game, type, date) VALUES (?,?,?)");
     $game->bind_param('sss', $new_game, $type, $date);
     $game->execute();
     $id_game = $game->insert_id;
-    setcookie("typeGame", $type);
+    //setcookie("typeGame", $type);
     header('Location: ../admin/create.php?id='.$id_game);
 }
 
@@ -22,7 +22,7 @@ if ($_POST['new_game']){
 if($_POST['upd_game']){
     $id_game = $_POST['upd_game'];
     $game = $_POST['game'];
-    $conn->query("UPDATE `games` SET `game`= '$game' WHERE (`id`= $id_game)");
+    $conn->query("UPDATE `$dbt_games` SET `game`= '$game' WHERE (`id`= $id_game)");
     header('Location: ../admin/create.php?id='.$id_game);
 }
 
@@ -31,7 +31,7 @@ if($_POST['new_team']){
     $id_game = $_POST['id_game'];
 
     //определяем тип команды
-    $types = $conn->query("SELECT type FROM games WHERE games.id = $id_game")->fetch_assoc();
+    $types = $conn->query("SELECT type FROM $dbt_games Q WHERE Q.id = $id_game")->fetch_assoc();
     if($types['type'] == 'sat' OR $types['type'] == 'thu'){
         $type = 'main';
     }else{
@@ -39,7 +39,7 @@ if($_POST['new_team']){
     }
 
     //проверка на одинаковые названия
-    $teams = $conn->query("SELECT team FROM teams WHERE type = '$type'");
+    $teams = $conn->query("SELECT team FROM $dbt_teams WHERE type = '$type'");
     foreach($teams as $value){
         if($value['team'] == $_POST['new_team']){
             header('Location: ../admin/create.php?id='.$id_game.'&mes=team');
@@ -51,14 +51,14 @@ if($_POST['new_team']){
     $date = date('Y');
     $team = htmlspecialchars_decode($_POST['new_team'], ENT_HTML5);
     $team = $conn->real_escape_string($team);
-    $conn->query("INSERT INTO teams (team, type, date) VALUES ('$team', '$type', '$date')");
+    $conn->query("INSERT INTO $dbt_teams (team, type, date) VALUES ('$team', '$type', '$date')");
 
     //Добавляем её в турнир
     $id_team = $conn->insert_id;
-    $conn->query("INSERT INTO qualification (id_game, id_team) VALUES ($id_game, $id_team)");
+    $conn->query("INSERT INTO $dbt_qualification (id_game, id_team) VALUES ($id_game, $id_team)");
 
     //Записываем её в статистику
-    $conn->query("INSERT INTO statistics (id_game, id_team) VALUES ($id_game, $id_team)");
+    $conn->query("INSERT INTO $dbt_statistics (id_game, id_team) VALUES ($id_game, $id_team)");
 
     header('Location: ../admin/create.php?id='.$id_game);
 }
@@ -67,7 +67,7 @@ if($_POST['new_team']){
 if($_POST['add_team']){
     $id_game = $_POST['id_game'];
     $id_team = $_POST['add_team'];
-    $team = $conn->query("SELECT qualification.id_team FROM qualification WHERE qualification.id_game = $id_game");
+    $team = $conn->query("SELECT Q.id_team FROM $dbt_qualification Q WHERE Q.id_game = $id_game");
     $error = "";
     foreach ($team as $value){
         if($value['id_team'] == $id_team){
@@ -78,12 +78,12 @@ if($_POST['add_team']){
     if($error == true){
         header('Location: ../admin/create.php?id='.$id_game.'&mes=err');
     }else{
-        $conn->query("INSERT INTO qualification (id_game, id_team) VALUES ($id_game, $id_team)");
+        $conn->query("INSERT INTO $dbt_qualification (id_game, id_team) VALUES ($id_game, $id_team)");
         header('Location: ../admin/create.php?id='.$id_game);
     }
 
     //Записываем её в статистику
-    $conn->query("INSERT INTO statistics (id_game, id_team) VALUES ($id_game, $id_team)");
+    $conn->query("INSERT INTO $dbt_statistics (id_game, id_team) VALUES ($id_game, $id_team)");
 }
 
 /* Замена команды в турнире */
@@ -94,7 +94,7 @@ if($_POST['changeTeam']){
     $change_team = $_POST['change_team'];
 
     //проверяем зарегана команда в турнире
-    $team = $conn->query("SELECT qualification.id_team FROM qualification WHERE qualification.id_game = $id_game");
+    $team = $conn->query("SELECT Q.id_team FROM $dbt_qualification Q WHERE Q.id_game = $id_game");
     
     foreach ($team as $value){
         if($value['id_team'] == $id_team){
@@ -106,10 +106,10 @@ if($_POST['changeTeam']){
     if($error == true){
         header('Location: ../admin/create.php?id='.$id_game.'&mes=err');
     }else{
-        $conn->query("UPDATE `q_games` SET `id_t1`= '$id_team' WHERE (`id_t1`= $change_team) AND (`id_game`= $id_game)");
-        $conn->query("UPDATE `q_games` SET `id_t2`= '$id_team' WHERE (`id_t2`= $change_team) AND (`id_game`= $id_game)");
-        $conn->query("UPDATE `qualification` SET `id_team`= '$id_team' WHERE (`id_team`= $change_team) AND (`id_game`= $id_game)");
-        $conn->query("UPDATE `statistics` SET `id_team`= '$id_team' WHERE (`id_team`= $change_team) AND (`id_game`= $id_game)");
+        $conn->query("UPDATE `$dbt_q_games` SET `id_t1`= '$id_team' WHERE (`id_t1`= $change_team) AND (`id_game`= $id_game)");
+        $conn->query("UPDATE `$dbt_q_games` SET `id_t2`= '$id_team' WHERE (`id_t2`= $change_team) AND (`id_game`= $id_game)");
+        $conn->query("UPDATE `$dbt_qualification` SET `id_team`= '$id_team' WHERE (`id_team`= $change_team) AND (`id_game`= $id_game)");
+        $conn->query("UPDATE `$dbt_statistics` SET `id_team`= '$id_team' WHERE (`id_team`= $change_team) AND (`id_game`= $id_game)");
         header('Location: ../admin/create.php?id='.$id_game);
     }
 }
@@ -118,7 +118,7 @@ if($_POST['changeTeam']){
 if($_POST['del_team']){
     $id_game = $_POST['id_game'];
     $id_team = $_POST['del_team'];
-    $check_team = $conn->query("SELECT r1 FROM qualification WHERE id_game = $id_game AND id_team = $id_team")->fetch_assoc();
+    $check_team = $conn->query("SELECT r1 FROM $dbt_qualification WHERE id_game = $id_game AND id_team = $id_team")->fetch_assoc();
 
     if($check_team['r1'] != NULL){
         header('Location: ../admin/create.php?id='.$id_game.'&mes=point');
@@ -126,14 +126,14 @@ if($_POST['del_team']){
     }
 
     //удаление из таблицы
-    $conn->query("DELETE FROM `qualification` WHERE (`id_game` = $id_game) AND (`id_team` = $id_team)");
+    $conn->query("DELETE FROM `$dbt_qualification` WHERE (`id_game` = $id_game) AND (`id_team` = $id_team)");
 
     //удаление из статистики
-    $conn->query("DELETE FROM `statistics` WHERE (`id_game` = $id_game) AND (`id_team` = $id_team)");
+    $conn->query("DELETE FROM `$dbt_statistics` WHERE (`id_game` = $id_game) AND (`id_team` = $id_team)");
 
     //удаление из туров
-    $conn->query("DELETE FROM `q_games` WHERE (`id_game` = $id_game) AND (`id_t1` = $id_team)");
-    $conn->query("DELETE FROM `q_games` WHERE (`id_game` = $id_game) AND (`id_t2` = $id_team)");
+    $conn->query("DELETE FROM `$dbt_q_games` WHERE (`id_game` = $id_game) AND (`id_t1` = $id_team)");
+    $conn->query("DELETE FROM `$dbt_q_games` WHERE (`id_game` = $id_game) AND (`id_t2` = $id_team)");
 
     header('Location: ../admin/create.php?id='.$id_game);
 }
@@ -141,9 +141,9 @@ if($_POST['del_team']){
 /* Удаление игры */
 if($_POST['del_game']){
     $id_game = $_POST['del_game'];
-    $conn->query("DELETE FROM `qualification` WHERE (`id_game` = $id_game)");
-    $conn->query("DELETE FROM `q_games` WHERE (`id_game` = $id_game)");
-    $conn->query("DELETE FROM `final` WHERE (`id_game` = $id_game)");
-    $conn->query("DELETE FROM `games` WHERE (`id` = $id_game)");
+    $conn->query("DELETE FROM `$dbt_qualification` WHERE (`id_game` = $id_game)");
+    $conn->query("DELETE FROM `$dbt_q_games` WHERE (`id_game` = $id_game)");
+    $conn->query("DELETE FROM `$dbt_final` WHERE (`id_game` = $id_game)");
+    $conn->query("DELETE FROM `$dbt_games` WHERE (`id` = $id_game)");
     header('Location: ../index.php');
 }

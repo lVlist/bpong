@@ -7,21 +7,21 @@ menuAdmin();
 $login = getUserLogin();
 
 //получения id игры методом GET если нету последний id из БД
-$id_last_game = $conn -> query ("SELECT games.id FROM games ORDER BY games.id DESC LIMIT 1");
+$id_last_game = $conn -> query ("SELECT G.id FROM $dbt_games G ORDER BY G.id DESC LIMIT 1");
 $last_game = $id_last_game->fetch_assoc();
 		
 if (isset($_GET['id'])){$id_game = (int)$_GET['id'];}else{$id_game = (int)$last_game['id'];}
 
-$sql = "SELECT final.id, t1.team t1, final.s1, final.s2, t2.team t2, final.round, 
-        final.block, final.next_block, final.id_t1, final.id_t2 FROM final
-        INNER JOIN teams t1 ON t1.id = IFNULL(final.id_t1, 1)
-        INNER JOIN teams t2 ON t2.id = IFNULL(final.id_t2, 1)
-        WHERE final.id_game = $id_game ORDER BY id ASC";
+$sql = "SELECT F.id, t1.team t1, F.s1, F.s2, t2.team t2, F.round, 
+        F.block, F.next_block, F.id_t1, F.id_t2 FROM $dbt_final F
+        INNER JOIN $dbt_teams t1 ON t1.id = IFNULL(F.id_t1, 1)
+        INNER JOIN $dbt_teams t2 ON t2.id = IFNULL(F.id_t2, 1)
+        WHERE F.id_game = $id_game ORDER BY id ASC";
 $final = $conn->query("$sql");
 
 echo "<div id='final'>";
 if ($login != null){   
-    $id_last_round = $conn -> query ("SELECT round, s1, s2, block FROM final 
+    $id_last_round = $conn -> query ("SELECT round, s1, s2, block FROM $dbt_final
                                     WHERE id_game = $id_game ORDER BY round DESC LIMIT 1");
     $last_round = $id_last_round->fetch_assoc();
 
@@ -102,18 +102,13 @@ if ($login != null){
     foreach($final as $value){
         if($value['round'] == $last_round['round']){
             if($value['block'] == 1){
-                echo "<div class='final -clear'>".$value['t1']."</div>";
-                if($value['s1']>$value['s2']){
-                    finalEdit('s1','1');
-                }else{
-                    finalEdit('s1','2');
-                }               
-            }elseif($value['block'] == 2 || $value['block'] == 3){
-                if($value['s1']>$value['s2']){
-                    finalEdit('s1','1');
-                }else{
-                    finalEdit('s1','2');
-                }
+                echo "<div class='final -clear'>".$value['t1']."</div>"; 
+            } 
+
+            if($value['s1']>$value['s2']){
+                finalEdit('s1','1');
+            }else{
+                finalEdit('s1','2');
             }
         }
     }
@@ -121,19 +116,14 @@ if ($login != null){
     foreach($final as $value){
         if($value['round'] == $last_round['round']){
             if($value['block'] == 1){
-                echo "<div class='final -clear'>".$value['t2']."</div>";
-                if($value['s1']<$value['s2']){
-                    finalEdit('s2','1');
-                }else{
-                    finalEdit('s2','2');
-                }
-            }elseif($value['block'] == 2 || $value['block'] == 3){
-                if($value['s1']<$value['s2']){
-                    finalEdit('s2','1');
-                }else{
-                    finalEdit('s2','2');
-                }
-            }     
+                echo "<div class='final -clear'>".$value['t2']."</div>"; 
+            } 
+                          
+            if($value['s1']<$value['s2']){
+                finalEdit('s2','1');
+            }else{
+                finalEdit('s2','2');
+            }
         }
     }
     

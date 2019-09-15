@@ -12,10 +12,10 @@ if ($login != null){
     $id_game = (int)$_GET['id'];
 
     if($id_game > 0){
-        $edit_view = $conn->query("SELECT teams.team, games.game, qualification.id_team, qualification.id_game FROM qualification
-        INNER JOIN teams ON teams.id = qualification.id_team
-        RIGHT JOIN games ON games.id = qualification.id_game
-        WHERE games.id = $id_game");
+        $edit_view = $conn->query("SELECT $dbt_teams.team, $dbt_games.game, $dbt_qualification.id_team, $dbt_qualification.id_game FROM $dbt_qualification
+        INNER JOIN $dbt_teams ON $dbt_teams.id = $dbt_qualification.id_team
+        RIGHT JOIN $dbt_games ON $dbt_games.id = $dbt_qualification.id_game
+        WHERE $dbt_games.id = $id_game");
         $game = $edit_view->fetch_assoc();
 
         /* Редактирование турнира */

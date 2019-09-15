@@ -5,7 +5,7 @@ $id_game = $_GET['id'];
 
 if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
 
-    $conn->query("DELETE FROM `final` WHERE (`id_game` = $id_game)");
+    $conn->query("DELETE FROM `$dbt_final` WHERE (`id_game` = $id_game)");
 
     /* Определяем порядок команд */
     if($_GET['limit'] == 8){
@@ -26,7 +26,7 @@ if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
     ksort($teams);
 
     /* Записываем первый раунд с командами */
-    $stmt = $conn->prepare("INSERT INTO final (id_game, id_t1, id_t2, round, block, next_block) VALUES (?,?,?,?,?,?)"); 
+    $stmt = $conn->prepare("INSERT INTO $dbt_final (id_game, id_t1, id_t2, round, block, next_block) VALUES (?,?,?,?,?,?)"); 
     $stmt->bind_param('iiiiii',$id_game, $t1, $t2, $round, $block,$j);
 
     /* Раунд 1 */
@@ -50,7 +50,7 @@ if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
     }
     
     /* Записываем последующие раунды без команд */
-    $stmt = $conn->prepare("INSERT INTO final (id_game, round, block,next_block) VALUES (?,?,?,?)"); 
+    $stmt = $conn->prepare("INSERT INTO $dbt_final (id_game, round, block,next_block) VALUES (?,?,?,?)"); 
     $stmt->bind_param('iiii',$id_game, $round, $block,$j);
 
     /* Раунд 2 */ 

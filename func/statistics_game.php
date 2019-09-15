@@ -6,10 +6,10 @@ $id_game = $_POST['id'];
 $qualification_hit_got = $conn->query("SELECT id_team, SUM(hit) as hit_cups,SUM(got) as got_cups 
 FROM(
 	SELECT id_t1 as id_team, SUM(s1) as hit, SUM(s2) as got
-	FROM q_games WHERE id_game = $id_game GROUP BY id_t1
+	FROM $dbt_q_games WHERE id_game = $id_game GROUP BY id_t1
 	UNION ALL
 	SELECT id_t2 as id_team, SUM(s2) as hit, SUM(s1) as got
-	FROM q_games WHERE id_game = $id_game GROUP BY id_t2
+	FROM $dbt_q_games WHERE id_game = $id_game GROUP BY id_t2
 ) as s
 GROUP BY id_team");
 
@@ -17,14 +17,14 @@ GROUP BY id_team");
 $final_hit_got = $conn->query("SELECT id_team, SUM(hit) as hit_cups,SUM(got) as got_cups 
 FROM(
 	SELECT id_t1 as id_team, SUM(s1) as hit, SUM(s2) as got
-	FROM final WHERE id_game = $id_game GROUP BY id_t1
+	FROM $dbt_final WHERE id_game = $id_game GROUP BY id_t1
 	UNION ALL
 	SELECT id_t2 as id_team, SUM(s2) as hit, SUM(s1) as got
-	FROM final WHERE id_game = $id_game GROUP BY id_t2
+	FROM $dbt_final WHERE id_game = $id_game GROUP BY id_t2
 ) as s
 GROUP BY id_team");
 
-$stmt = $conn->prepare("UPDATE `statistics` SET  `hit_cups`=?, `got_cups`=?, `difference_cups`=? WHERE (`id_game`=?) AND (`id_team`=?)"); 
+$stmt = $conn->prepare("UPDATE `$dbt_statistics` SET  `hit_cups`=?, `got_cups`=?, `difference_cups`=? WHERE (`id_game`=?) AND (`id_team`=?)"); 
 $stmt->bind_param('iiiii', $hit_cups, $got_cups, $difference_cups, $id_game, $id_team);
 
 foreach ($qualification_hit_got as $value){
@@ -55,22 +55,22 @@ FROM(
 		IF (r1=0, 1,0)+IF (r2=0, 1,0)+IF (r3=0, 1,0) as losses,
 		IF (r1=2, 1,0)+IF (r2=2, 1,0)+IF (r3=2, 1,0) as wins_ot,
 		IF (r1=1, 1,0)+IF (r2=1, 1,0)+IF (r3=1, 1,0) as losses_ot
-		FROM qualification WHERE id_game = $id_game
+		FROM $dbt_qualification WHERE id_game = $id_game
 	UNION ALL
 		SELECT id_team, 
 		SUM(wins) as wins, 
 		SUM(losses) as losses, 
 		SUM(wins_over) as wins_ot, 
 		SUM(losses_over) as losses_ot
-		FROM statistics_final WHERE id_game = $id_game GROUP BY id_team
+		FROM $dbt_statistics_final WHERE id_game = $id_game GROUP BY id_team
 ) as s
 GROUP BY id_team");
 
-$stmt = $conn->prepare("UPDATE `statistics` SET `wins`=?, `losses`=?, `wins_over`=?, `losses_over`=? WHERE (`id_game`=?) AND (`id_team`=?)"); 
+$stmt = $conn->prepare("UPDATE `$dbt_statistics` SET `wins`=?, `losses`=?, `wins_over`=?, `losses_over`=? WHERE (`id_game`=?) AND (`id_team`=?)"); 
 $stmt->bind_param('iiiiii', $wins, $losses, $wins_over, $losses_over, $id_game, $id_team);
 
 foreach ($qualification_games as $value){
-	//var_dump($value);
+
 	$id_team = $value['id_team'];
 
 	// если 0 то NULL
@@ -83,20 +83,20 @@ foreach ($qualification_games as $value){
 
 
 /* Очки за место */
-$type = $conn->query("SELECT type FROM games WHERE games.id = $id_game")->fetch_assoc();
-$array_score = $conn->query("SELECT * FROM score ORDER BY sat DESC");
+$type = $conn->query("SELECT type FROM $dbt_games Q WHERE Q.id = $id_game")->fetch_assoc();
+$array_score = $conn->query("SELECT * FROM $dbt_score ORDER BY sat DESC");
 foreach($array_score as $value){
     $array_points[] = $value[$type['type']];
 }
 
 $i=0;
 
-$stmt = $conn->prepare("UPDATE `statistics` SET `points`=? WHERE (`id_game`=?) AND (`id_team`=?)"); 
+$stmt = $conn->prepare("UPDATE `$dbt_statistics` SET `points`=? WHERE (`id_game`=?) AND (`id_team`=?)"); 
 $stmt->bind_param('iii', $points, $id_game, $id_team);
 
 /* 1 место */
-$final_id_teams = $conn->query("SELECT id_t1, s1, s2, id_t2, block FROM final 
-WHERE id_game = $id_game AND round = (SELECT round FROM final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1)");
+$final_id_teams = $conn->query("SELECT id_t1, s1, s2, id_t2, block FROM $dbt_final 
+WHERE id_game = $id_game AND round = (SELECT round FROM $dbt_final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1)");
 
 //определяю кто выйграл 2 игры
 $t1 = 0; $t2 = 0;
@@ -126,8 +126,8 @@ if ($t1 > $t2){
 }
 
 /* 3 место */
-$final_id_teams = $conn->query("SELECT IF ((s1 > s2),id_t1,id_t2) AS id_team FROM final
-WHERE id_game = $id_game AND round = (SELECT round FROM final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1) - 1");
+$final_id_teams = $conn->query("SELECT IF ((s1 > s2),id_t1,id_t2) AS id_team FROM $dbt_final
+WHERE id_game = $id_game AND round = (SELECT round FROM $dbt_final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1) - 1");
 $final_id_team = $final_id_teams->fetch_assoc();
 
 //записываем
@@ -136,10 +136,10 @@ $points = $array_points[$i++];
 $stmt->execute();
 
 /* Финал кроме 3,2,1 места (делаю выборку по командам которые проиграли) */
-$final_id_teams = $conn->query("SELECT IF ((s1 > s2),id_t2,id_t1) AS id_team FROM final
-WHERE final.id_game = $id_game AND
-final.round != (SELECT round FROM final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1) AND
-final.round != (SELECT round FROM final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1)-2
+$final_id_teams = $conn->query("SELECT IF ((s1 > s2),id_t2,id_t1) AS id_team FROM $dbt_final
+WHERE id_game = $id_game AND
+round != (SELECT round FROM $dbt_final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1) AND
+round != (SELECT round FROM $dbt_final WHERE id_game = $id_game ORDER BY round DESC LIMIT 1)-2
 ORDER BY round DESC");
 
 foreach($final_id_teams as $value){
@@ -149,13 +149,13 @@ foreach($final_id_teams as $value){
 }
 
 /* Команды квалификации (делаю выборку команд которые не прошли в финал) */
-$qualification_id_teams = $conn->query("SELECT id_team FROM qualification
+$qualification_id_teams = $conn->query("SELECT id_team FROM $dbt_qualification
 WHERE id_game = $id_game AND id_team NOT IN (
 	SELECT team
 	FROM(
-		SELECT id_t1 as team FROM final WHERE id_game = $id_game
+		SELECT id_t1 as team FROM $dbt_final WHERE id_game = $id_game
 		UNION ALL
-		SELECT id_t2 as team FROM final WHERE id_game = $id_game) as f
+		SELECT id_t2 as team FROM $dbt_final WHERE id_game = $id_game) as f
 	GROUP BY team)
 ORDER BY result DESC, difference DESC");
 

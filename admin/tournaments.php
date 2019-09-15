@@ -9,7 +9,7 @@ $login = getUserLogin();
 echo "<div id='main'>";    
     if ($login != null){
         echo "<div id='block'>";
-            $games = $conn->query("SELECT * FROM games WHERE type = 'thu' ORDER BY date DESC");
+            $games = $conn->query("SELECT * FROM $dbt_games WHERE type = 'thu' ORDER BY date DESC");
             echo "<h3>Четверги:</h3>";
             echo "<table>";
             $i = 1;
@@ -28,7 +28,7 @@ echo "<div id='main'>";
         echo "</div>";
 
         echo "<div id='block'>";
-            $games = $conn->query("SELECT * FROM games WHERE type = 'sat' ORDER BY date DESC");
+            $games = $conn->query("SELECT * FROM $dbt_games WHERE type = 'sat' ORDER BY date DESC");
             echo "<h3>Субботы:</h3>";
             echo "<table>";
             $i = 1;
@@ -45,7 +45,7 @@ echo "<div id='main'>";
             }
             echo "</table>";
 
-            $games = $conn->query("SELECT * FROM games WHERE type = 'king' ORDER BY date DESC");
+            $games = $conn->query("SELECT * FROM $dbt_games WHERE type = 'king' ORDER BY date DESC");
             echo "<h3>KING:</h3>";
             echo "<table>";
             $i = 1;
@@ -62,7 +62,7 @@ echo "<div id='main'>";
             }
             echo "</table>";
 
-            $games = $conn->query("SELECT * FROM games WHERE type = 'queen' ORDER BY date DESC");
+            $games = $conn->query("SELECT * FROM $dbt_games WHERE type = 'queen' ORDER BY date DESC");
             echo "<h3>QUEEN:</h3>";
             echo "<table>";
             $i = 1;

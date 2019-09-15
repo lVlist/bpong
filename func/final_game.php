@@ -17,31 +17,35 @@ $next_round = $round+1;
 if($_POST['id_match'])
 {
     /* Записываем счет за игру */
-    $stmt = $conn->prepare("UPDATE `final` SET `s1`=?, `s2`=? WHERE (`id`=?)"); 
+    $stmt = $conn->prepare("UPDATE `$dbt_final` SET `s1`=?, `s2`=? WHERE (`id`=?)"); 
     $stmt->bind_param('iii',$s1, $s2, $id_match);
     $stmt->execute();
     
     /* Получаем id команд играющих в след раунде */
-    $final = $conn->query("SELECT final.id_t1, final.id_t2, final.id, final.block FROM final 
-    WHERE final.id_game = $id_game AND final.round = $next_round AND final.block = $next_block");
+    $final = $conn->query("SELECT F.id_t1, F.id_t2, F.id, F.block 
+    FROM $dbt_final F
+    WHERE F.id_game = $id_game AND F.round = $next_round AND F.block = $next_block");
     $final_team = $final->fetch_assoc();
 
     /* Получаем id команд играющих в финале */
     $mesto3 = $next_round +1;
-    $final2 = $conn->query("SELECT final.id_t1, final.id_t2, final.id, final.block FROM final 
-    WHERE final.id_game = $id_game AND final.round = $mesto3 AND final.block = $next_block");
+    $final2 = $conn->query("SELECT F.id_t1, F.id_t2, F.id, F.block 
+    FROM $dbt_final F
+    WHERE F.id_game = $id_game AND F.round = $mesto3 AND F.block = $next_block");
     $final_team2 = $final2->fetch_assoc();
 
     /* Получаем id последнего раунда */
-    $id_last_round = $conn -> query ("SELECT final.round FROM final WHERE final.id_game = $id_game ORDER BY final.round DESC LIMIT 1");
+    $id_last_round = $conn -> query ("SELECT F.round 
+    FROM $dbt_final F
+    WHERE F.id_game = $id_game ORDER BY F.round DESC LIMIT 1");
     $last_round = $id_last_round->fetch_assoc();
 
     /* Записываем команду в следующий раунд */
-    $stmt = $conn->prepare("UPDATE `final` SET `id_t1`=?, `id_t2`=? WHERE (`id_game`=?) AND (`round`=?) AND (`block`=?)"); 
+    $stmt = $conn->prepare("UPDATE `$dbt_final` SET `id_t1`=?, `id_t2`=? WHERE (`id_game`=?) AND (`round`=?) AND (`block`=?)"); 
     $stmt->bind_param('iiiii',$t1, $t2, $id_game, $next_round, $next_block);
 
     
-    /* Определяем и записываем выйгревшею команду в следующий раунд */
+    /* Определяем и записываем выигравшею команду в следующий раунд */
     if($round == $last_round['round']-2){ //игра за 3 место и финал
         if($block%2 == 1){          //команда из нечетного блока
             if($s1>$s2){
@@ -139,17 +143,17 @@ if($_POST['id_match'])
     if ($s1 < $s2){if($s1 >= 10){$losses_over=1;}else{$losses=1;}}
     $id_team = $id_t1;
 
-    $stmt = $conn->query("SELECT id_game, id_team, round, block FROM statistics_final");
+    $stmt = $conn->query("SELECT id_game, id_team, round, block FROM $dbt_statistics_final");
 
     foreach($stmt as $value){
         if($value['id_game'] == $id_game AND $value['id_team'] == $id_t1 AND $value['round'] == $round AND $value['block'] == $block){
-            $conn->query("DELETE FROM `statistics_final` 
+            $conn->query("DELETE FROM `$dbt_statistics_final` 
             WHERE (`id_game` = $id_game) AND (`id_team` = $id_t1) AND (`round` = $round) AND (`block` = $block)");
             break;
         }
     }
 
-    $conn->query("INSERT INTO statistics_final (id_game, id_team, round, block, wins, losses, wins_over, losses_over) 
+    $conn->query("INSERT INTO $dbt_statistics_final (id_game, id_team, round, block, wins, losses, wins_over, losses_over) 
     VALUES ($id_game, $id_team, $round, $block, $wins, $losses, $wins_over, $losses_over)");
 
     // Команда 2
@@ -158,7 +162,7 @@ if($_POST['id_match'])
     if ($s2 < $s1){if($s2 >= 10){$losses_over=1;}else{$losses=1;}}
     $id_team = $id_t2;
 
-    $stmt = $conn->query("SELECT id_game, id_team, round, block FROM statistics_final");
+    $stmt = $conn->query("SELECT id_game, id_team, round, block FROM $dbt_statistics_final");
 
     foreach($stmt as $value){
         if($value['id_game'] == $id_game AND $value['id_team'] == $id_t2 AND $value['round'] == $round AND $value['block'] == $block){
@@ -168,7 +172,7 @@ if($_POST['id_match'])
         }
     }
 
-    $conn->query("INSERT INTO statistics_final (id_game, id_team, round, block, wins, losses, wins_over, losses_over) 
+    $conn->query("INSERT INTO $dbt_statistics_final (id_game, id_team, round, block, wins, losses, wins_over, losses_over) 
     VALUES ($id_game, $id_team, $round, $block, $wins, $losses, $wins_over, $losses_over)");
  
     header('Location: ../admin/final.php?id='.$id_game);

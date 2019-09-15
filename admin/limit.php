@@ -14,10 +14,11 @@ if($login != null){
 
     if($limit > 0 AND $id_game > 0){
 
-        $stmt= $conn->query("SELECT teams.team, teams.id, qualification.result, qualification.difference FROM qualification
-        INNER JOIN teams ON teams.id = qualification.id_team
-        WHERE qualification.id_game = $id_game
-        ORDER BY qualification.result DESC, qualification.difference DESC");
+        $stmt= $conn->query("SELECT T.team, T.id, Q.result, Q.difference 
+        FROM $dbt_qualification Q
+        INNER JOIN $dbt_teams T ON T.id = Q.id_team
+        WHERE Q.id_game = $id_game
+        ORDER BY Q.result DESC, Q.difference DESC");
     
         echo "<div id='block'>";
             if($_GET['msg']){
@@ -71,18 +72,4 @@ if($login != null){
 }else{
     echo "Доступ запрещен!";
 }
-
-    $stmt= $conn->query("SELECT teams.team, teams.id, qualification.result, qualification.difference FROM qualification
-    INNER JOIN teams ON teams.id = qualification.id_team
-    WHERE qualification.id_game = $id_game
-    ORDER BY qualification.result DESC, qualification.difference DESC LIMIT $limit");
-
-    echo "<div id='block'>";
-    $team = '';
-    foreach ($stmt as $value){
-         $team .= $value['team']."\n";
-    }
-    $team = substr($team, 0, -1);
-echo "<textarea class='input-block' name='teams' rows='40' cols='100'>".$team."</textarea>";
-    echo "</div'>";
 echo "</div'>";

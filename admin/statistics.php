@@ -17,25 +17,24 @@ if ($login != null){
         $statistics = $conn->query("SELECT team, points, wins, losses, wins_over, losses_over,
         (IFNULL(wins,0)+IFNULL(wins_over,0))*100/(IFNULL(wins,0)+IFNULL(wins_over,0)+IFNULL(losses,0)+IFNULL(losses_over,0)) as percent, 
         hit_cups, got_cups, difference_cups
-        FROM statistics 
-        INNER JOIN teams ON teams.id = statistics.id_team
-        WHERE statistics.id_game = $id_game AND teams.team != 'ХАЛЯВА'
+        FROM $dbt_statistics S
+        INNER JOIN $dbt_teams T ON T.id = S.id_team
+        WHERE S.id_game = $id_game AND T.team != 'ХАЛЯВА'
         ORDER BY points DESC, percent DESC, difference_cups DESC");
 
         echo "<table>";
             echo "<tr>";
-                echo "
-                <td>№
-                <td>Team</td>
-                <td>Point</td>
-                <td>Wins</td>
-                <td>Losses</td>
-                <td>Wins OT</td>
-                <td>Losses OT</td>
-                <td>Wins %</td>
-                <td>Hit cups</td>
-                <td>Got cups</td>
-                <td>Cups +/-</td>";
+                echo "  <td>№</td>
+                        <td>Team</td>
+                        <td>Point</td>
+                        <td>Wins</td>
+                        <td>Losses</td>
+                        <td>Wins OT</td>
+                        <td>Losses OT</td>
+                        <td>Wins %</td>
+                        <td>Hit cups</td>
+                        <td>Got cups</td>
+                        <td>Cups +/-</td>";
             echo "</tr>";
 
         $i=1;
