@@ -5,6 +5,7 @@ $login = getUserLogin();
 
 echo "
 <!DOCTYPE HTML>
+<html lang='ru'>
 <head>
 <title>Beer Pong Minsk - Бир Понг Минск - Аренда Beer Pong - Турниры по Beer Pong</title>
     <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
@@ -55,15 +56,13 @@ function menuAdmin(){
                             <a href='#close' title='Закрыть' class='close'>X</a>                            
                                 <form action='../func/edit_game.php' method='POST'>
                                     <input class='input-block' type='text' name='new_game' class='login' placeholder='Название турнира'  autocomplete='off'><br>
-                                    <center>";
-                                    if($_GET['mes'] == 'type'){
-                                        echo "<p style='color:red'>Выберите тип!</p>";
-                                    }
-                                    echo "                                   
-                                    <input type='radio' name='type' value='sat'> Суббота
-                                    <input type='radio' name='type' value='thu'> Четверг
-                                    <input type='radio' name='type' value='king'> King
-                                    <input type='radio' name='type' value='queen'> Queen
+                                    <center>                      
+                                        <input type='radio' id='check1' name='type' value='sat'><label for='check1'>Суббота</label> 
+                                        <input type='radio' id='check2' name='type' value='thu' checked><label for='check2'>Четверг</label>
+                                        <input type='radio' id='check3' name='type' value='king'><label for='check3'>King</label>
+                                        <input type='radio' id='check4' name='type' value='queen'><label for='check4'>Queen</label>
+                                        <input type='hidden' name='bronze' value='0'>
+                                        <br><input type='checkbox' id='box' name='bronze' value='1' checked><label for='box'>Матч за 3-е место</label>
                                     </center>
                                     <input class='submit' type='submit' value='СОЗДАТЬ'>
                                 </form>

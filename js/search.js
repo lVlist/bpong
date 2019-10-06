@@ -64,3 +64,31 @@ $(function(){
     })
 
 })
+
+var x = 0;
+
+function addInput() {
+    if (x < 4) {
+        var profile = document.getElementById('profile');
+        var div = document.createElement('div');
+        div.id = 'input' + ++x;
+        div.innerHTML = '<input type="number" autocomplete="off" class="form-grand" name="is1[]">';
+        profile.appendChild(div);
+
+        var profile = document.getElementById('profile2');
+        var div = document.createElement('div');
+        div.id = 'input' + x;
+        div.innerHTML = '<input type="number" autocomplete="off" class="form-grand" name="is2[]">';
+        profile.appendChild(div);
+    }else{
+        alert('Лимит исчерпан');
+    }
+}
+
+function delInput() {
+      var div = document.getElementById('input' + x);
+      div.remove();
+      var div = document.getElementById('input' + x);
+      div.remove();
+      --x;
+}

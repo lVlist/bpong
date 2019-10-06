@@ -2,8 +2,8 @@
 require('../conf/dbconfig.php');
 
 /* Добавление команды в турнир */
-if(!empty($_POST["add_team"])){
-
+if(!empty($_POST["add_team"]))
+{
     $referal = "{$_POST['add_team']}%";
     $id_game = $_POST['id_game'];
 
@@ -22,13 +22,16 @@ if(!empty($_POST["add_team"])){
     $row = $db_referal->num_rows;
     $team = htmlspecialchars($_POST["add_team"], ENT_QUOTES);
     
-    if ($row === 0){
+    if ($row === 0)
+    {
             echo "<form action='../func/edit_game.php' method='POST'>
             <input type='hidden' name='new_team' value='".$team."'>
             <input type='hidden' name='id_game' value='".$_POST['id_game']."'>
             <input class ='submit -addteam' type='submit' value='Создать команду'>
             </form>";
-    }else{
+    }
+    else
+    {
         while ($row = $db_referal -> fetch_array()) {
             echo "<form action='../func/edit_game.php' method='POST'>
             <input class='input-team' type='text' name='team' value='".htmlspecialchars($row['team'], ENT_QUOTES)."' readonly>
@@ -46,10 +49,11 @@ if(!empty($_POST["add_team"])){
 }
 
 /* Замена команды в турнире */
-if(!empty($_POST["change_team"])){
-
+if(!empty($_POST["change_team"]))
+{
     $referal = "{$_POST['change_team']}%";
     $id_game = $_POST['id_game'];
+    $team = htmlspecialchars($_POST["change_team"], ENT_QUOTES);
 
     $types = $conn->query("SELECT type FROM $dbt_games Q WHERE Q.id = $id_game")->fetch_assoc();
     if($types['type'] == 'sat' OR $types['type'] == 'thu'){
@@ -63,20 +67,38 @@ if(!empty($_POST["change_team"])){
     $stmt->execute();
     $db_referal = $stmt->get_result();
    
-    while ($row = $db_referal -> fetch_array()) {
+    if ($db_referal->num_rows === 0)
+    {
         echo "<form action='../func/edit_game.php' method='POST'>
-        <input class='input-team' type='text' name='team' value='".htmlspecialchars($row['team'], ENT_QUOTES)."' readonly>
-        <input type='hidden' name='id_team' value='".$row['id']."'>
-        <input type='hidden' name='change_team' value='".$_POST['id_team']."'>
+        <input type='hidden' name='new_team' value='".$team."'>
         <input type='hidden' name='id_game' value='".$_POST['id_game']."'>
-        <input class ='submit -addteam' type='submit' name='changeTeam' value='Заменить'>
+        <input class ='submit -addteam' type='submit' value='Создать команду'>
         </form>";
+    }
+    else
+    {
+        while ($row = $db_referal -> fetch_array())
+        {
+            echo "<form action='../func/edit_game.php' method='POST'>
+            <input class='input-team' type='text' name='team' value='".htmlspecialchars($row['team'], ENT_QUOTES)."' readonly>
+            <input type='hidden' name='id_team' value='".$row['id']."'>
+            <input type='hidden' name='change_team' value='".$_POST['id_team']."'>
+            <input type='hidden' name='id_game' value='".$_POST['id_game']."'>
+            <input class ='submit -addteam' type='submit' name='changeTeam' value='Заменить'>
+            </form>";
+        }
+
+            echo "<form action='../func/edit_game.php' method='POST'>
+            <input type='hidden' name='new_team' value='".$team."'>
+            <input type='hidden' name='id_game' value='".$_POST['id_game']."'>
+            <input class ='submit -addteam' type='submit' value='Создать команду'>
+            </form>";
     }
 }
 
 /* Изменение название команды или удаление */
-if(!empty($_POST["edit_team"])){ //Принимаем данные
-
+if(!empty($_POST["edit_team"]))
+{ //Принимаем данные
     $referal = "{$_POST['edit_team']}%";
     $type = $_POST['type_game'];
 

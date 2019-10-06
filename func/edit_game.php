@@ -2,24 +2,23 @@
 require('../conf/dbconfig.php');
 
 /* Записываем  название турнира */ 
-if ($_POST['new_game']){
-
-    if(!$_POST['type']){
-        header('Location: ../index.php?mes=type#openModal');
-    }
-    $new_game = $_POST['new_game'];
+if ($_POST['new_game'])
+{
+    
+   $new_game = $_POST['new_game'];
     $date = date("Y-m-d");
     $type = $_POST['type'];
-    $game = $conn->prepare("INSERT INTO $dbt_games (game, type, date) VALUES (?,?,?)");
-    $game->bind_param('sss', $new_game, $type, $date);
+    $bronze = (int)$_POST['bronze'];
+    $game = $conn->prepare("INSERT INTO $dbt_games (`game`, `type`, `bronze`, `date`) VALUES (?,?,?,?)");
+    $game->bind_param('ssis', $new_game, $type, $bronze, $date);
     $game->execute();
     $id_game = $game->insert_id;
-    //setcookie("typeGame", $type);
     header('Location: ../admin/create.php?id='.$id_game);
 }
 
 /* Обновление названия турнира */
-if($_POST['upd_game']){
+if($_POST['upd_game'])
+{
     $id_game = $_POST['upd_game'];
     $game = $_POST['game'];
     $conn->query("UPDATE `$dbt_games` SET `game`= '$game' WHERE (`id`= $id_game)");
@@ -27,7 +26,8 @@ if($_POST['upd_game']){
 }
 
 /* Создание команды и запись в турнир */
-if($_POST['new_team']){
+if($_POST['new_team'])
+{
     $id_game = $_POST['id_game'];
 
     //определяем тип команды

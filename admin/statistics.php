@@ -15,18 +15,19 @@ if ($login != null){
 
         /* Получаем id команд */
         $statistics = $conn->query("SELECT team, points, wins, losses, wins_over, losses_over,
-        (IFNULL(wins,0)+IFNULL(wins_over,0))*100/(IFNULL(wins,0)+IFNULL(wins_over,0)+IFNULL(losses,0)+IFNULL(losses_over,0)) as percent, 
+        (IFNULL(wins,0)+IFNULL(wins_over,0))*100/(IFNULL(wins,0)+IFNULL(wins_over,0)+IFNULL(losses,0)+IFNULL(losses_over,0)) as percent,
+        (IFNULL(wins,0)+IFNULL(wins_over,0)+IFNULL(losses,0)+IFNULL(losses_over,0)) as games,
         hit_cups, got_cups, difference_cups
         FROM $dbt_statistics S
         INNER JOIN $dbt_teams T ON T.id = S.id_team
         WHERE S.id_game = $id_game AND T.team != 'ХАЛЯВА'
-        ORDER BY points DESC, percent DESC, difference_cups DESC");
+        ORDER BY final DESC, points DESC,  percent DESC, difference_cups DESC");
 
         echo "<table>";
             echo "<tr>";
                 echo "  <td>№</td>
                         <td>Team</td>
-                        <td>Point</td>
+                        <td>Point</td>                        
                         <td>Wins</td>
                         <td>Losses</td>
                         <td>Wins OT</td>

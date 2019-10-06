@@ -1,179 +1,127 @@
 <?php
 require('../conf/dbconfig.php');
-$id_game = $_GET['id'];
-
-/* Записываем резульаты игры */
-$s1 = (int)$_POST['s1'];
-$s2 = (int)$_POST['s2'];
 $id_match = (int)$_POST['id_match'];
 $id_game = (int)$_POST['id_game'];
 $id_t1 = (int)$_POST['id_t1'];
 $id_t2 = (int)$_POST['id_t2'];
 $block = (int)$_POST['block'];
 $next_block = (int)$_POST['next_block'];
+$next_block_position = (int)$_POST['next_block_position'];
 $round = (int)$_POST['round'];
-$next_round = $round+1;
+$next_round = $round + 1;
 
-if($_POST['id_match'])
-{
+/* Получаем id последнего раунда */
+$id_last_round = $conn -> query ("SELECT F.round 
+FROM $dbt_final F
+WHERE F.id_game = $id_game ORDER BY F.round DESC LIMIT 1");
+$last_round = $id_last_round->fetch_assoc();
+
+// получаем статус о игре за 3-е место
+$bronze = $conn->query("SELECT bronze FROM $dbt_games WHERE id = $id_game")->fetch_assoc();
+
+
+if(isset($_POST)){
+
     /* Записываем счет за игру */
-    $stmt = $conn->prepare("UPDATE `$dbt_final` SET `s1`=?, `s2`=? WHERE (`id`=?)"); 
-    $stmt->bind_param('iii',$s1, $s2, $id_match);
-    $stmt->execute();
-    
-    /* Получаем id команд играющих в след раунде */
-    $final = $conn->query("SELECT F.id_t1, F.id_t2, F.id, F.block 
-    FROM $dbt_final F
-    WHERE F.id_game = $id_game AND F.round = $next_round AND F.block = $next_block");
-    $final_team = $final->fetch_assoc();
-
-    /* Получаем id команд играющих в финале */
-    $mesto3 = $next_round +1;
-    $final2 = $conn->query("SELECT F.id_t1, F.id_t2, F.id, F.block 
-    FROM $dbt_final F
-    WHERE F.id_game = $id_game AND F.round = $mesto3 AND F.block = $next_block");
-    $final_team2 = $final2->fetch_assoc();
-
-    /* Получаем id последнего раунда */
-    $id_last_round = $conn -> query ("SELECT F.round 
-    FROM $dbt_final F
-    WHERE F.id_game = $id_game ORDER BY F.round DESC LIMIT 1");
-    $last_round = $id_last_round->fetch_assoc();
-
-    /* Записываем команду в следующий раунд */
-    $stmt = $conn->prepare("UPDATE `$dbt_final` SET `id_t1`=?, `id_t2`=? WHERE (`id_game`=?) AND (`round`=?) AND (`block`=?)"); 
-    $stmt->bind_param('iiiii',$t1, $t2, $id_game, $next_round, $next_block);
+    $stmt = $conn->prepare("INSERT INTO $dbt_final_score (id_match, id_game, s1, s2) VALUES (?,?,?,?)");
+    $stmt->bind_param('iiii', $id_match, $id_game, $s1, $s2);
 
     
-    /* Определяем и записываем выигравшею команду в следующий раунд */
-    if($round == $last_round['round']-2){ //игра за 3 место и финал
-        if($block%2 == 1){          //команда из нечетного блока
-            if($s1>$s2){
-                /* 3 место */
-                $t1 = $id_t2;
-                $t2 = $final_team['id_t2'];
-                $stmt->execute();
-                
-                /* Финал */
-                $next_round = $next_round+1;
-                $t1 = $id_t1;
-                $t2 = $final_team2['id_t2'];
-                for($i=1;$i<=3;$i++){
-                    $stmt->execute();
-                    $next_block = $next_block +1;
-                }
-            }else{
-                /* 3 место */
-                $t1 = $id_t1;
-                $t2 = $final_team['id_t2'];
-                $stmt->execute();
 
-                /* Финал */
-                $next_round = $next_round+1;
-                $t1 = $id_t2;
-                $t2 = $final_team2['id_t2'];
-                for($i=1;$i<=3;$i++){
-                    $stmt->execute();
-                    $next_block = $next_block +1;
-                }
-            }
-        }else{                      //команда из четного блока
-            if($s1>$s2){
-                /* 3 место */
-                $t2 = $id_t2;
-                $t1 = $final_team['id_t1'];
-                $stmt->execute();
-
-                /* Финал */
-                $next_round = $next_round+1;
-                $t2 = $id_t1;
-                $t1 = $final_team2['id_t1'];
-                for($i=1;$i<=3;$i++){
-                    $stmt->execute();
-                    $next_block = $next_block +1;
-                }
-            }else{
-                /* 3 место */
-                $t2 = $id_t1;
-                $t1 = $final_team['id_t1'];
-                $stmt->execute();
-
-                /* Финал */
-                $next_round = $next_round+1;
-                $t2 = $id_t2;
-                $t1 = $final_team2['id_t1'];
-                for($i=1;$i<=3;$i++){
-                    $stmt->execute();
-                    $next_block = $next_block +1;
-                }
-            }    
-        }
+    if($_POST['us1'] && $_POST['us2'])
+    {
         
-    }else{ //все остальные раунды
-        if($block%2 == 1){          //команда из нечетного блока
-            if($s1>$s2){
-                $t1 = $id_t1;
-                $t2 = $final_team['id_t2'];
-            }else{          
-                $t1 = $id_t2;
-                $t2 = $final_team['id_t2'];
-            }
-            if($round != $last_round['round']-1){
-                $stmt->execute(); 
-            }
-        }else{                      //команда из четного блока
-            if($s1>$s2){
-                $t2 = $id_t1;
-                $t1 = $final_team['id_t1'];
+        
+        $conn->query("DELETE FROM `$dbt_final_score` WHERE (`id_game` = $id_game) AND (`id_match` = $id_match)");
+        $i=0;
+        foreach ($_POST['us1'] as $value)
+        {
+            $s1 = $_POST['us1'][$i];
+            $s2 = $_POST['us2'][$i];
+            $stmt->execute();
+            $i++;
+        }
+    }
+    
+    if($_POST['is1'] && $_POST['is2'])
+    {
+        $i=0;
+        foreach ($_POST['is1'] as $value)
+        {
+            $s1 = $_POST['is1'][$i];
+            $s2 = $_POST['is2'][$i];
+            $stmt->execute();
+            $i++;
+        }
+    }
+
+    /* Оперделяем кто победил */
+    $final_score = $conn->query("SELECT id, s1, s2 FROM $dbt_final_score WHERE id_match = $id_match AND id_game = $id_game");
+
+        $s1 = 0; $s2 = 0;
+        foreach($final_score as $gs)
+        {
+            if($gs['s1']>$gs['s2']){
+                $s1 += 1;
             }else{
-                $t2 = $id_t2;
-                $t1 = $final_team['id_t1'];
+                $s2 += 1;
             }
-            if($round != $last_round['round']-1){
+        }
+    
+    
+    $stmt = $conn->prepare("UPDATE `$dbt_final` SET `id_t$next_block_position`=? WHERE (`id_game`=?) AND (`round`=?) AND (`block`=?)"); 
+    $stmt->bind_param('iiii',$id_team, $id_game, $next_round, $next_block);
+
+    if((int)$bronze['bronze'] === 1)
+    { //игра за 3-е место
+        if($round == $last_round['round']-2)
+        {
+            
+            if($s1>$s2){
+                $id_team = $id_t1;
+            }else{          
+                $id_team = $id_t2;
+            }
+            if(($round != (int)$last_round['round']) && ($round != (int)$last_round['round']-1)){
+                $stmt->execute(); 
+            }
+            
+            //игра за 3-е место
+            if($s1<$s2){
+                $id_team = $id_t1;
+            }else{          
+                $id_team = $id_t2;
+            }
+            $next_round += 1;
+            if(($round != (int)$last_round['round']) && ($round != (int)$last_round['round']-1)){
+                $stmt->execute(); 
+            }
+
+        }
+        else
+        {
+            if($s1>$s2){
+                $id_team = $id_t1;
+            }else{          
+                $id_team = $id_t2;
+            }
+            if(($round != (int)$last_round['round']) && ($round != (int)$last_round['round']-1)){
                 $stmt->execute(); 
             }
         }
     }
-
-    /* Считаем и записываем статистику финала */
-
-    // Команда 1
-    $wins = 0; $wins_over = 0; $losses = 0; $losses_over = 0;
-    if ($s1 > $s2){if($s1 == 10){$wins=1;}else{$wins_over=1;}}
-    if ($s1 < $s2){if($s1 >= 10){$losses_over=1;}else{$losses=1;}}
-    $id_team = $id_t1;
-
-    $stmt = $conn->query("SELECT id_game, id_team, round, block FROM $dbt_statistics_final");
-
-    foreach($stmt as $value){
-        if($value['id_game'] == $id_game AND $value['id_team'] == $id_t1 AND $value['round'] == $round AND $value['block'] == $block){
-            $conn->query("DELETE FROM `$dbt_statistics_final` 
-            WHERE (`id_game` = $id_game) AND (`id_team` = $id_t1) AND (`round` = $round) AND (`block` = $block)");
-            break;
+    else
+    { //без игры за 3-е место
+        
+        if($s1>$s2){
+            $id_team = $id_t1;
+        }else{          
+            $id_team = $id_t2;
+        }
+        if($round != (int)$last_round['round']){
+            $stmt->execute(); 
         }
     }
-
-    $conn->query("INSERT INTO $dbt_statistics_final (id_game, id_team, round, block, wins, losses, wins_over, losses_over) 
-    VALUES ($id_game, $id_team, $round, $block, $wins, $losses, $wins_over, $losses_over)");
-
-    // Команда 2
-    $wins = 0; $wins_over = 0; $losses = 0; $losses_over = 0;
-    if ($s2 > $s1){if($s2 == 10){$wins=1;}else{$wins_over=1;}}
-    if ($s2 < $s1){if($s2 >= 10){$losses_over=1;}else{$losses=1;}}
-    $id_team = $id_t2;
-
-    $stmt = $conn->query("SELECT id_game, id_team, round, block FROM $dbt_statistics_final");
-
-    foreach($stmt as $value){
-        if($value['id_game'] == $id_game AND $value['id_team'] == $id_t2 AND $value['round'] == $round AND $value['block'] == $block){
-            $conn->query("DELETE FROM `statistics_final` 
-            WHERE (`id_game` = $id_game) AND (`id_team` = $id_t2) AND (`round` = $round) AND (`block` = $block)");
-            break;
-        }
-    }
-
-    $conn->query("INSERT INTO $dbt_statistics_final (id_game, id_team, round, block, wins, losses, wins_over, losses_over) 
-    VALUES ($id_game, $id_team, $round, $block, $wins, $losses, $wins_over, $losses_over)");
- 
+    
     header('Location: ../admin/final.php?id='.$id_game);
 }

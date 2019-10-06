@@ -13,6 +13,16 @@ if($_POST['edit_team']){
 /* Удаление команды */
 if($_POST['del_team']){
     $id_team = $_POST['id_team'];
-    $conn->query("DELETE FROM `$dbt_teams` WHERE (`id` = $id_team)");
+
+    //проверяем играла ли команда в турнире если да то не удаляем
+    $check = $conn->query("SELECT id_game FROM bp_qualification WHERE id_team = $id_team")->fetch_assoc();
+
+    if($check === NULL){
+        $conn->query("DELETE FROM `$dbt_teams` WHERE (`id` = $id_team)");
+    }else{
+        header('Location: ../admin/teams.php?&mes=no_del');
+        exit;
+    }
+    
     header('Location: ../admin/teams.php');
 }

@@ -11,7 +11,7 @@ function winLoseView($value)
         echo "<td style='background-color: #999'>OL</td>";
     }elseif (is_null($value)){
         echo "<td></td>";
-    }else  {
+    }else{
         echo "<td style='background-color: #f66'>L</td>";
     }
 }
@@ -84,7 +84,7 @@ function getUserLogin()
 
 /* финал кнопки редактирования */
 function finalEdit($s, $winLose){
-    global $conn, $value, $sql, $r_final2, $id_game, $last_round;
+    global $conn, $value, $sql, $id_game, $last_round;
   
     if (isset($_GET['id_match']))
     {$id_match = $_GET['id_match'];}else{$id_match = $value['id'];}
@@ -92,35 +92,32 @@ function finalEdit($s, $winLose){
     if (!$value['s1']&&!$value['s2']){
 
         if($value['round'] == $last_round['round']){
-            echo "<div class='final -score -final'>
-            <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'><img width='13px' src='http://".$_SERVER['HTTP_HOST']."/img/edit_score.png'></a>
-            </div>";
+            echo "<div class='final -score -final'>";
         }else{
-            echo "<div class='final -score'>
-            <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'><img width='13px' src='http://".$_SERVER['HTTP_HOST']."/img/edit_score.png'></a>
-            </div>";
+            echo "<div class='final -score'>";
         }
-    }elseif($winLose == 1){
+
+        echo "<a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'><img width='13px' src='http://".$_SERVER['HTTP_HOST']."/img/edit_score.png'></a>
+        </div>";
+
+    }else{
         
-        if($value['round'] == $last_round['round']){
-            echo "<div class='final -score -color -final'>
-            <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'>".$value[$s]."</a>
-            </div>";
-        }else{
-            echo "<div class='final -score -color'>
-            <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'>".$value[$s]."</a>
-            </div>";
+        if($winLose == 1){
+            if($value['round'] == $last_round['round']){
+                echo "<div class='final -score -color -final'>";
+            }else{
+                echo "<div class='final -score -color'>";
+            }
+        }elseif($winLose == 2){
+            if($value['round'] == $last_round['round']){
+                echo "<div class='final -score -final'>";
+            }else{
+                echo "<div class='final -score'>";
+            }
         }
-    }elseif($winLose == 2){
-        if($value['round'] == $last_round['round']){
-            echo "<div class='final -score -final'>
-            <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'>".$value[$s]."</a>
-            </div>";
-        }else{
-            echo "<div class='final -score'>
-            <a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'>".$value[$s]."</a>
-            </div>";
-        }
+
+        echo "<a href='?id=".$id_game."&id_match=".$value['id']."#finalEdit'>".$value[$s]."</a>
+        </div>";
     }
 
     /* Матчи для таблицы редактирования */

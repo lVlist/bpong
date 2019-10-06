@@ -165,7 +165,7 @@ if ($login != null){
                             </form>
                         </td>";
                     }else{
-                        echo "<td style='width: 50px; text-align: center;'>".$value['table']."</td>";
+                        echo "<td style='width: 50px; text-align: center;'></td>";
                     }
                 echo "</tr>";
                 }//end if
