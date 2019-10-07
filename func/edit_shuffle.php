@@ -19,7 +19,7 @@ foreach($round1 as $value){
 /* Проверяем четное количество команд или нет */
 if(count($teams_id)%2 == 1){
     header('Location: ../admin/create.php?id='.$id_game.'&mes=even');
-    die;
+    exit;
 }
 
 /* Получаем массив новых команд */
@@ -29,7 +29,7 @@ $count = count($new_id)/2;
 /* Проверяем появились новые команду или нет. Если нету сразу в турнир */
 if(empty($new_id)){
     header('Location: ../admin/qualification.php?id='.$id_game);
-    die;
+    exit;
 }
 
 /* Удаляем 2,3 тур */
@@ -103,4 +103,5 @@ for ($i=1;$i<=$quantity_round;$i++){
     }
 }
 header('Location: ../admin/qualification.php?id='.$id_game);
+exit;
 ?>

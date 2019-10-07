@@ -89,3 +89,4 @@ if($_POST['table']){
     $stmt->execute();
 }
 header('Location: ../admin/qualification.php?id='.$id_game);
+exit;

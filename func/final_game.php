@@ -70,7 +70,7 @@ if(isset($_POST)){
     
     
     $stmt = $conn->prepare("UPDATE `$dbt_final` SET `id_t$next_block_position`=? WHERE (`id_game`=?) AND (`round`=?) AND (`block`=?)"); 
-    $stmt->bind_param('iiii',$id_team, $id_game, $next_round, $next_block);
+    $team_null = 1;
 
     if((int)$bronze['bronze'] === 1)
     { //игра за 3-е место
@@ -83,7 +83,13 @@ if(isset($_POST)){
                 $id_team = $id_t2;
             }
             if(($round != (int)$last_round['round']) && ($round != (int)$last_round['round']-1)){
-                $stmt->execute(); 
+                if($s1 == $s2){
+                    $stmt->bind_param('iiii',$team_null, $id_game, $next_round, $next_block);
+                    $stmt->execute();
+                }else{
+                    $stmt->bind_param('iiii',$id_team, $id_game, $next_round, $next_block);
+                    $stmt->execute();
+                }
             }
             
             //игра за 3-е место
@@ -94,7 +100,13 @@ if(isset($_POST)){
             }
             $next_round += 1;
             if(($round != (int)$last_round['round']) && ($round != (int)$last_round['round']-1)){
-                $stmt->execute(); 
+                if($s1 == $s2){
+                    $stmt->bind_param('iiii',$team_null, $id_game, $next_round, $next_block);
+                    $stmt->execute();
+                }else{
+                    $stmt->bind_param('iiii',$id_team, $id_game, $next_round, $next_block);
+                    $stmt->execute();
+                }
             }
 
         }
@@ -106,7 +118,13 @@ if(isset($_POST)){
                 $id_team = $id_t2;
             }
             if(($round != (int)$last_round['round']) && ($round != (int)$last_round['round']-1)){
-                $stmt->execute(); 
+                if($s1 == $s2){
+                    $stmt->bind_param('iiii',$team_null, $id_game, $next_round, $next_block);
+                    $stmt->execute();
+                }else{
+                    $stmt->bind_param('iiii',$id_team, $id_game, $next_round, $next_block);
+                    $stmt->execute();
+                }
             }
         }
     }
@@ -119,9 +137,16 @@ if(isset($_POST)){
             $id_team = $id_t2;
         }
         if($round != (int)$last_round['round']){
-            $stmt->execute(); 
+            if($s1 == $s2){
+                $stmt->bind_param('iiii',$team_null, $id_game, $next_round, $next_block);
+                $stmt->execute();
+            }else{
+                $stmt->bind_param('iiii',$id_team, $id_game, $next_round, $next_block);
+                $stmt->execute();
+            }
         }
     }
     
     header('Location: ../admin/final.php?id='.$id_game);
+    exit;
 }

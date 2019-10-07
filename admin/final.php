@@ -116,7 +116,7 @@ for($i=1;$i<=$last_round['round'];$i++)
                     $t2 += 1;
                 }
             }
-
+            
             $url = "<a href='?id=".$id_game."&id_match=".$value['id']."&round=".$value['round']."&block=".$value['block']."&next_block=".$value['next_block']."&next_block_position=".$value['next_block_position']."&id_t1=".$value['id_t1']."&id_t2=".$value['id_t2']."&t1=".$value['t1']."&t2=".$value['t2']."#grandEdit'>";
             $img_edit = "<img width='13px' src='http://".$_SERVER['HTTP_HOST']."/img/edit_score.png'>";
 
@@ -129,10 +129,12 @@ for($i=1;$i<=$last_round['round'];$i++)
                 echo "<div class='final -score'>";
             }
 
+
+
             if($t1 === NULL && $t2 === NULL){
                 echo $url.$img_edit."</a></div>";
             }else{
-                if ($t1 <= 1 && $t2 <= 1){
+                if ($t1 < 1 && $t2 < 1){
                     echo $url.$gs['s1']."</a></div>";
                 }else{
                     echo $url.(int)$t1."</a></div>";
@@ -156,7 +158,7 @@ for($i=1;$i<=$last_round['round'];$i++)
             if($t1 === NULL && $t2 === NULL){
                 echo $url.$img_edit."</a></div>";
             }else{
-                if ($t1 <= 1 && $t2 <= 1){
+                if ($t1 < 1 && $t2 < 1){
                     echo $url.$gs['s2']."</a></div>";
                 }else{
                     echo $url.(int)$t2."</a></div>";

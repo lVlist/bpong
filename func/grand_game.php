@@ -69,4 +69,5 @@ if(isset($_POST)){
     $stmt->execute();
 
     header('Location: ../admin/grand.php?id='.$id_game);
+    exit;
 }

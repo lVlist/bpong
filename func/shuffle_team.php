@@ -83,3 +83,4 @@ for ($i=1;$i<=$quantity_round;$i++){
     }
 }
 header('Location: ../admin/qualification.php?id='.$id_game);
+exit;

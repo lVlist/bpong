@@ -9,8 +9,10 @@ if (!empty($_POST)) {
         setcookie('login', $login, 0, '/');
         setcookie('password', $password, 0, '/');
         header('Location: /index.php');
+        exit;
     } else {
         header('Location: /index.php');
+        exit;
     }
 }
 ?>

@@ -139,6 +139,8 @@ if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
     }
 
     header('Location: ../admin/final.php?id='.$id_game);
+    exit;
 }else{
     header('Location: ../admin/limit.php?id='.$id_game.'&limit='.$_GET['limit'].'&msg='.count($_POST));
+    exit;
 }

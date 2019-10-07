@@ -12,3 +12,4 @@ for($i=1;$i<=count($_POST)/5;$i++){
 }
 
 header('Location: ../admin/score.php');
+exit;
