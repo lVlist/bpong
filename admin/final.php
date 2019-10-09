@@ -134,7 +134,7 @@ for($i=1;$i<=$last_round['round'];$i++)
             if($t1 === NULL && $t2 === NULL){
                 echo $url.$img_edit."</a></div>";
             }else{
-                if ($t1 < 1 && $t2 < 1){
+                if (($t1 <= 1 && $t2 == 0) || ($t1 == 0 && $t2 <= 1)){
                     echo $url.$gs['s1']."</a></div>";
                 }else{
                     echo $url.(int)$t1."</a></div>";
@@ -157,8 +157,8 @@ for($i=1;$i<=$last_round['round'];$i++)
 
             if($t1 === NULL && $t2 === NULL){
                 echo $url.$img_edit."</a></div>";
-            }else{
-                if ($t1 < 1 && $t2 < 1){
+            }else{                
+                if (($t1 <= 1 && $t2 == 0) || ($t1 == 0 && $t2 <= 1)){
                     echo $url.$gs['s2']."</a></div>";
                 }else{
                     echo $url.(int)$t2."</a></div>";

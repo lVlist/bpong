@@ -16,7 +16,6 @@ if ($login != null){
         /* Получаем id команд */
         $statistics = $conn->query("SELECT team, points, wins, losses, wins_over, losses_over,
         (IFNULL(wins,0)+IFNULL(wins_over,0))*100/(IFNULL(wins,0)+IFNULL(wins_over,0)+IFNULL(losses,0)+IFNULL(losses_over,0)) as percent,
-        (IFNULL(wins,0)+IFNULL(wins_over,0)+IFNULL(losses,0)+IFNULL(losses_over,0)) as games,
         hit_cups, got_cups, difference_cups
         FROM $dbt_statistics S
         INNER JOIN $dbt_teams T ON T.id = S.id_team
@@ -39,6 +38,7 @@ if ($login != null){
             echo "</tr>";
 
         $i=1;
+        
         foreach ($statistics as $value){
             echo "<tr>";
                 echo "
