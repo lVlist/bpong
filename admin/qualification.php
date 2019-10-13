@@ -33,6 +33,7 @@ if ($login != null){
         $game = $qualification->fetch_assoc();
         $game = $game['game'];
 
+        if($qualification->num_rows == 0) {die;}
         echo "<div id='main'>";
 
         /* Общая таблица 3 туров */
@@ -81,6 +82,7 @@ if ($login != null){
         /* Выборка 3 туров */
         $q_game = $conn->query($sql);
 
+        if($q_game->num_rows == 0) {die;}
         echo "<div id='block'>";
 
         for($t=1;$t<=3;$t++){
