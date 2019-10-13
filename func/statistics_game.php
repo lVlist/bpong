@@ -51,7 +51,7 @@ foreach ($qualification_hit_got as $value){
 	$stmt->execute();
 }
 
-/* Получаем id команд квалификации и их количество побед и пройгрышей */
+/* Получаем id команд квалификации и финала и их количество побед и пройгрышей */
 $qualification_games = $conn->query("SELECT id_team, 
 SUM(wins) as wins, 
 SUM(losses) as losses, 
@@ -66,19 +66,19 @@ FROM(
 		FROM $dbt_qualification WHERE id_game = $id_game
 UNION ALL
 		SELECT id_t1 as id_team,
-		SUM(IF(s1>s2,IF(s1>10,0,1),0))as wins,
-		SUM(IF(s2>s1,IF(s1>10,0,1),0))as losses,
-		SUM(IF(s1>s2,IF(s1>10,1,0),0)) as wins_ot,		
-		SUM(IF(s2>s1,IF(s1>10,1,0),0)) as losses_ot
+		SUM(IF(s1>s2,IF(s2>=10,0,1),0))as wins,
+		SUM(IF(s2>s1,IF(s1>=10,0,1),0))as losses,
+		SUM(IF(s1>s2,IF(s2>=10,1,0),0)) as wins_ot,		
+		SUM(IF(s2>s1,IF(s1>=10,1,0),0)) as losses_ot
 		FROM $dbt_final f
 		INNER JOIN $dbt_final_score s ON s.id_match = f.id
 		WHERE f.id_game = $id_game GROUP BY f.id_t1
 	UNION ALL
 		SELECT id_t2 as id_team,
-		SUM(IF(s2>s1,IF(s1>10,0,1),0))as wins,
-		SUM(IF(s1>s2,IF(s1>10,0,1),0))as losses,
-		SUM(IF(s2>s1,IF(s1>10,1,0),0)) as wins_ot,		
-		SUM(IF(s1>s2,IF(s1>10,1,0),0)) as losses_ot
+		SUM(IF(s2>s1,IF(s1>=10,0,1),0))as wins,
+		SUM(IF(s1>s2,IF(s2>=10,0,1),0))as losses,
+		SUM(IF(s2>s1,IF(s1>=10,1,0),0)) as wins_ot,		
+		SUM(IF(s1>s2,IF(s2>=10,1,0),0)) as losses_ot
 		FROM $dbt_final f
 		INNER JOIN $dbt_final_score s ON s.id_match = f.id
 		WHERE f.id_game = $id_game GROUP BY f.id_t2
