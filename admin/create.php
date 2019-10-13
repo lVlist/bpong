@@ -30,9 +30,14 @@ if ($login != null){
             echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/shuffle_team.php' method='POST' style='float: left; margin-bottom: 5px'>
                 <input type='hidden' name='start_game' value='".$id_game."'>";
                 if ($edit_view->num_rows >= 4){
-                    echo "<input class ='submit -addteam' type='submit' value='НАЧАТЬ НОВЫЙ ТУРНИР'>";
+                    if($edit_view->num_rows%2 == 1){
+                        echo "<input class ='submit -addteam -dis' type='submit' value='НАЧАТЬ НОВЫЙ ТУРНИР' disabled>";
+                    }else{
+                        echo "<input class ='submit -addteam' type='submit' value='НАЧАТЬ НОВЫЙ ТУРНИР'>";
+                    }
+                    
                 }else{
-                    echo "<input class ='submit -addteam -dis' type='submit' value='НАЧАТЬ НОВЫЙ ТУРНИР' disabled>";
+                    
                 }      
             echo "</form>
 

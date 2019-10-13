@@ -88,9 +88,8 @@ GROUP BY id_team");
 $stmt = $conn->prepare("UPDATE `$dbt_statistics` SET `wins`=?, `losses`=?, `wins_over`=?, `losses_over`=? WHERE (`id_game`=?) AND (`id_team`=?)"); 
 $stmt->bind_param('iiiiii', $wins, $losses, $wins_over, $losses_over, $id_game, $id_team);
 
-foreach ($qualification_games as $value){
-
-	
+foreach ($qualification_games as $value)
+{
 	$id_team = $value['id_team'];
 
 	// если 0 то NULL
