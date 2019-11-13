@@ -46,6 +46,7 @@ ORDER BY points DESC, percent DESC, difference_cups DESC");
 
 $year_games = $conn->query("SELECT DISTINCT YEAR(date) as date FROM bpm_games ORDER BY date ASC");
     echo "<center>";
+    echo "<a href='?type={$_GET['type']}' class='type'>FULL</a> ";
     foreach($year_games as $value){
         echo "<a href='?year={$value['date']}&type={$_GET['type']}' class='type'>{$value['date']}</a> ";
     }
