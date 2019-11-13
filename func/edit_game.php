@@ -1,10 +1,10 @@
 <?php
 require('../conf/dbconfig.php');
+session_start();
 
 /* Записываем  название турнира */ 
 if ($_POST['new_game'])
 {
-    
    $new_game = $_POST['new_game'];
     $date = date("Y-m-d");
     $type = $_POST['type'];
@@ -13,8 +13,14 @@ if ($_POST['new_game'])
     $game->bind_param('ssis', $new_game, $type, $bronze, $date);
     $game->execute();
     $id_game = $game->insert_id;
-    header('Location: ../admin/create.php?id='.$id_game);
-    exit;
+    if($type == 'grand'){
+        header('Location: ../admin/create_grand.php?id='.$id_game.'&type=8');
+        exit;
+    }else{
+        header('Location: ../admin/create.php?id='.$id_game);
+        exit;
+    }
+    
 }
 
 /* Обновление названия турнира */
@@ -50,10 +56,9 @@ if($_POST['new_team'])
     }
 
     //Создаем команду
-    $date = date('Y');
     $team = htmlspecialchars_decode($_POST['new_team'], ENT_HTML5);
     $team = $conn->real_escape_string($team);
-    $conn->query("INSERT INTO $dbt_teams (team, type, date) VALUES ('$team', '$type', '$date')");
+    $conn->query("INSERT INTO $dbt_teams (team, type) VALUES ('$team', '$type')");
 
     //Добавляем её в турнир
     $id_team = $conn->insert_id;
@@ -156,5 +161,49 @@ if($_POST['del_game']){
     $conn->query("DELETE FROM `$dbt_final` WHERE (`id_game` = $id_game)");
     $conn->query("DELETE FROM `$dbt_games` WHERE (`id` = $id_game)");
     header('Location: ../index.php');
+    exit;
+}
+
+/* Создание команды и запись в турнир */
+if($_POST['new_team_grand'])
+{
+    $id_game = $_POST['id_game'];
+    $type_grand = $_POST['type'];
+    $type = "main";
+    $pos = $_POST['pos'];
+
+    //проверка на одинаковые названия
+    $teams = $conn->query("SELECT team FROM $dbt_teams WHERE type = '$type'");
+    foreach($teams as $value){
+        if($value['team'] == $_POST['new_team_grand']){
+
+            header('Location: ../admin/create_grand.php?id='.$id_game.'&mes='.$type_grand.'&mes=team');
+            exit;
+        }
+    }
+
+    //Создаем команду
+    $team = htmlspecialchars_decode($_POST['new_team_grand'], ENT_HTML5);
+    $team = $conn->real_escape_string($team);
+    $conn->query("INSERT INTO $dbt_teams (team, type) VALUES ('$team', '$type')");
+
+    //Добавляем её в турнир
+    $id_team = $conn->insert_id;
+    $_SESSION['grand'][$pos] = $id_team;
+
+    header('Location: ../admin/create_grand.php?id='.$id_game.'&type='.$type_grand);
+    exit;
+}
+
+/* Добавление команды в турнир */
+if($_POST['add_team_grand']){
+    $id_game = $_POST['id_game'];
+    $type_grand = $_POST['type'];
+    $id_team = $_POST['add_team_grand'];
+    $pos = $_POST['pos'];
+
+    $_SESSION['grand'][$pos] = $id_team;
+
+    header('Location: ../admin/create_grand.php?id='.$id_game.'&type='.$type_grand);
     exit;
 }

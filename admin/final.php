@@ -77,7 +77,7 @@ for($i=1;$i<=$last_round['round'];$i++)
             echo "<div id='final" . $final->num_rows . "'>";
             echo "<div style='margin: 5px 0px'>Игра за 3-е место:</div>";
         }elseif($i == $last_round['round']-1){
-            echo "<div id='even".$e."'>";
+            echo "<div id='final" . $final->num_rows . "'>";
             echo "<div style='margin: 5px 0px'>Финал:</div>";
         }else{
             echo "<div id='even".$e."'>";
@@ -117,7 +117,7 @@ for($i=1;$i<=$last_round['round'];$i++)
                 }
             }
             
-            $url = "<a href='?id=".$id_game."&id_match=".$value['id']."&round=".$value['round']."&block=".$value['block']."&next_block=".$value['next_block']."&next_block_position=".$value['next_block_position']."&id_t1=".$value['id_t1']."&id_t2=".$value['id_t2']."&t1=".$value['t1']."&t2=".$value['t2']."#grandEdit'>";
+            $url = "<a href='?id=".$id_game."&id_match=".$value['id']."&round=".$value['round']."&block=".$value['block']."&next_block=".$value['next_block']."&next_block_position=".$value['next_block_position']."&id_t1=".$value['id_t1']."&id_t2=".$value['id_t2']."&t1=".$value['t1']."&t2=".$value['t2']."#finalEdit'>";
             $img_edit = "<img width='13px' src='http://".$_SERVER['HTTP_HOST']."/img/edit_score.png'>";
 
             /* Команда 1 */
@@ -186,7 +186,7 @@ $id_match = $_GET['id_match'];
 
 $grand = $conn->query("SELECT id, s1, s2 FROM $dbt_final_score WHERE id_match = $id_match AND id_game = $id_game");
 
-echo "<div id='grandEdit' class='modalGrand'>
+echo "<div id='finalEdit' class='modalGrand'>
 <div><a href='http://".$_SERVER['HTTP_HOST']."/admin/final.php?id={$id_game}#close' title='Закрыть' class='close'>x</a>
     <h3>Результаты матча</h3>
     <form action='http://".$_SERVER['HTTP_HOST']."/func/final_game.php' method='POST'>

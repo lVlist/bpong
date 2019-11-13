@@ -382,24 +382,24 @@ nav{
 
 .final.-clear {clear: both;}
 
-.final.-even1 {margin-bottom: 20px;}
-.final.-even2 {margin-bottom: 90px;}
-.final.-even3 {margin-bottom: 230px;}
-.final.-even4 {margin-bottom: 520px;}
+.final.-even1 {margin-bottom: 7px;}
+.final.-even2 {margin-bottom: 65px;}
+.final.-even3 {margin-bottom: 183px;}
+.final.-even4 {margin-bottom: 410px;}
 .final.-even5 {margin-bottom: 20px;}
 .final.-final {margin-bottom: 5px;}
 
 #even1 {float: left; display: block; margin: 10px;}
-#even2 {float: left; display: block; margin: 50px 10px 10px 10px;}
-#even3 {float: left; display: block; margin: 120px 10px 10px 10px;}
-#even4 {float: left; display: block; margin: 260px 10px 10px 10px;}
-#even5 {float: left; display: block; margin: 550px 10px 10px 10px;}
+#even2 {float: left; display: block; margin: 40px 10px 10px 10px;}
+#even3 {float: left; display: block; margin: 95px 10px 10px 10px;}
+#even4 {float: left; display: block; margin: 210px 10px 10px 10px;}
+#even5 {float: left; display: block; margin: 450px 10px 10px 10px;}
 
-#final8 {float: left; display: block; margin: 120px 10px 10px 10px;}
-#final12 {float: left; display: block; margin: 120px 10px 10px 10px;}
-#final16 {float: left; display: block; margin: 260px 10px 10px 10px;}
-#final24 {float: left; display: block; margin: 260px 10px 10px 10px;}
-#final32 {float: left; display: block; margin: 550px 10px 10px 10px;}
+#final8 {float: left; display: block; margin: 70px 10px 10px 10px;}
+#final12 {float: left; display: block; margin: 70px 10px 10px 10px;}
+#final16 {float: left; display: block; margin: 180px 10px 10px 10px;}
+#final24 {float: left; display: block; margin: 180px 10px 10px 10px;}
+#final32 {float: left; display: block; margin: 420px 10px 10px 10px;}
 
 
 .final.-score {
@@ -420,6 +420,69 @@ nav{
 	margin-left: 2px;
 
 }
+
+#grand {
+	position: absolute;
+}
+
+#grandUp8 {width: 900px; min-height: 320px;}
+#grandUp16 {width: 1050px; min-height: 600px;}
+#grandUp32 {width: 1600px; min-height: 1180px;}
+
+#grandDown {
+	width: 1650px;
+}
+
+.final.-geven1 {margin-bottom: 10px;}
+.final.-geven2 {margin-bottom: 10px;}
+.final.-geven3 {margin-bottom: 65px;}
+.final.-geven4 {margin-bottom: 65px;}
+.final.-geven5 {margin-bottom: 180px;}
+.final.-geven6 {margin-bottom: 180px;}
+.final.-final {margin-bottom: 5px;}
+
+#geven1 {float: left; display: block; margin: 10px;}
+#geven2 {float: left; display: block; margin: 10px;}
+#geven3 {float: left; display: block; margin: 50px 10px 10px 10px;}
+#geven4 {float: left; display: block; margin: 50px 10px 10px 10px;}
+#geven5 {float: left; display: block; margin: 120px 10px 10px 10px;}
+#geven6 {float: left; display: block; margin: 120px 10px 10px 10px;}
+#geven7 {float: left; display: block; margin: 220px 10px 10px 10px;}
+#geven8 {float: left; display: block; margin: 220px 10px 10px 10px;}
+#final30 {float: left; display: block; margin: 220px 10px 10px 10px;}
+
+.final.-grandrr{
+	border-radius: 0 7px 7px 0;
+}
+
+.final.-grandlr{
+	width: 15px;
+	text-align: center;
+}
+
+.final.-grandrl{
+	border-radius: 7px 0 0 7px;
+	text-align: right;
+}
+
+.final.-grandll{
+	border-radius: 0 7px 7px 0;
+	width: 15px;
+	text-align: center;
+}
+
+table.grand{
+    font-size: 12px;
+	border-collapse: collapse; 
+	background-color: #272A33;
+	margin: auto;
+}
+
+td.grand{
+    padding: 4px 7px;
+    border: 0px;
+}
+
 
 .type {
 	border: 1px solid #23252d; /* Рамка */

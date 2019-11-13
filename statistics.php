@@ -6,11 +6,14 @@ menu();
 menuAdmin();
 
 $login = getUserLogin();
-if($_GET['type']){
-    $type = $_GET['type'];
+
+$type = $_GET['type'];
+if($_GET['year'] === NULL){
+    $year = "";
 }else{
-    $type = 'main';
+    $year = "AND YEAR(G.date) = ".$_GET['year'];
 }
+
 
 
 echo "<div id='main'>";
@@ -23,27 +26,34 @@ if ($login != null){
     (IFNULL(wins,0)+IFNULL(wins_over,0))*100/(IFNULL(wins,0)+IFNULL(wins_over,0)+IFNULL(losses,0)+IFNULL(losses_over,0)) as percent, 
     hit_cups, got_cups, difference_cups, tournaments
 FROM(
-	SELECT 
-	team, 
-	SUM(points) as points,
-	COUNT(id_team) as tournaments,
-	SUM(wins) as wins, 
-	SUM(losses) as losses, 
-	SUM(wins_over) as wins_over, 
-	SUM(losses_over) as losses_over,  
-	SUM(hit_cups) as hit_cups, 
-	SUM(got_cups) as got_cups, 
-	SUM(difference_cups) as difference_cups
+	SELECT team, 
+        SUM(points) as points,
+        COUNT(id_team) as tournaments,
+        SUM(wins) as wins, 
+        SUM(losses) as losses, 
+        SUM(wins_over) as wins_over, 
+        SUM(losses_over) as losses_over,  
+        SUM(hit_cups) as hit_cups, 
+        SUM(got_cups) as got_cups, 
+        SUM(difference_cups) as difference_cups
 	FROM $dbt_statistics  ST
 	INNER JOIN $dbt_teams T ON T.id = ST.id_team
-	WHERE T.team != 'ХАЛЯВА' AND T.type = '$type'
+    INNER JOIN $dbt_games AS G ON ST.id_game = G.id
+	WHERE T.team != 'ХАЛЯВА' AND T.type = '$type' $year
 	GROUP BY id_team
 ) as s
 ORDER BY points DESC, percent DESC, difference_cups DESC");
 
-    echo "<center><a href='?type=main' class='type'>MAIN</a> ";
-    echo "<a href='?type=king' class='type'>KING</a> ";
-    echo "<a href='?type=queen' class='type'>QUEEN</a></center><br>";
+$year_games = $conn->query("SELECT DISTINCT YEAR(date) as date FROM bpm_games ORDER BY date ASC");
+    echo "<center>";
+    foreach($year_games as $value){
+        echo "<a href='?year={$value['date']}&type={$_GET['type']}' class='type'>{$value['date']}</a> ";
+    }
+    echo "</center>";
+
+    echo "<center><a href='?year={$_GET['year']}&type=main' class='type'>MAIN</a> ";
+    echo "<a href='?year={$_GET['year']}&type=king' class='type'>KING</a> ";
+    echo "<a href='?year={$_GET['year']}&type=queen' class='type'>QUEEN</a></center><br>";
 
     echo "<table>";
     echo "<tr>";

@@ -17,12 +17,12 @@ echo "
 <header>
 <div class='header-container'>
     <div class='logo'>
-        <a href='/'><img src='http://".$_SERVER['HTTP_HOST']."/img/logo.png' alt='logo'></a>
+        <a href='/'><img src='http://".$_SERVER['HTTP_HOST']."/img/logo.svg' width='85px' alt='logo'></a>
     </div>
     <nav role='navigation'>
             <ul class='main-menu'>
                 <li><a href='/'>ГЛАВНАЯ</a></li>                
-                <li><a href='/statistics.php'>CТАТИСТИКА</a></li>
+                <li><a href='/statistics.php?year=".date("Y")."&type=main'>CТАТИСТИКА</a></li>
                 <li><a href='/rules.php'>ПРАВИЛА</a></li>";
                 if ($login === null){
                     echo "<a href='#openModal'>ВОЙТИ</a>
@@ -49,14 +49,15 @@ function menuAdmin(){
             <ul class='main-menu'>";
                 if ($login != null){
                     echo "<li class='admin-li'>ADMIN MENU: </li>";
-                    echo "<li><a href='http://".$_SERVER['HTTP_HOST']."/admin/tournaments.php'>ТУРНИРЫ</a></li>";
+                    echo "<li><a href='http://".$_SERVER['HTTP_HOST']."/admin/tournaments.php?year=".date("Y")."'>ТУРНИРЫ</a></li>";
                     echo "<a href='#openModal'>СОЗДАТЬ ТУРНИР</a>
                         <div id='openModal' class='modalDialog'>
                             <div style='padding: 10px'>
                             <a href='#close' title='Закрыть' class='close'>X</a>                            
                                 <form action='../func/edit_game.php' method='POST'>
                                     <input class='input-block' type='text' name='new_game' class='login' placeholder='Название турнира'  autocomplete='off'><br>
-                                    <center>                      
+                                    <center>
+                                        <input type='radio' id='check1' name='type' value='grand'><label for='check1'>GRAND</label>                 
                                         <input type='radio' id='check1' name='type' value='sat'><label for='check1'>Суббота</label> 
                                         <input type='radio' id='check2' name='type' value='thu' checked><label for='check2'>Четверг</label>
                                         <input type='radio' id='check3' name='type' value='king'><label for='check3'>King</label>

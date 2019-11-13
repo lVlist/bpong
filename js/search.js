@@ -63,6 +63,29 @@ $(function(){
         $(".edit_team").blur(); //Убираем фокус с input
     })
 
+    //Изменение название команды или удаление
+    $('.grand').bind("change keyup input click", function() {
+        if(this.value.length >= 1){
+            var id_game = $('#game').val();
+            var type = $('#type').val();
+            var pos = $('#pos').val();
+            $.ajax({
+                type: 'post',
+                url: "../func/search.php", //Путь к обработчику
+                data: {'add_grand':this.value, 'id_game':id_game, 'type':type, 'pos':pos},
+                response: 'text',
+                success: function(data){
+                    $(".search_grand").html(data).fadeIn(); //Выводим полученые данные в списке
+                    
+                }
+            })
+        }
+    })
+    
+    $(".search_grand").hover(function(){
+        $(".grand").blur(); //Убираем фокус с input
+    })
+
 })
 
 var x = 0;
