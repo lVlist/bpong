@@ -1,12 +1,13 @@
 <?php
-require_once('func/func.php');
-require_once('func/header.php');
+
+require_once 'func/func.php';
+require_once 'func/header.php';
 menu();
 menuAdmin();
 
 echo "<div id='main'>";
-echo "<center><h2>Официальные правила турниров Beer Pong Minsk</h2></center><br>";
-echo <<<RULES
+echo '<center><h2>Официальные правила турниров Beer Pong Minsk</h2></center><br>';
+echo <<<'RULES'
 <div class="rules"><b>Данные правила созданы с 3 основными целями:</b><br> 
  
 - Справедливость к каждому из участников<br> 
@@ -46,4 +47,4 @@ echo <<<RULES
 - Бросать со стороны от стола запрещается<br> 
 - Команда имеет право не пить, мы за спорт!</div>
 RULES;
-echo "</div>";
+echo '</div>';

@@ -441,15 +441,15 @@ nav{
 .final.-geven6 {margin-bottom: 180px;}
 .final.-final {margin-bottom: 5px;}
 
-#geven1 {float: left; display: block; margin: 10px;}
-#geven2 {float: left; display: block; margin: 10px;}
-#geven3 {float: left; display: block; margin: 50px 10px 10px 10px;}
-#geven4 {float: left; display: block; margin: 50px 10px 10px 10px;}
-#geven5 {float: left; display: block; margin: 120px 10px 10px 10px;}
-#geven6 {float: left; display: block; margin: 120px 10px 10px 10px;}
-#geven7 {float: left; display: block; margin: 220px 10px 10px 10px;}
-#geven8 {float: left; display: block; margin: 220px 10px 10px 10px;}
-#final30 {float: left; display: block; margin: 220px 10px 10px 10px;}
+#geven1 {float: left; display: block; margin: 5px;}
+#geven2 {float: left; display: block; margin: 5px;}
+#geven3 {float: left; display: block; margin: 50px 5px 5px 5px;}
+#geven4 {float: left; display: block; margin: 50px 5px 5px 5px;}
+#geven5 {float: left; display: block; margin: 120px 5px 5px 5px;}
+#geven6 {float: left; display: block; margin: 120px 5px 5px 5px;}
+#geven7 {float: left; display: block; margin: 220px 5px 5px 5px;}
+#geven8 {float: left; display: block; margin: 220px 5px 5px 5px;}
+#final30 {float: left; display: block; margin: 220px 5px 5px 5px;}
 
 .final.-grandrr{
 	border-radius: 0 7px 7px 0;

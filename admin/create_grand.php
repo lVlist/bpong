@@ -1,50 +1,52 @@
 <?php
+
 session_start();
-require_once('../conf/dbconfig.php');
-require_once('../func/func.php');
-require_once('../func/header.php');
+require_once '../conf/dbconfig.php';
+require_once '../func/func.php';
+require_once '../func/header.php';
 menu();
 menuAdmin();
 $login = getUserLogin();
 
 echo "<div id='main'>";
-if ($login === null){die("Бородатый не годуе!");}
+if (null === $login) {
+    die('Бородатый не годуе!');
+}
 
-$id_game = (int)$_GET['id'];
-
+$id_game = (int) $_GET['id'];
+/*
 echo "<center><a href='?id={$id_game}&type=8' class='type'>8</a> ";
 echo "<a href='?id={$id_game}&type=16' class='type'>16</a> ";
-echo "<a href='?id={$id_game}&type=32' class='type'>32</a></center><br>";
+echo "<a href='?id={$id_game}&type=32' class='type'>32</a></center><br>";*/
 
 echo "<table class='grand'>
     <tr>
         <td class='grand'>";
         $j = 1;
-        
-            for($i=1;$i <= $_GET['type']/4;$i++)
-            {
+
+            for ($i = 1; $i <= $_GET['type'] / 4; ++$i) {
                 echo "<div class='final -grandlr -clear'>{$j}</div>
                     <div class='final -grandrr'>";
-                        if($_SESSION['grand'][$j] === NULL){
-                            echo "<a href='?id=".$id_game."&type=".$_GET['type']."&pos=".$j."#grandCreate'>Команда</a>";
-                        }else{
-                            $id_team = $_SESSION['grand'][$j];
-                            $team = $conn->query("SELECT team FROM $dbt_teams WHERE id = $id_team")->fetch_assoc();
-                            echo "<a href='?id=".$id_game."&type=".$_GET['type']."&pos=".$j."#grandCreate'>".$team['team']."</a>";
-                        }
-                    echo "</div>";
-                $j++;
+                if (null === $_SESSION['grand'][$j]) {
+                    echo "<a href='?id=".$id_game.'&type='.$_GET['type'].'&pos='.$j."#grandCreate'>Команда</a>";
+                } else {
+                    $id_team = $_SESSION['grand'][$j];
+                    $team = $conn->query("SELECT team FROM {$dbt_teams} WHERE id = {$id_team}")->fetch_assoc();
+                    echo "<a href='?id=".$id_game.'&type='.$_GET['type'].'&pos='.$j."#grandCreate'>".$team['team'].'</a>';
+                }
+                echo '</div>';
+                ++$j;
                 echo "<div class='final -grandlr -even1 -clear'>{$j}</div>
                     <div class='final -grandrr'>";
-                        if($_SESSION['grand'][$j] === NULL){
-                            echo "<a href='?id=".$id_game."&type=".$_GET['type']."&pos=".$j."#grandCreate'>Команда</a>";
-                        }else{
-                            $id_team = $_SESSION['grand'][$j];
-                            $team = $conn->query("SELECT team FROM $dbt_teams WHERE id = $id_team")->fetch_assoc();
-                            echo "<a href='?id=".$id_game."&type=".$_GET['type']."&pos=".$j."#grandCreate'>".$team['team']."</a>";
-                        }
-                    echo "</div>";
-                $j++;
+                if (null === $_SESSION['grand'][$j]) {
+                    echo "<a href='?id=".$id_game.'&type='.$_GET['type'].'&pos='.$j."#grandCreate'>Команда</a>";
+                } else {
+                    $id_team = $_SESSION['grand'][$j];
+                    $team = $conn->query("SELECT team FROM {$dbt_teams} WHERE id = {$id_team}")->fetch_assoc();
+                    echo "<a href='?id=".$id_game.'&type='.$_GET['type'].'&pos='.$j."#grandCreate'>".$team['team'].'</a>';
+                }
+                echo '</div>';
+                ++$j;
             }
         echo "</td>
         <td class='grand' width='400px'>
@@ -54,39 +56,38 @@ echo "<table class='grand'>
                 <input type='hidden' value='{$id_game}' name='id_game'>
                 <input class='submit' type='submit' value='ПОГНАЛИ'>
             </form>";
-        
+
         echo "</td>
         <td class='grand'>";
-            for($i=1;$i <= $_GET['type']/4;$i++)
-            {
+            for ($i = 1; $i <= $_GET['type'] / 4; ++$i) {
                 echo "<div class='final -grandrl -clear'>";
-                    if($_SESSION['grand'][$j] === NULL){
-                        echo "<a href='?id=".$id_game."&type=".$_GET['type']."&pos=".$j."#grandCreate'>Команда</a>";
-                    }else{
-                        $id_team = $_SESSION['grand'][$j];
-                        $team = $conn->query("SELECT team FROM $dbt_teams WHERE id = $id_team")->fetch_assoc();
-                        echo "<a href='?id=".$id_game."&type=".$_GET['type']."&pos=".$j."#grandCreate'>".$team['team']."</a>";
-                    }
+                if (null === $_SESSION['grand'][$j]) {
+                    echo "<a href='?id=".$id_game.'&type='.$_GET['type'].'&pos='.$j."#grandCreate'>Команда</a>";
+                } else {
+                    $id_team = $_SESSION['grand'][$j];
+                    $team = $conn->query("SELECT team FROM {$dbt_teams} WHERE id = {$id_team}")->fetch_assoc();
+                    echo "<a href='?id=".$id_game.'&type='.$_GET['type'].'&pos='.$j."#grandCreate'>".$team['team'].'</a>';
+                }
                 echo "</div>
                 <div class='final -grandll '>{$j}</div>";
-                $j++;
+                ++$j;
                 echo "<div class='final -grandrl -clear'>";
-                if($_SESSION['grand'][$j] === NULL){
-                    echo "<a href='?id=".$id_game."&type=".$_GET['type']."&pos=".$j."#grandCreate'>Команда</a>";
-                }else{
+                if (null === $_SESSION['grand'][$j]) {
+                    echo "<a href='?id=".$id_game.'&type='.$_GET['type'].'&pos='.$j."#grandCreate'>Команда</a>";
+                } else {
                     $id_team = $_SESSION['grand'][$j];
-                    $team = $conn->query("SELECT team FROM $dbt_teams WHERE id = $id_team")->fetch_assoc();
-                    echo "<a href='?id=".$id_game."&type=".$_GET['type']."&pos=".$j."#grandCreate'>".$team['team']."</a>";
+                    $team = $conn->query("SELECT team FROM {$dbt_teams} WHERE id = {$id_team}")->fetch_assoc();
+                    echo "<a href='?id=".$id_game.'&type='.$_GET['type'].'&pos='.$j."#grandCreate'>".$team['team'].'</a>';
                 }
-            echo "</div>
+                echo "</div>
                 <div class='final -grandll -even1 '>{$j}</div>";
-                $j++;
+                ++$j;
             }
-        echo "</td>
+        echo '</td>
     </tr>
-</table>";
+</table>';
 
-/* ---------------Модальное окно------------------ */
+// ---------------Модальное окно------------------
 
 echo "<div id='grandCreate' class='modalGrand'>
 <div><a href='http://".$_SERVER['HTTP_HOST']."/admin/create_grand.php?id={$id_game}&type={$_GET['type']}#close' title='Закрыть' class='close'>x</a>
@@ -100,4 +101,3 @@ echo "<div id='grandCreate' class='modalGrand'>
 </div>
     
 </div>";
-?>
