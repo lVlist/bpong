@@ -1,4 +1,5 @@
-conf
-conf/usersDB.php
-.vscode
+/conf/
+/.vscode/
+/.idea/
 test.php
+
