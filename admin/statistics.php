@@ -23,6 +23,7 @@ if ($login != null){
         ORDER BY final DESC, points DESC,  percent DESC, difference_cups DESC");
 
 if($statistics->num_rows == 0) {die;}
+        echo "<div class='block-t'>";
         echo "<table>";
             echo "<tr>";
                 echo "  <td>№</td>
@@ -57,6 +58,8 @@ if($statistics->num_rows == 0) {die;}
                 ";
             echo "</tr>";
         }
+        echo "</table>";
+        echo "</div>";
     }else{
         die;
     }

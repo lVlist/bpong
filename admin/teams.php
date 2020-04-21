@@ -5,9 +5,9 @@ require_once('../func/header.php');
 menu();
 menuAdmin();
 $login = getUserLogin();
-
+echo "<br><center>Название команды изменяется сразу в появившемся поле с командой, только потом жмем \"Изменить\"<br></center>";
 echo "<div id='main'>";
-echo "<center>Название команды изменяется сразу в появившемся поле с командой, только потом жмем \"Изменить\"<br></center>";
+
 if ($login != null){
     echo "<div id='create-block'>";
         if($_GET['mes'] == 'no_del'){

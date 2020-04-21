@@ -15,6 +15,18 @@ if (null === $_GET['year']) {
     $year = 'AND YEAR(G.date) = '.$_GET['year'];
 }
 
+$year_games = $conn->query("SELECT DISTINCT YEAR(date) as date FROM {$dbt_games} ORDER BY date ASC");
+echo '<br><center>';
+echo "<a href='?type={$_GET['type']}' class='type'>FULL</a> ";
+foreach ($year_games as $value) {
+    echo "<a href='?year={$value['date']}&type={$_GET['type']}' class='type'>{$value['date']}</a> ";
+}
+echo '</center>';
+
+echo "<center><a href='?year={$_GET['year']}&type=main' class='type'>MAIN</a> ";
+echo "<a href='?year={$_GET['year']}&type=king' class='type'>KING</a> ";
+echo "<a href='?year={$_GET['year']}&type=queen' class='type'>QUEEN</a></center>";
+
 echo "<div id='main'>";
 if (null != $login) {
     // Получаем id команд
@@ -42,18 +54,8 @@ FROM(
 ) as s
 ORDER BY points DESC, percent DESC, difference_cups DESC");
 
-    $year_games = $conn->query("SELECT DISTINCT YEAR(date) as date FROM {$dbt_games} ORDER BY date ASC");
-    echo '<center>';
-    echo "<a href='?type={$_GET['type']}' class='type'>FULL</a> ";
-    foreach ($year_games as $value) {
-        echo "<a href='?year={$value['date']}&type={$_GET['type']}' class='type'>{$value['date']}</a> ";
-    }
-    echo '</center>';
 
-    echo "<center><a href='?year={$_GET['year']}&type=main' class='type'>MAIN</a> ";
-    echo "<a href='?year={$_GET['year']}&type=king' class='type'>KING</a> ";
-    echo "<a href='?year={$_GET['year']}&type=queen' class='type'>QUEEN</a></center><br>";
-
+    echo "<div class='block-t'>";
     echo '<table>';
     echo '<tr>';
     echo '
@@ -93,5 +95,6 @@ ORDER BY points DESC, percent DESC, difference_cups DESC");
     ';
         echo '</tr>';
     }
+    echo "</div>";
 }
 echo '</div>';

@@ -8,21 +8,24 @@ menuAdmin();
 $login = getUserLogin();
 $year = $_GET['year'];
 
+$year_games = $conn->query("SELECT DISTINCT YEAR(date) as date FROM {$dbt_games} ORDER BY date ASC");
+
+    echo '<br/><center>';
+    foreach ($year_games as $value) {
+        echo "<a href='?year={$value['date']}' class='type'>{$value['date']}</a> ";
+    }
+    echo '</center>';
+
 echo "<div id='main'>";
     if (null === $login) {
         echo 'Доступ запрещен!';
         die;
     }
-    $year_games = $conn->query("SELECT DISTINCT YEAR(date) as date FROM {$dbt_games} ORDER BY date ASC");
-    echo '<center>';
-    foreach ($year_games as $value) {
-        echo "<a href='?year={$value['date']}' class='type'>{$value['date']}</a> ";
-    }
-    echo '</center>';
+
     // Четверги
     $games = $conn->query("SELECT * FROM {$dbt_games} WHERE type = 'thu' AND YEAR(date) = {$year}  ORDER BY date DESC");
     if ($games->num_rows > 0) {
-        echo "<div id='block'>";
+        echo "<div class='block-t'>";
         echo '<h3>Четверги:</h3>';
         echo '<table>';
         $i = 1;
@@ -32,7 +35,7 @@ echo "<div id='main'>";
             echo "<tr>
                             <td align='center'>".$i++.'</td>
                             <td>'.$date."</td>
-                            <td width='150px'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
+                            <td style='min-width: 200px;'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
                             <td><a href='final.php?id=".$value['id']."'>Финал</td>
                             <td><a href='statistics.php?id=".$value['id']."'>Результаты турнира</td>
                         </tr>";
@@ -42,7 +45,7 @@ echo "<div id='main'>";
     }
 
     // Суббота, KING, QUEEN
-    echo "<div id='block'>";
+    echo "<div class='block-t'>";
         $games = $conn->query("SELECT * FROM {$dbt_games} WHERE type = 'grand' AND YEAR(date) = {$year} ORDER BY date DESC");
         if ($games->num_rows > 0) {
             echo '<h3>GRAND FINAL:</h3>';
@@ -54,7 +57,7 @@ echo "<div id='main'>";
                 echo "<tr>
                         <td align='center'>".$i++.'</td>
                         <td>'.$date."</td>
-                        <td width='205px'><a href='grand.php?id=".$value['id']."'>".$value['game']."</a></td>
+                        <td style='min-width: 260px;'><a href='grand.php?id=".$value['id']."'>".$value['game']."</a></td>
                         <td><a href='statistics.php?id=".$value['id']."'>Результаты турнира</td>
                     </tr>";
             }
@@ -72,7 +75,7 @@ echo "<div id='main'>";
                 echo "<tr>
                         <td align='center'>".$i++.'</td>
                         <td>'.$date."</td>
-                        <td width='150px'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
+                        <td style='min-width: 200px;'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
                         <td><a href='final.php?id=".$value['id']."'>Финал</td>
                         <td><a href='statistics.php?id=".$value['id']."'>Результаты турнира</td>
                     </tr>";
@@ -91,7 +94,7 @@ echo "<div id='main'>";
                 echo "<tr>
                         <td align='center'>".$i++.'</td>
                         <td>'.$date."</td>
-                        <td width='150px'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
+                        <td style='min-width: 200px;'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
                         <td><a href='final.php?id=".$value['id']."'>Финал</td>
                         <td><a href='statistics.php?id=".$value['id']."'>Результаты турнира</td>
                     </tr>";
@@ -110,7 +113,7 @@ echo "<div id='main'>";
                 echo "<tr>
                         <td align='center'>".$i++.'</td>
                         <td>'.$date."</td>
-                        <td width='150px'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
+                        <td style='min-width: 200px;'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
                         <td><a href='final.php?id=".$value['id']."'>Финал</td>
                         <td><a href='statistics.php?id=".$value['id']."'>Результаты турнира</td>
                     </tr>";
@@ -129,7 +132,7 @@ echo "<div id='main'>";
                 echo "<tr>
                         <td align='center'>".$i++.'</td>
                         <td>'.$date."</td>
-                        <td width='150px'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
+                        <td style='min-width: 200px;'><a href='qualification.php?id=".$value['id']."'>".$value['game']."</a></td>
                         <td><a href='final.php?id=".$value['id']."'>Финал</td>
                         <td><a href='statistics.php?id=".$value['id']."'>Результаты турнира</td>
                     </tr>";

@@ -6,10 +6,12 @@ menu();
 menuAdmin();
 $login = getUserLogin();
 
+echo "<h3>Очки:</h3>";
+
 echo "<div id='main'>";
 if ($login != null){
     $games = $conn->query("SELECT * FROM $dbt_score ORDER BY place ASC");
-    echo "<h3>Очки:</h3>";
+
     echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/score.php' method='POST'>";
     echo "<table>";
     echo "<tr align='center'>
