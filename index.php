@@ -6,16 +6,27 @@ menu();
 menuAdmin();
 
 $login = getUserLogin();
-if($_GET['year']){
-    $year = $_GET['year'];
+if($_GET['year'] === 'FULL'){
+    $year = '';
+}else if($_GET['year']){
+    $year = (int)$_GET['year'];
+    $year = 'AND (YEAR(G.date) = '.$year.')';
 }else{
-    $year = date('Y');
+    $now = date('Y');
+    $year = 'AND (YEAR(G.date) = '.$now.')';
 }
+
+if($_GET['year'] === 'FULL'){
+
+}
+
 
 $year_games = $conn->query("SELECT DISTINCT YEAR(date) as date FROM {$dbt_games} ORDER BY date ASC");
 echo '<br><center>';
+echo "<a href='?year=FULL' class='type'>FULL</a>";
 foreach ($year_games as $value) {
-    echo "<a href='?year={$value['date']}' class='type'>{$value['date']}</a>";
+    $date = (int)$value['date'];
+    echo "<a href='?year={$date}' class='type'>{$value['date']}</a>";
 }
 echo '</center>';
 
@@ -29,15 +40,15 @@ FROM (
 	SELECT $dbt_teams.team, Count($dbt_statistics.id_team) AS thu, 0 as sat
 		FROM $dbt_statistics
 		INNER JOIN $dbt_teams ON $dbt_teams.id = $dbt_statistics.id_team
-		INNER JOIN $dbt_games ON $dbt_games.id = $dbt_statistics.id_game
-		WHERE $dbt_statistics.points = 10 AND $dbt_games.type = 'thu' AND YEAR($dbt_games.date) = {$year}
+		INNER JOIN $dbt_games G ON G.id = $dbt_statistics.id_game
+		WHERE $dbt_statistics.points = 10 AND G.type = 'thu' {$year}
 		GROUP BY $dbt_statistics.id_team
 	UNION ALL
 		SELECT $dbt_teams.team, 0 as thu, Count($dbt_statistics.id_team) AS sat
 		FROM $dbt_statistics
 		INNER JOIN $dbt_teams ON $dbt_teams.id = $dbt_statistics.id_team
-		INNER JOIN $dbt_games ON $dbt_games.id = $dbt_statistics.id_game
-		WHERE $dbt_statistics.points = 50 AND $dbt_games.type = 'sat' AND YEAR($dbt_games.date) = {$year}
+		INNER JOIN $dbt_games G ON G.id = $dbt_statistics.id_game
+		WHERE $dbt_statistics.points = 50 AND G.type = 'sat' {$year}
 		GROUP BY $dbt_statistics.id_team) as d
     GROUP BY d.team
     ORDER BY thu DESC");
@@ -80,7 +91,7 @@ FROM (
 		INNER JOIN $dbt_teams T2 ON QG.id_t2 = T2.id 
 		INNER JOIN $dbt_teams T1 ON QG.id_t1 = T1.id
 		INNER JOIN $dbt_games G ON QG.id_game = G.id
-		WHERE (G.type = 'thu' OR G.type = 'sat') AND (QG.s1 > 19 OR QG.s2 > 19) AND (YEAR(G.date) = {$year})
+		WHERE (G.type = 'thu' OR G.type = 'sat') AND (QG.s1 > 19 OR QG.s2 > 19) {$year}
 	UNION ALL
 		SELECT G.date, G.game, 
 		IF(s1>s2, T1.team, T2.team) as t1,
@@ -92,7 +103,7 @@ FROM (
 		INNER JOIN $dbt_games G ON F.id_game = G.id
 		INNER JOIN $dbt_teams T1 ON F.id_t1 = T1.id
 		INNER JOIN $dbt_teams T2 ON F.id_t2 = T2.id
-		WHERE (G.type = 'thu' OR G.type = 'sat') AND (S.s1 > 19 OR S.s2 > 19) AND (YEAR(G.date) = {$year})
+		WHERE (G.type = 'thu' OR G.type = 'sat') AND (S.s1 > 19 OR S.s2 > 19) {$year}
 		) as T
     ORDER BY s1 DESC, s2 DESC");
 
@@ -128,7 +139,7 @@ FROM (
 		INNER JOIN $dbt_teams T2 ON QG.id_t2 = T2.id 
 		INNER JOIN $dbt_teams T1 ON QG.id_t1 = T1.id
 		INNER JOIN $dbt_games G ON QG.id_game = G.id
-		WHERE G.type = 'king' AND (QG.s1 > 19 OR QG.s2 > 19) AND (YEAR(G.date) = {$year})
+		WHERE G.type = 'king' AND (QG.s1 > 19 OR QG.s2 > 19) {$year}
 	UNION ALL
 		SELECT G.date, G.game, 
 		IF(s1>s2, T1.team, T2.team) as t1,
@@ -140,7 +151,7 @@ FROM (
 		INNER JOIN $dbt_games G ON F.id_game = G.id
 		INNER JOIN $dbt_teams T1 ON F.id_t1 = T1.id
 		INNER JOIN $dbt_teams T2 ON F.id_t2 = T2.id
-		WHERE G.type = 'king' AND (S.s1 > 19 OR S.s2 > 19) AND (YEAR(G.date) = {$year})
+		WHERE G.type = 'king' AND (S.s1 > 19 OR S.s2 > 19) {$year}
 		) as T
     ORDER BY s1 DESC, s2 DESC");
 
@@ -175,7 +186,7 @@ FROM (
 		INNER JOIN $dbt_teams T2 ON QG.id_t2 = T2.id 
 		INNER JOIN $dbt_teams T1 ON QG.id_t1 = T1.id
 		INNER JOIN $dbt_games G ON QG.id_game = G.id
-		WHERE G.type = 'queen' AND (QG.s1 > 19 OR QG.s2 > 19) AND (YEAR(G.date) = {$year})
+		WHERE G.type = 'queen' AND (QG.s1 > 19 OR QG.s2 > 19) {$year}
 	UNION ALL
 		SELECT G.date, G.game, 
 		IF(s1>s2, T1.team, T2.team) as t1,
@@ -187,7 +198,7 @@ FROM (
 		INNER JOIN $dbt_games G ON F.id_game = G.id
 		INNER JOIN $dbt_teams T1 ON F.id_t1 = T1.id
 		INNER JOIN $dbt_teams T2 ON F.id_t2 = T2.id
-		WHERE G.type = 'queen' AND (S.s1 > 19 OR S.s2 > 19) AND (YEAR(G.date) = {$year})
+		WHERE G.type = 'queen' AND (S.s1 > 19 OR S.s2 > 19) {$year}
 		) as T
     ORDER BY s1 DESC, s2 DESC");
 

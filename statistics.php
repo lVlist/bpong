@@ -7,24 +7,28 @@ menu();
 menuAdmin();
 
 $login = getUserLogin();
-
 $type = $_GET['type'];
-if (null === $_GET['year']) {
+
+if($_GET['year'] === 'FULL'){
     $year = '';
-} else {
-    $year = 'AND YEAR(G.date) = '.$_GET['year'];
+}else if($_GET['year']){
+    $year = (int)$_GET['year'];
+    $year = 'AND (YEAR(G.date) = '.$year.')';
+}else{
+    $now = date('Y');
+    $year = 'AND (YEAR(G.date) = '.$now.')';
 }
 
 $year_games = $conn->query("SELECT DISTINCT YEAR(date) as date FROM {$dbt_games} ORDER BY date ASC");
 echo '<br><center>';
-echo "<a href='?type={$_GET['type']}' class='type'>FULL</a> ";
+echo "<a href='?year=FULL&type={$_GET['type']}' class='type'>FULL</a>";
 foreach ($year_games as $value) {
-    echo "<a href='?year={$value['date']}&type={$_GET['type']}' class='type'>{$value['date']}</a> ";
+    echo "<a href='?year={$value['date']}&type={$_GET['type']}' class='type'>{$value['date']}</a>";
 }
 echo '</center>';
 
-echo "<center><a href='?year={$_GET['year']}&type=main' class='type'>MAIN</a> ";
-echo "<a href='?year={$_GET['year']}&type=king' class='type'>KING</a> ";
+echo "<center><a href='?year={$_GET['year']}&type=main' class='type'>MAIN</a>";
+echo "<a href='?year={$_GET['year']}&type=king' class='type'>KING</a>";
 echo "<a href='?year={$_GET['year']}&type=queen' class='type'>QUEEN</a></center>";
 
 echo "<div id='main'>";
