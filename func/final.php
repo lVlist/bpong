@@ -11,13 +11,18 @@ if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
     $conn->query("DELETE FROM `$dbt_final` WHERE (`id_game` = $id_game)");
     $conn->query("DELETE FROM `$dbt_final_score` WHERE (`id_game` = $id_game)");
     
-    /* Определяем порядок команд */
+    /**
+     * Определяем порядок команд
+     * TODO нужен алгоритм сортировки
+     */
     if($_GET['limit'] == 8){
         $final = [1,5,7,3,4,8,6,2];
     }elseif($_GET['limit'] == 16){
         $final = [1,9,13,5,7,15,11,3,4,12,16,8,6,14,10,2];
     }elseif($_GET['limit'] == 32){
         $final = [1,17,25,9,13,29,21,5,7,23,31,15,11,27,19,3,4,20,28,12,16,32,24,8,6,22,30,14,10,26,18,2];
+    }elseif($_GET['limit'] == 64){
+        $final = [1,33,49,17,25,57,41,9,13,45,61,29,21,53,37,5,7,39,55,23,31,63,47,15,11,43,59,27,19,51,35,3,4,36,52,20,28,60,44,12,16,48,64,32,24,56,40,8,6,38,54,22,30,62,46,14,10,42,58,26,18,50,34,2];
     }
 
     /* Получаем массив команд */
@@ -68,7 +73,7 @@ if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
     $stmt->bind_param('iiiii',$id_game, $round, $block, $nb, $bp);
 
     /* Раунд 2 */ 
-    if($_GET['limit']==8||$_GET['limit']==16||$_GET['limit']==32){
+    if($_GET['limit'] == 8 || $_GET['limit'] == 16 || $_GET['limit'] == 32 || $_GET['limit'] == 64){
         $col = $block/2;
         $nb = 0;
         for($i=1;$i<=$col;$i++){
@@ -84,7 +89,7 @@ if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
         }
     }
     /* Раунд 3 */ 
-    if($_GET['limit']==16||$_GET['limit']==32){
+    if($_GET['limit'] == 16 || $_GET['limit'] == 32 || $_GET['limit'] == 64){
         $col = $col/2;
         $nb = 0;
         for($i=1;$i<=$col;$i++){
@@ -101,7 +106,7 @@ if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
     }
 
     /* Раунд 4 */ 
-    if($_GET['limit']==32){
+    if($_GET['limit'] == 32 || $_GET['limit'] == 64){
         $col = $col/2;
         $nb = 0;
         for($i=1;$i<=$col;$i++){
@@ -115,6 +120,23 @@ if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
             }
             $stmt->execute();
         } 
+    }
+
+    /* Раунд 5 */
+    if($_GET['limit'] == 64){
+        $col = $col/2;
+        $nb = 0;
+        for($i=1;$i<=$col;$i++){
+            $round = 5;
+            $block = $i;
+            if($i%2 == 1){
+                $nb++;
+                $bp = 1;
+            }else{
+                $bp = 2;
+            }
+            $stmt->execute();
+        }
     }
 
     /* Финал */

@@ -25,9 +25,9 @@ if($login != null){
                 echo "<p style='color:red'>Было выбранно ".$_GET['msg']." команд из ".$_GET['limit']."</p>";
             }
 
-            if($limit == 8 OR $limit == 16 OR $limit == 32){
+            if($limit % 8 === 0){
                 echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/final.php?id=".$id_game."&limit=".$limit."&final=3' method='POST'>";
-            }elseif($limit == 12 OR $limit == 24){
+            }elseif($limit % 12 === 0){
                 echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/final2.php?id=".$id_game."&limit=".$limit."&final=3' method='POST'>";
             }
 

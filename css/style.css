@@ -365,7 +365,7 @@ nav{
 }
 
 #final {
-	width: 1300px;
+	width: 1400px;
 }
 
 .final {
@@ -392,7 +392,7 @@ nav{
 .final.-even2 {margin-bottom: 65px;}
 .final.-even3 {margin-bottom: 183px;}
 .final.-even4 {margin-bottom: 410px;}
-.final.-even5 {margin-bottom: 20px;}
+.final.-even5 {margin-bottom: 870px;}
 .final.-final {margin-bottom: 5px;}
 
 #even1 {float: left; display: block; margin: 10px;}
@@ -406,6 +406,7 @@ nav{
 #final16 {float: left; display: block; margin: 180px 10px 10px 10px;}
 #final24 {float: left; display: block; margin: 180px 10px 10px 10px;}
 #final32 {float: left; display: block; margin: 420px 10px 10px 10px;}
+#final64 {float: left; display: block; margin: 880px 10px 10px 10px;}
 
 
 .final.-score {
