@@ -13,9 +13,9 @@ $(function(){
                     $(".search_create").html(data).fadeIn(); //Выводим полученые данные в списке
                     
                 }
-            })
+            });
         }
-    })
+    });
     
     $(".search_create").hover(function(){
         $(".team").blur(); //Убираем фокус с input

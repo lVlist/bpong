@@ -27,8 +27,9 @@ if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
 
     /* Получаем массив команд */
     foreach($_POST as $key=>$value){
-        $team[] = $value; 
-    } 
+        $team[] = $value;
+
+    }
 
     /* Объеденяем массивы $final и $team в один массив где $final ключ а $team значение */
     $teams = array_combine($final,$team);

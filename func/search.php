@@ -1,6 +1,7 @@
 <?php
 require('../conf/dbconfig.php');
 
+
 if(!empty($_POST["add_grand"]))
 {
     $referal = "{$_POST['add_grand']}%";
@@ -66,7 +67,7 @@ if(!empty($_POST["add_team"]))
     $db_referal = $stmt->get_result();
     $row = $db_referal->num_rows;
     $team = htmlspecialchars($_POST["add_team"], ENT_QUOTES);
-    
+
     if ($row === 0)
     {
             echo "<form action='../func/edit_game.php' method='POST'>
