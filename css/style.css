@@ -433,7 +433,7 @@ nav{
 }
 
 #grandUp8 {width: 900px; min-height: 320px;}
-#grandUp16 {width: 1050px; min-height: 600px;}
+#grandUp16 {width: 1600px; min-height: 600px;}
 #grandUp32 {width: 1600px; min-height: 1180px;}
 
 #grandDown {
@@ -472,10 +472,23 @@ nav{
 	text-align: right;
 }
 
+.final.-grandrlDark{
+	border-radius: 7px 0 0 7px;
+	text-align: right;
+	background-color: #3d3d40;
+}
+
 .final.-grandll{
 	border-radius: 0 7px 7px 0;
 	width: 15px;
 	text-align: center;
+}
+
+.final.-grandllDark{
+	border-radius: 0 7px 7px 0;
+	width: 15px;
+	text-align: center;
+	background-color: #3d3d40;
 }
 
 table.grand{

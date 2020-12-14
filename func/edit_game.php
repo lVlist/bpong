@@ -150,12 +150,23 @@ if ($_POST['del_team']) {
 
 // Удаление игры
 if ($_POST['del_game']) {
-    $id_game = $_POST['del_game'];
+    $id_game = (int)$_POST['del_game'];
     $conn->query("DELETE FROM `{$dbt_qualification}` WHERE (`id_game` = {$id_game})");
     $conn->query("DELETE FROM `{$dbt_q_games}` WHERE (`id_game` = {$id_game})");
     $conn->query("DELETE FROM `{$dbt_final}` WHERE (`id_game` = {$id_game})");
     $conn->query("DELETE FROM `{$dbt_games}` WHERE (`id` = {$id_game})");
     header('Location: ../index.php');
+    exit;
+}
+
+// Удаление гранд фианала
+if ($_POST['del_grand']) {
+
+    $id_game = (int)$_POST['del_grand'];
+    $conn->query("DELETE FROM `{$dbt_grand}` WHERE (`id_game` = {$id_game})");
+    $conn->query("DELETE FROM `{$dbt_grand_score}` WHERE (`id_game` = {$id_game})");
+    $conn->query("DELETE FROM `{$dbt_games}` WHERE (`id` = {$id_game})");
+    header('Location: ../admin/tournaments.php?year='.date('Y'));
     exit;
 }
 

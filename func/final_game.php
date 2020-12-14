@@ -82,7 +82,9 @@ if(isset($_POST)){
             }else{          
                 $id_team = $id_t2;
             }
+
             if(($round != (int)$last_round['round']) && ($round != (int)$last_round['round']-1)){
+
                 if($s1 == $s2){
                     $stmt->bind_param('iiii',$team_null, $id_game, $next_round, $next_block);
                     $stmt->execute();

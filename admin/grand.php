@@ -37,21 +37,25 @@ $quantity_team_game = $conn->query("SELECT Count(id_t1) + Count(id_t2) as quanti
 
 echo "<div id='grand'>";
 echo "<div id='grandUp{$quantity_team_game['quantity']}'>";
+
 echo "<a name='up'></a>";
     echo "<table style='margin:5px;'><tr>";
 
     for ($i = 1; $i <= $last_round['round']; ++$i) {
-        echo "<td style='width: 173px; text-align: center'>";
+        echo "<td style='width: 183px; text-align: center'>";
 
         if ($i === (int) $last_round['round']) {
-            echo 'Финал';
+            echo "Финал
+            ";
         } else {
             echo "Раунд {$i}";
         }
 
         echo '</td>';
     }
+
 echo '</tr></table>';
+
 
 for ($i = 1; $i <= $last_round['round']; ++$i) {
     // Cчетчик стиля id=even
@@ -165,8 +169,32 @@ echo "<div id='grandDown'>";
         echo '</tr></table>';
 
     for ($i = 1; $i <= $last_round['round']; ++$i) {
+
+        $even24 = $conn->query("SELECT IF (COUNT(position) = 8, 1, 0) as count
+                                        FROM bpm_grand WHERE position = 'down' AND (round = 2 OR round = 3)")->fetch_assoc();
+
+
+        
         // Cчетчик стиля id=even
-        $e = $i;
+        if ((int)$even24['count'] === 1) {
+            switch ($i) {
+                case 1:
+                    $e = 1;
+                    break;
+                case 2:
+                    $e = 3;
+                    break;
+                case 4:
+                    $e = 5;
+                    break;
+                case 6:
+                    $e = 7;
+                    break;
+            }
+        }else{
+            $e = $i;
+        }
+
 
         echo "<div id='geven".$e."'>";
 

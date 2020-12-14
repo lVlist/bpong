@@ -11,7 +11,7 @@ $next_block_position = (int) $_POST['next_block_position'];
 $round = (int) $_POST['round'];
 $next_round = $round + 1;
 $position = $_POST['position'];
-//var_dump($_POST);die;
+
 
 // Получаем id последнего раунда
 $last_round = $conn->query("SELECT F.round FROM {$dbt_grand} F WHERE F.id_game = {$id_game} AND F.position = '{$position}' ORDER BY F.round DESC LIMIT 1")->fetch_assoc();
@@ -87,52 +87,56 @@ if (isset($_POST)) {
         if ($round != (int) $last_round['round']) {
             $position = 'down';
 
-            switch ($round) {
-                case 2:
-                    $next_block_position = 1;
-                    $array_block = [
-                        '1' => '8',
-                        '2' => '7',
-                        '3' => '6',
-                        '4' => '5',
-                        '5' => '4',
-                        '6' => '3',
-                        '7' => '2',
-                        '8' => '1',
-                    ];
-                    $block = $array_block[$block];
+        $game24 = $conn->query("SELECT IF (COUNT(position) = 8, 1, 0) as count
+                                        FROM bpm_grand WHERE position = 'down' AND (round = 2 OR round = 3)")->fetch_assoc();
 
-                    break;
-                case 3:
-                    $round = 4;
-                    $next_block_position = 1;
-                    $array_block = [
-                        '1' => '2',
-                        '2' => '1',
-                        '3' => '4',
-                        '4' => '3',
-                    ];
-                    $block = $array_block[$block];
+        switch ($round) {
+            case 2:
+                (int)$game24['count'] === 1 ? $round = 1 : $round = 2;
+                $next_block_position = 1;
+                $array_block = [
+                    '1' => '8',
+                    '2' => '7',
+                    '3' => '6',
+                    '4' => '5',
+                    '5' => '4',
+                    '6' => '3',
+                    '7' => '2',
+                    '8' => '1',
+                ];
+                $block = $array_block[$block];
 
-                    break;
-                case 4:
-                    $round = 6;
-                    $next_block_position = 1;
-                    $array_block = [
-                        '1' => '2',
-                        '2' => '1',
-                    ];
-                    $block = $array_block[$block];
+                break;
+            case 3:
+                (int)$game24['count'] === 1 ? $round = 3 : $round = 4;
+                $next_block_position = 1;
+                $array_block = [
+                    '1' => '2',
+                    '2' => '1',
+                    '3' => '4',
+                    '4' => '3',
+                ];
+                $block = $array_block[$block];
 
-                    break;
-                case 5:
-                    $round = 8;
-                    $next_block_position = 1;
+                break;
+            case 4:
+                (int)$game24['count'] === 1 ? $round = 5 : $round = 6;
+                $next_block_position = 1;
+                $array_block = [
+                    '1' => '2',
+                    '2' => '1',
+                ];
+                $block = $array_block[$block];
 
-                    break;
-                default:
-                    $block = $next_block;
-            }
+                break;
+            case 5:
+                (int)$game24['count'] === 1 ? $round = 7 : $round = 8;
+                $next_block_position = 1;
+
+                break;
+            default:
+                $block = $next_block;
+        }
 
             $stmt = $conn->prepare("UPDATE `{$dbt_grand}` SET `id_t{$next_block_position}`=? WHERE (`id_game`=?) AND (`round`=?) AND (`block`=?) AND (`position`=?)");
 
@@ -152,10 +156,7 @@ if (isset($_POST)) {
             $id_team = $id_t2;
         }
 
-        if (1 === $round % 2) {
-            $next_block_position = 2;
-            $next_block = $block;
-        }
+
 
         $stmt = $conn->prepare("UPDATE `{$dbt_grand}` SET `id_t{$next_block_position}`=? WHERE (`id_game`=?) AND (`round`=?) AND (`block`=?) AND (`position`=?)");
 
