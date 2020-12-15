@@ -1,6 +1,7 @@
 <?php
 
 require '../conf/dbconfig.php';
+
 $id_match = (int) $_POST['id_match'];
 $id_game = (int) $_POST['id_game'];
 $id_t1 = (int) $_POST['id_t1'];

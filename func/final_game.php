@@ -11,9 +11,8 @@ $round = (int)$_POST['round'];
 $next_round = $round + 1;
 
 /* Получаем id последнего раунда */
-$id_last_round = $conn -> query ("SELECT F.round 
-FROM $dbt_final F
-WHERE F.id_game = $id_game ORDER BY F.round DESC LIMIT 1");
+$id_last_round = $conn -> query ("SELECT F.round FROM $dbt_final F
+                        WHERE F.id_game = $id_game ORDER BY F.round DESC LIMIT 1");
 $last_round = $id_last_round->fetch_assoc();
 
 // получаем статус о игре за 3-е место
