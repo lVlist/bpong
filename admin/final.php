@@ -100,6 +100,7 @@ for ($i = 1; $i <= $last_round['round']; ++$i) {
     }
 
     // Выводим команды и счет
+    $j = 1;
     foreach ($final as $value) {
         $match_id = $value['id'];
         if ($value['round'] == $i) {
@@ -115,11 +116,11 @@ for ($i = 1; $i <= $last_round['round']; ++$i) {
                 }
             }
 
-            $url = "<a href='?id=".$id_game.'&id_match='.$value['id'].'&round='.$value['round'].'&block='.$value['block'].'&next_block='.$value['next_block'].'&next_block_position='.$value['next_block_position'].'&id_t1='.$value['id_t1'].'&id_t2='.$value['id_t2'].'&t1='.htmlspecialchars($value['t1'], ENT_QUOTES).'&t2='.htmlspecialchars($value['t2'], ENT_QUOTES)."#finalEdit'>";
+            $url = "<a href='?id=".$id_game.'&id_match='.$value['id'].'&round='.$value['round'].'&position='.$j.'&block='.$value['block'].'&next_block='.$value['next_block'].'&next_block_position='.$value['next_block_position'].'&id_t1='.$value['id_t1'].'&id_t2='.$value['id_t2'].'&t1='.htmlspecialchars($value['t1'], ENT_QUOTES).'&t2='.htmlspecialchars($value['t2'], ENT_QUOTES)."#finalEdit'>";
             $img_edit = "<img width='13px' src='http://".$_SERVER['HTTP_HOST']."/img/edit_score.png'>";
 
             // Команда 1
-            echo "<div class='final -clear'>".$value['t1'].'</div>';
+            echo "<div class='final -clear'><a name=".$j."></a>".$value['t1'].'</div>';
 
             if ($t1 > $t2) {
                 echo "<div class='final -score -color'>";
@@ -160,6 +161,7 @@ for ($i = 1; $i <= $last_round['round']; ++$i) {
                 }
             }
         }
+        $j++;
     }
 
     if ($i == $last_round['round']) {
@@ -188,6 +190,7 @@ echo "<div id='finalEdit' class='modalGrand'>
         <input type='hidden' name='id_game'  value='".$id_game."'>
         <input type='hidden' name='round'  value='".$_GET['round']."'>
         <input type='hidden' name='block'  value='".$_GET['block']."'>
+        <input type='hidden' name='position'  value='".$_GET['position']."'>
         <input type='hidden' name='next_block'  value='".$_GET['next_block']."'>
         <input type='hidden' name='next_block_position'  value='".$_GET['next_block_position']."'>
         <input type='hidden' name='id_t1'  value='".$_GET['id_t1']."'>

@@ -89,7 +89,7 @@ if (isset($_POST)) {
             $position = 'down';
 
         $game24 = $conn->query("SELECT IF (COUNT(position) = 8, 1, 0) as count
-                                        FROM bpm_grand WHERE position = 'down' AND (round = 2 OR round = 3)")->fetch_assoc();
+                                        FROM bpm_grand WHERE position = 'down' AND (round = 2 OR round = 3) AND id_game = {$id_game}")->fetch_assoc();
 
         switch ($round) {
             case 2:

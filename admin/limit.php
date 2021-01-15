@@ -12,20 +12,23 @@ if($login != null){
     $limit = (int)$_GET['limit'];
     $id_game = (int)$_GET['id'];
 
-    if($limit > 0 AND $id_game > 0){
+    if($limit > 0 AND $id_game > 0) {
 
-        $stmt= $conn->query("SELECT T.team, T.id, Q.result, Q.difference 
+        $stmt = $conn->query("SELECT T.team, T.id, Q.result, Q.difference 
         FROM $dbt_qualification Q
         INNER JOIN $dbt_teams T ON T.id = Q.id_team
         WHERE Q.id_game = $id_game
         ORDER BY Q.result DESC, Q.difference DESC");
-    
-        echo "<div id='block'>";
-            if($_GET['msg']){
-                echo "<p style='color:red'>Было выбранно ".$_GET['msg']." команд из ".$_GET['limit']."</p>";
-            }
 
-            if($limit === 12 OR $limit === 24){
+        echo "<div id='block'>";
+        if ($_GET['msg']) {
+            echo "<p style='color:red'>Было выбранно " . $_GET['msg'] . " команд из " . $_GET['limit'] . "</p>";
+        }
+
+
+            if ($_GET['type'] === 'random'){
+                echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/final_random.php?id=".$id_game."&limit=".$limit."&final=3' method='POST'>";
+            }elseif($_GET['type'] !== 'random' AND ($limit === 12 OR $limit === 24)){
                 echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/final2.php?id=".$id_game."&limit=".$limit."&final=3' method='POST'>";
             }else{
                 echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/final.php?id=".$id_game."&limit=".$limit."&final=3' method='POST'>";

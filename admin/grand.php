@@ -61,6 +61,7 @@ for ($i = 1; $i <= $last_round['round']; ++$i) {
     // Cчетчик стиля id=even
     $e = $i;
 
+
     // Cчетчик стиля id=even для игр 12 и 24
     if (12 == $final->num_rows or 24 == $final->num_rows) {
         if ($i >= 2) {
@@ -171,7 +172,7 @@ echo "<div id='grandDown'>";
     for ($i = 1; $i <= $last_round['round']; ++$i) {
 
         $even24 = $conn->query("SELECT IF (COUNT(position) = 8, 1, 0) as count
-                                        FROM bpm_grand WHERE position = 'down' AND (round = 2 OR round = 3)")->fetch_assoc();
+                                        FROM bpm_grand WHERE position = 'down' AND (round = 2 OR round = 3) AND id_game = {$id_game}")->fetch_assoc();
 
 
         
@@ -199,6 +200,7 @@ echo "<div id='grandDown'>";
         echo "<div id='geven".$e."'>";
 
         // Выводим команды и счет
+        $j = 1;
         foreach ($final as $value) {
             $match_id = $value['id'];
             if ($value['round'] == $i) {
@@ -218,7 +220,8 @@ echo "<div id='grandDown'>";
                 $img_edit = "<img width='13px' src='http://".$_SERVER['HTTP_HOST']."/img/edit_score.png'>";
 
                 // Команда 1
-                echo "<div class='final -clear'>".$value['t1'].'</div>';
+
+                echo "<div class='final -clear'><a name=".$j."></a>".$value['t1'].'</div>';
 
                 if ($t1 > $t2) {
                     echo "<div class='final -score -color'>";
@@ -259,6 +262,7 @@ echo "<div id='grandDown'>";
                     }
                 }
             }
+            $j++;
         }
         echo '</div>';
     }

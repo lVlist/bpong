@@ -42,7 +42,8 @@ if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
 
     /* Раунд 1 */
     
-    $i=0;$nb=0;foreach ($teams as $key => $value)
+    $i=0;$nb=0;
+    foreach ($teams as $key => $value)
     {
         $i++;
         $round = 1;

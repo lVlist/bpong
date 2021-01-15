@@ -66,8 +66,18 @@ if (null != $login) {
         echo "<a href='limit.php?limit=16&id={$id_game}'> 16 |</a>";
         echo "<a href='limit.php?limit=24&id={$id_game}'> 24 |</a>";
         echo "<a href='limit.php?limit=32&id={$id_game}'> 32 |</a>";
-        echo "<a href='limit.php?limit=64&id={$id_game}'> 64</a> команды для финала<br>";
+        echo "<a href='limit.php?limit=64&id={$id_game}'> 64</a> команды для финала<br><br>";
+
+
+
+        echo "Выбрать:<a href='limit.php?limit=16&type=random&id={$id_game}'> 16 |</a>";
+       // echo "<a href='limit.php?limit=12&type=random&id={$id_game}'> 12 |</a>";
+        echo "<a href='limit.php?limit=32&type=random&id={$id_game}'> 32 |</a>";
+        //echo "<a href='limit.php?limit=24&type=random&id={$id_game}'> 24 |</a>";
+       // echo "<a href='limit.php?limit=32&type=random&id={$id_game}'> 32 |</a>";
+        echo "<a href='limit.php?limit=64&type=random&id={$id_game}'> 64</a> команды для рандома<br>";
         echo '</div>';
+
         if (0 == $qualification->num_rows) {
             die;
         }

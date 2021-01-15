@@ -9,6 +9,7 @@ $next_block = (int)$_POST['next_block'];
 $next_block_position = (int)$_POST['next_block_position'];
 $round = (int)$_POST['round'];
 $next_round = $round + 1;
+$position = $_POST['position'];
 
 /* Получаем id последнего раунда */
 $id_last_round = $conn -> query ("SELECT F.round FROM $dbt_final F
@@ -148,6 +149,6 @@ if(isset($_POST)){
         }
     }
     
-    header('Location: ../admin/final.php?id='.$id_game);
+    header('Location: ../admin/final.php?id='.$id_game.'#'.$position);
     exit;
 }
