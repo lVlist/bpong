@@ -12,8 +12,9 @@ if($_GET['year'] === 'FULL'){
     $year = (int)$_GET['year'];
     $year = 'AND (YEAR(G.date) = '.$year.')';
 }else{
-    $now = date('Y');
-    $year = 'AND (YEAR(G.date) = '.$now.')';
+    $year = $conn->query("SELECT YEAR(date) as year FROM $dbt_games ORDER BY date DESC LIMIT 1") -> fetch_assoc();
+    $year = $year['year'];
+    $year = 'AND (YEAR(G.date) = '.$year.')';
 }
 
 if($_GET['year'] === 'FULL'){
@@ -22,6 +23,7 @@ if($_GET['year'] === 'FULL'){
 
 
 $year_games = $conn->query("SELECT DISTINCT YEAR(date) as date FROM {$dbt_games} ORDER BY date ASC");
+if ($login != null){
 echo '<br><center>';
 echo "<a href='?year=FULL' class='type'>FULL</a>";
 foreach ($year_games as $value) {
@@ -31,7 +33,7 @@ foreach ($year_games as $value) {
 echo '</center>';
 
 echo "<div id='main'>";
-if ($login != null){
+
 
 
     /* Получаем id команд */

@@ -64,6 +64,7 @@ for ($i = 1; $i <= $last_round['round']; ++$i) {
 
     // Cчетчик стиля id=even для игр 12 и 24
     if (12 == $final->num_rows or 24 == $final->num_rows) {
+
         if ($i >= 2) {
             $e = $i - 1;
         }
@@ -172,7 +173,7 @@ echo "<div id='grandDown'>";
     for ($i = 1; $i <= $last_round['round']; ++$i) {
 
         $even24 = $conn->query("SELECT IF (COUNT(position) = 8, 1, 0) as count
-                                        FROM bpm_grand WHERE position = 'down' AND (round = 2 OR round = 3) AND id_game = {$id_game}")->fetch_assoc();
+                                        FROM {$dbt_grand} WHERE position = 'down' AND (round = 2 OR round = 3) AND id_game = {$id_game}")->fetch_assoc();
 
 
         

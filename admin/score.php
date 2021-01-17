@@ -1,5 +1,6 @@
 <?php
 require_once('../conf/dbconfig.php');
+require_once('../conf/config.php');
 require_once('../func/func.php');
 require_once('../func/header.php');
 menu();
@@ -17,8 +18,9 @@ if ($login != null){
     echo "<tr align='center'>
         <td>Место</td>
         <td>Суббота</td>
-        <td>Четверг</td>
-        <td>King</td>
+        <td>Недельный</td>";
+    echo $organization == "minsk" ? "<td>Old school</td>" : "<td>Личка</td>";
+    echo "<td>King</td>
         <td>Queen</td>
         </tr>";
 
@@ -27,8 +29,15 @@ if ($login != null){
         <td>".$value['place']."</td>
         <input type='hidden' name='".$value['place']."' value='".$value['place']."'>
         <td><input class='form-score' type='number' name='sat".$value['place']."' value='".$value['sat']."'></td>
-        <td><input class='form-score' type='number' name='thu".$value['place']."' value='".$value['thu']."'></td>
-        <td><input class='form-score' type='number' name='king".$value['place']."' value='".$value['king']."'></td>
+        <td><input class='form-score' type='number' name='thu".$value['place']."' value='".$value['thu']."'></td>";
+
+        if ($organization == "minsk"){
+            echo "<td><input class='form-score' type='number' name='old".$value['place']."' value='".$value['old']."'></td>";
+        }else{
+            echo "<td><input class='form-score' type='number' name='personal".$value['place']."' value='".$value['personal']."'></td>";
+        }
+
+        echo "<td><input class='form-score' type='number' name='king".$value['place']."' value='".$value['king']."'></td>
         <td><input class='form-score' type='number' name='queen".$value['place']."' value='".$value['queen']."'></td>
         </tr>";
     }

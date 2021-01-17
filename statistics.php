@@ -1,13 +1,18 @@
 <?php
 
 require_once 'conf/dbconfig.php';
+require_once 'conf/config.php';
 require_once 'func/func.php';
 require_once 'func/header.php';
 menu();
 menuAdmin();
 
 $login = getUserLogin();
+
+if (null != $login) {
+
 $type = $_GET['type'];
+$year_games = $conn->query("SELECT DISTINCT YEAR(date) as date FROM {$dbt_games} ORDER BY date ASC");
 
 if($_GET['year'] === 'FULL'){
     $year = '';
@@ -15,11 +20,10 @@ if($_GET['year'] === 'FULL'){
     $year = (int)$_GET['year'];
     $year = 'AND (YEAR(G.date) = '.$year.')';
 }else{
-    $now = date('Y');
-    $year = 'AND (YEAR(G.date) = '.$now.')';
+    $year = 'AND (YEAR(G.date) = '.$year_games.')';
 }
 
-$year_games = $conn->query("SELECT DISTINCT YEAR(date) as date FROM {$dbt_games} ORDER BY date ASC");
+
 echo '<br><center>';
 echo "<a href='?year=FULL&type={$_GET['type']}' class='type'>FULL</a>";
 foreach ($year_games as $value) {
@@ -29,10 +33,12 @@ echo '</center>';
 
 echo "<center><a href='?year={$_GET['year']}&type=main' class='type'>MAIN</a>";
 echo "<a href='?year={$_GET['year']}&type=king' class='type'>KING</a>";
-echo "<a href='?year={$_GET['year']}&type=queen' class='type'>QUEEN</a></center>";
+echo "<a href='?year={$_GET['year']}&type=queen' class='type'>QUEEN</a>";
+echo "<a href='?year={$_GET['year']}&type=";
+echo $organization == "minsk" ? "old' class='type'>OLD SCHOOL</a></center>" : "personal' class='type'>ЛИЧНЫЙ</a></center>";
 
 echo "<div id='main'>";
-if (null != $login) {
+
     // Получаем id команд
     $statistics = $conn->query("SELECT team, points,
     (IFNULL(wins,0)+IFNULL(wins_over,0)+IFNULL(losses,0)+IFNULL(losses_over,0)) as games,

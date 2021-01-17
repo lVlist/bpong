@@ -2,6 +2,7 @@
 
 session_start();
 require_once '../conf/dbconfig.php';
+require_once '../conf/config.php';
 require_once '../func/func.php';
 require_once '../func/header.php';
 menu();
@@ -91,7 +92,7 @@ echo "<table class='grand'>
         }
         echo "</td>
         <td class='grand' width='400px'>
-        <center><img width='400px'src='../img/bpm.svg'></center>";
+        <center><img width='400px'src='../img/{$organization}/grand.svg'></center>";
 
         echo "<form action='../func/create_grand.php' method='POST'>
                 <input type='hidden' value='{$id_game}' name='id_game'>

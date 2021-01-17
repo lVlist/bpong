@@ -5,10 +5,12 @@ require_once('../func/header.php');
 menu();
 menuAdmin();
 $login = getUserLogin();
+
+if ($login != null){
 echo "<br><center>Название команды изменяется сразу в появившемся поле с командой, только потом жмем \"Изменить\"<br></center>";
 echo "<div id='main'>";
 
-if ($login != null){
+
     echo "<div id='create-block'>";
         if($_GET['mes'] == 'no_del'){
             echo "<p style='color:red'>Команда принимает участие в турнире, сначала удалите её из турнира!</p>";

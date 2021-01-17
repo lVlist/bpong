@@ -107,6 +107,7 @@ foreach ($qualification_games as $value)
 $type = $conn->query("SELECT type FROM $dbt_games Q WHERE Q.id = $id_game")->fetch_assoc();
 
 $array_score = $conn->query("SELECT * FROM $dbt_score ORDER BY sat DESC");
+
 foreach($array_score as $value)
 {
     $array_points[] = $value[$type['type']];
@@ -158,6 +159,7 @@ $i=0;
 foreach($final_winners as $value){
 	$id_team = $value;
 	$points = $array_points[$i++];
+    //var_dump($points);die;
 	$stmt->execute();
 }
 

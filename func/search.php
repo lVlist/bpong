@@ -54,7 +54,7 @@ if(!empty($_POST["add_team"]))
     $id_game = $_POST['id_game'];
 
     $types = $conn->query("SELECT type FROM $dbt_games Q WHERE Q.id = $id_game")->fetch_assoc();
-    if($types['type'] == 'sat' OR $types['type'] == 'thu' OR $types['type'] == 'grand'){
+    if($types['type'] == 'sat' OR $types['type'] == 'thu'){
         $type = 'main';
     }else{
         $type = $types['type'];

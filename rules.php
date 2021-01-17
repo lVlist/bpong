@@ -1,14 +1,16 @@
 <?php
 
-require_once 'func/func.php';
-require_once 'func/header.php';
+require_once ($_SERVER['DOCUMENT_ROOT'].'/func/func.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/func/header.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/conf/config.php');
+
 menu();
 menuAdmin();
 
 echo "<div id='main'>";
 echo '<center><h2>Официальные правила турниров Beer Pong Minsk</h2></center><br>';
-echo <<<'RULES'
-<div class="rules"><b>Данные правила созданы с 3 основными целями:</b><br> 
+echo "
+<div class='rules'><b>Данные правила созданы с 3 основными целями:</b><br> 
  
 - Справедливость к каждому из участников<br> 
 - Эффективность в организации максимального количества игр одновременно<br> 
@@ -24,7 +26,7 @@ echo <<<'RULES'
 
 <b>Расстановка стаканов:</b><br> 
 Стаканы расстанавливаются в виде пирамиды: 4-3-2-1, перестановка производится, когда на столе осталось 6,3, и 1 стакан. Шесть стаканов ставятся в виде маленькой пирамиды: 3-2-1, три в виде треугольника: 2-1, один ставится по середине. Все расстановки начинаются от линии, отмеченной на столе.<br><br>
-<center><object type='image/svg+xml' data='img/rules.svg'></object></center><br>
+<center><object type='image/svg+xml' data='img/{$organization}/rules.svg'></object></center><br>
 
 <b>Защита:</b><br> 
 Разрешается кричать, махать руками (вне стола), отвлекать любыми способами, но только на своей половине стола.<br><br>
@@ -46,5 +48,6 @@ echo <<<'RULES'
 - Запрещается отодвигать свои стаканы при броске<br> 
 - Бросать со стороны от стола запрещается<br> 
 - Команда имеет право не пить, мы за спорт!</div>
-RULES;
-echo '</div>';
+
+</div>
+";
