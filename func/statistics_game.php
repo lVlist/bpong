@@ -105,12 +105,13 @@ foreach ($qualification_games as $value)
 
 //Записываем очки за места в массив в зависимости от типа турнира
 $type = $conn->query("SELECT type FROM $dbt_games Q WHERE Q.id = $id_game")->fetch_assoc();
+$type = $type['type'];
 
-$array_score = $conn->query("SELECT * FROM $dbt_score ORDER BY sat DESC");
+$array_score = $conn->query("SELECT {$type} FROM $dbt_score ORDER BY {$type} DESC");
 
 foreach($array_score as $value)
 {
-    $array_points[] = $value[$type['type']];
+    $array_points[] = $value[$type];
 }
 
 //определяем победителей финала
