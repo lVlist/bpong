@@ -88,10 +88,12 @@ $(function(){
 
 })
 
-var x = 0;
+
 
 function addInput() {
-    if (x < 4) {
+    var x  = document.getElementById("profile").childElementCount;
+
+    if (x < 5) {
         var profile = document.getElementById('profile');
         var div = document.createElement('div');
         div.id = 'input' + ++x;
@@ -109,9 +111,36 @@ function addInput() {
 }
 
 function delInput() {
-      var div = document.getElementById('input' + x);
-      div.remove();
-      var div = document.getElementById('input' + x);
-      div.remove();
-      --x;
+    var x = document.getElementById("profile").childElementCount;
+
+    var id = ['del_input', document.getElementById('input' + x).dataset.id];
+
+    if (document.getElementById('input' + x).dataset.id) {
+        fetch('../func/edit.php', {
+            method: 'POST',
+            body: JSON.stringify(id)
+        })
+    }
+
+    var div = document.getElementById('input' + x);
+    div.remove();
+    var div = document.getElementById('input' + x);
+    div.remove();
+    --x;
+
+    if (x == 0) {
+        x = 1;
+        var profile = document.getElementById('profile');
+        var div = document.createElement('div');
+        div.id = 'input' + x;
+        div.innerHTML = '<input type="number" autocomplete="off" class="form-grand" name="is1[]">';
+        profile.appendChild(div);
+
+        var profile = document.getElementById('profile2');
+        var div = document.createElement('div');
+        div.id = 'input' + x;
+        div.innerHTML = '<input type="number" autocomplete="off" class="form-grand" name="is2[]">';
+        profile.appendChild(div);
+
+    }
 }

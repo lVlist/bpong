@@ -105,5 +105,11 @@ if($_POST['table']){
     sendMessage($message);
 }
 
+$out = json_decode(file_get_contents('php://input'));
+if($out[0] == 'del_input'){
+    $conn->query("DELETE FROM `{$dbt_final_score}` WHERE `id` = {$out[1]}");
+    exit;
+}
+
 header('Location: ../admin/qualification.php?id='.$id_game);
 exit;

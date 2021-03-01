@@ -1,5 +1,4 @@
 <?php
-
 require_once '../conf/dbconfig.php';
 require_once '../func/func.php';
 require_once '../func/header.php';
@@ -195,49 +194,58 @@ echo "<div id='finalEdit' class='modalGrand'>
         <input type='hidden' name='next_block_position'  value='".$_GET['next_block_position']."'>
         <input type='hidden' name='id_t1'  value='".$_GET['id_t1']."'>
         <input type='hidden' name='id_t2'  value='".$_GET['id_t2']."'>
+        <input type='hidden' name='t1'  value='".$_GET['t1']."'>
+        <input type='hidden' name='t2'  value='".$_GET['t2']."'>
 
         <table>
         <tr>
-            <td colspan='6' style='border: 0px; background: #2B303D';><div class='counter' onclick='addInput()'>добавить</div><div class='counter' onclick='delInput()'>удалить</div></td>
+            <td colspan='6' style='border: 0px; background: #2B303D';>
+                <div class='counter' onclick='addInput()'>добавить</div><div class='counter' onclick='delInput()'>удалить</div>
+            </td>
         </tr>
         <tr>
             <td>".$_GET['t1']."</td>
             <td>
-                <div id='profile'>
-                    <div>";
-                        $i = 0;
-                        foreach ($grand as $val1) {
-                            ++$i;
-                            echo "<input type='number' autocomplete='off' class='form-grand' name='us1[]' value='{$val1['s1']}'>";
+                <div id='profile'> ";
+                        if($grand){
+                            $i = 0;
+                            foreach ($grand as $val1) {
+                                ++$i;
+                                echo "<div id='input$i' data-id='{$val1['id']}'>";
+                                echo "<input type='number' autocomplete='off' class='form-grand' name='us1[]' value='{$val1['s1']}'>";
+                                echo '</div>';
+                            }
                         }
-
-                        echo "</div>
-                        <div id='input0'>";
 
                         if (0 == $grand->num_rows && $i <= 4) {
+                            echo "<div id='input1'>";
                             echo "<input type='number' autocomplete='off' class='form-grand' name='is1[]'>";
+                            echo "</div>";
                         }
-                    echo '</div>
-                </div>
+
+                echo '</div>
             </td>
         </tr>
         <tr>
             <td>'.$_GET['t2']."</td>
             <td>
-                <div id='profile2'>
-                    <div>";
+                <div id='profile2'>";
+                    if($grand){
+                        $i = 0;
                         foreach ($grand as $val2) {
+                            ++$i;
+                            echo "<div id='input$i'>";
                             echo "<input type='number' autocomplete='off' class='form-grand' name='us2[]' value='{$val2['s2']}'>";
+                            echo '</div>';
                         }
+                    }
 
-                        echo "</div>
-                        <div id='input0'>";
-
-                        if (0 == $grand->num_rows && $i <= 4) {
-                            echo "<input type='number' autocomplete='off' class='form-grand' name='is2[]'>";
-                        }
-                    echo '</div>
-                </div>       
+                    if (0 == $grand->num_rows && $i <= 4) {
+                        echo "<div id='input1'>";
+                        echo "<input type='number' autocomplete='off' class='form-grand' name='is2[]'>";
+                        echo "</div>";
+                    }
+               echo '</div>       
             </td>
         </tr>';
 echo "</table>
