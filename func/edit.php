@@ -10,6 +10,14 @@ $round = (int)$_POST['round'];
 $id_q1 = (int)$_POST['id_q1'];
 $id_q2 = (int)$_POST['id_q2'];
 
+$score = $conn->query("SELECT s1 FROM $dbt_q_games WHERE id_game = $id_game AND s1 > 0");
+$game = $conn->query("SELECT game FROM $dbt_games WHERE id = $id_game")->fetch_assoc();
+
+if ((int)$score->num_rows == 0){
+    $message = "\xE2\x9D\x97\xE2\x9D\x97\xE2\x9D\x97 Начался турнир - ".$game['game']." \xE2\x9D\x97\xE2\x9D\x97\xE2\x9D\x97";
+    sendMessage($message);
+}
+
 if($_POST['s1']){
 
     /* Записываем результаты игры */
@@ -19,7 +27,7 @@ if($_POST['s1']){
         $stmt->bind_param('iii',$s1, $s2, $id_match);
         $stmt->execute();
     }
-    //var_dump("UPDATE `$dbt_qualification` SET `r$round`=?, `d$round`=? WHERE (`id_game`=?) AND (`id_team`=?)");die;
+
     /* Присваиваем очки за победу/проигрыш */
     function roundUpdate($round)
     {
@@ -80,6 +88,10 @@ if($_POST['s1']){
             $id_q = $id_q2;
             $stmt->execute();
         }
+
+    //telegram
+    $message = "Квалификация - Тур $round\n".$_POST['t1']." ".$s1.":".$s2." ".$_POST['t2'];
+    sendMessage($message);
 }
 
 if($_POST['table']){
@@ -87,6 +99,11 @@ if($_POST['table']){
     $stmt = $conn->prepare("UPDATE `$dbt_q_games` SET `table`=? WHERE (`id`=?)"); 
     $stmt->bind_param('si',$table, $id_match);
     $stmt->execute();
+
+    //telegram
+    $message = $_POST['t1']." : ".$_POST['t2']."\nиграют за $table столом";
+    sendMessage($message);
 }
+
 header('Location: ../admin/qualification.php?id='.$id_game);
 exit;
