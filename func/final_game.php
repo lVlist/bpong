@@ -1,5 +1,7 @@
 <?php
 require('../conf/dbconfig.php');
+require('../func/func.php');
+
 $id_match = (int)$_POST['id_match'];
 $id_game = (int)$_POST['id_game'];
 $id_t1 = (int)$_POST['id_t1'];
@@ -19,6 +21,19 @@ $last_round = $id_last_round->fetch_assoc();
 // получаем статус о игре за 3-е место
 $bronze = $conn->query("SELECT bronze FROM $dbt_games WHERE id = $id_game")->fetch_assoc();
 
+$arr_rounds = ["ФИНАЛ", "1/2 финала", "1/4 финала", "1/8 финала", "1/16 финала", "1/32 финала", "1/64 финала"];
+
+if ((int)$bronze == 1){
+    $arr_final = ["Финал - игра за 3-е место"];
+    for($i = 1; $i <= $last_round['round']-1; $i++){
+        array_unshift($arr_final, $arr_rounds[$i-1]);
+    }
+}else{
+    $arr_final = [];
+    for($i = 1; $i <= $last_round['round']; $i++){
+        array_unshift($arr_final, $arr_rounds[$i-1]);
+    }
+}
 
 if(isset($_POST)){
 
@@ -148,6 +163,23 @@ if(isset($_POST)){
             }
         }
     }
+
+    //telegram
+    if($_POST['is1']){
+        $score1 = $_POST['is1'];
+        $score2 = $_POST['is2'];
+    }else if($_POST['us1']){
+        $score1 = $_POST['us1'];
+        $score2 = $_POST['us2'];
+    }
+
+    $message = $arr_final[$round-1]."\n";
+
+    for ($i = 0; $i < count($score1); $i++){
+        $message .= $_POST['t1']." ".$score1[$i].":".$score2[$i]." ".$_POST['t2']."\n";
+    }
+
+    sendMessage($message);
     
     header('Location: ../admin/final.php?id='.$id_game.'#'.$position);
     exit;

@@ -43,6 +43,8 @@ function edit($name)
                               <input type='hidden' name='round'  value='".$val['round']."'>
                               <input type='hidden' name='id_q1'  value='".$val['id_t1']."'>
                               <input type='hidden' name='id_q2'  value='".$val['id_t2']."'>
+                              <input type='hidden' name='t1'  value='".$val['t1']."'>
+                              <input type='hidden' name='t2'  value='".$val['t2']."'>
                         <tr>
                             <td>".$val['t1']."</td>
                             <td width='70px'><input type='number' autocomplete='off' class='form-control -dark ' name='s1' value='".$val['s1']."'></td>
@@ -185,4 +187,26 @@ break;
 function mb_strcasecmp($str1, $str2)
 {
     return strcmp(mb_strtoupper($str1, mb_internal_encoding()), mb_strtoupper($str2, mb_internal_encoding()));
+}
+
+
+function sendMessage($messaggio) {
+
+    /*$token = "1608267401:AAGv_Yew28huxjiJR0idzGzajvuX5l2v83U";
+    $chatID = "-1001343779648";
+
+
+    $url = "https://api.telegram.org/bot" . $token . "/sendMessage?chat_id=" . $chatID;
+
+    $url = $url . "&text=" . urlencode($messaggio);
+    $ch = curl_init();
+    $optArray = array(
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true
+    );
+
+    curl_setopt_array($ch, $optArray);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;*/
 }

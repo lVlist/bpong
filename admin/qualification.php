@@ -177,6 +177,8 @@ if (null != $login) {
                             <form action='../func/edit.php' method='POST'>
                                 <input type='hidden' name='id_game' value='".$id_game."'>
                                 <input type='hidden' name='id_match' value='".$value['id_match']."'>
+                                <input type='hidden' name='t1' value='".$value['t1']."'>
+                                <input type='hidden' name='t2' value='".$value['t2']."'>
                                 <input type='text' class ='form-table' name='table' value='".$value['table']."'>
                                 <input class ='submit -table' type='submit' value='OK'>
                             </form>
