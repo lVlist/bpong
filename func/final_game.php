@@ -23,7 +23,7 @@ $bronze = $conn->query("SELECT bronze FROM $dbt_games WHERE id = $id_game")->fet
 
 $arr_rounds = ["ФИНАЛ", "1/2 финала", "1/4 финала", "1/8 финала", "1/16 финала", "1/32 финала", "1/64 финала"];
 
-if ((int)$bronze == 1){
+if((int)$bronze['bronze'] === 1){
     $arr_final = ["Финал - игра за 3-е место"];
     for($i = 1; $i <= $last_round['round']-1; $i++){
         array_unshift($arr_final, $arr_rounds[$i-1]);
@@ -34,6 +34,7 @@ if ((int)$bronze == 1){
         array_unshift($arr_final, $arr_rounds[$i-1]);
     }
 }
+
 
 if(isset($_POST)){
 
