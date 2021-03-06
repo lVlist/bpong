@@ -16,7 +16,7 @@ function menu()
 <head>
 <title>".$title."</title>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'></script>
-    <script src='../js/search.js'></script>
+    <script src='../js/search.js?ver=1.1'></script>
     <link rel='shortcut icon' href='http://".$_SERVER['HTTP_HOST']."/css/".$organization."/favicon.ico' type='image/x-icon'/>
     <link href='http://".$_SERVER['HTTP_HOST']."/css/style.css?ver=3.3' rel='stylesheet'>
   <meta charset='utf-8'>
