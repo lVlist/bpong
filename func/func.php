@@ -190,15 +190,13 @@ function mb_strcasecmp($str1, $str2)
 }
 
 
-function sendMessage($messaggio) {
-
-    /*$token = "1608267401:AAGv_Yew28huxjiJR0idzGzajvuX5l2v83U";
-    $chatID = "-1001343779648";
-
+function sendMessage($token, $chatID, $message) {
 
     $url = "https://api.telegram.org/bot" . $token . "/sendMessage?chat_id=" . $chatID;
 
-    $url = $url . "&text=" . urlencode($messaggio);
+    $url = $url . "&text=" . urlencode($message);
+    $url = $url . "&parse_mode=HTML";
+
     $ch = curl_init();
     $optArray = array(
         CURLOPT_URL => $url,
@@ -208,5 +206,6 @@ function sendMessage($messaggio) {
     curl_setopt_array($ch, $optArray);
     $result = curl_exec($ch);
     curl_close($ch);
-    return $result;*/
+    return $result;
 }
+
