@@ -40,13 +40,13 @@ echo $organization == "minsk" ? "old' class='type'>OLD SCHOOL</a></center>" : "p
 echo "<div id='main'>";
 
     // Получаем id команд
-    $statistics = $conn->query("SELECT team, points,
+    $statistics = $conn->query("SELECT id, team, points,
     (IFNULL(wins,0)+IFNULL(wins_over,0)+IFNULL(losses,0)+IFNULL(losses_over,0)) as games,
     wins, losses, wins_over, losses_over,
     (IFNULL(wins,0)+IFNULL(wins_over,0))*100/(IFNULL(wins,0)+IFNULL(wins_over,0)+IFNULL(losses,0)+IFNULL(losses_over,0)) as percent, 
     hit_cups, got_cups, difference_cups, tournaments
 FROM(
-	SELECT team, 
+	SELECT T.id, team, 
         SUM(points) as points,
         COUNT(id_team) as tournaments,
         SUM(wins) as wins, 
@@ -64,12 +64,42 @@ FROM(
 ) as s
 ORDER BY points DESC, percent DESC, difference_cups DESC");
 
+    // Получаем
+    $type_game = "'$type'";
+    if ($type == 'main'){
+        $type_game = "'sat' OR type = 'thu'";
+    }
+
+    $id_last_game = (int)$conn->query("SELECT id FROM $dbt_games WHERE type = {$type_game}
+                        ORDER BY id DESC LIMIT 1")->fetch_object()->id;
+
+
+
+    $statistics_old_game = $conn->query("SELECT (@row_number:=@row_number + 1) AS num, id, team, points,
+    (IFNULL(wins,0)+IFNULL(wins_over,0))*100/(IFNULL(wins,0)+IFNULL(wins_over,0)+IFNULL(losses,0)+IFNULL(losses_over,0)) as percent, 
+    difference_cups
+FROM(
+	SELECT T.id, team, 
+        SUM(points) as points,
+        SUM(wins) as wins, 
+        SUM(losses) as losses, 
+        SUM(wins_over) as wins_over, 
+        SUM(losses_over) as losses_over,  
+        SUM(difference_cups) as difference_cups
+	FROM {$dbt_statistics}  ST
+	INNER JOIN {$dbt_teams} T ON T.id = ST.id_team
+    INNER JOIN {$dbt_games} AS G ON ST.id_game = G.id
+	WHERE T.team != 'ХАЛЯВА' AND G.id != {$id_last_game} AND G.type != 'grand' AND T.type = '{$type}' {$year}
+	GROUP BY id_team
+) as s, (SELECT @row_number:=0) AS t
+ORDER BY points DESC, percent DESC, difference_cups DESC")->fetch_all(MYSQLI_ASSOC);
 
     echo "<div class='block-t'>";
     echo '<table>';
     echo '<tr>';
     echo '
-    <td>№
+    <td>№</td>
+    <td>Изм.</td>
     <td>Team</td>
     <td>Point</td>
     <td>Games</td>
@@ -88,22 +118,33 @@ ORDER BY points DESC, percent DESC, difference_cups DESC");
     $i = 1;
     foreach ($statistics as $value) {
         echo '<tr>';
-        echo "
-    <td align='center'>".$i++.'</td>
-    <td>'.$value['team']."</td>
-    <td align='center'>".$value['points']."</td>
-    <td align='center'>".$value['games']."</td>
-    <td align='center'>".$value['wins']."</td>
-    <td align='center'>".$value['losses']."</td>
-    <td align='center'>".$value['wins_over']."</td>
-    <td align='center'>".$value['losses_over']."</td>
-    <td align='center'>".round($value['percent'], 1)."%</td>
-    <td align='center'>".$value['hit_cups']."</td>
-    <td align='center'>".$value['got_cups']."</td>
-    <td align='center'>".$value['difference_cups']."</td>
-    <td align='center'>".$value['tournaments'].'</td>
-    ';
+        echo "<td align='center'>" . $i . "</td>";
+
+        $id_mass_team = array_search($value['id'], array_column($statistics_old_game, 'id'));
+            if($id_mass_team !== FALSE){
+                $num = $statistics_old_game[$id_mass_team]['num'];
+                echo "<td align='center'>" . (($num - $i) > 0 ? "<img src='img/up.webp'/> +" . ($num - $i) :
+                        (($num - $i) < 0 ? "<img src='img/down.webp'/> " . ($num - $i) :
+                        "=")) . "</td>";
+            }else{
+                echo "<td align='center'><img src='img/up.webp'/> +" . ($statistics->num_rows - $i) . "</td>";
+            }
+
+
+        echo "<td>" . $value['team'] . "</td>
+            <td align='center'>" . $value['points'] . "</td>
+            <td align='center'>" . $value['games'] . "</td>
+            <td align='center'>" . $value['wins'] . "</td>
+            <td align='center'>" . $value['losses'] . "</td>
+            <td align='center'>" . $value['wins_over'] . "</td>
+            <td align='center'>" . $value['losses_over'] . "</td>
+            <td align='center'>" . round($value['percent'], 1) . "%</td>
+            <td align='center'>" . $value['hit_cups'] . "</td>
+            <td align='center'>" . $value['got_cups'] . "</td>
+            <td align='center'>" . $value['difference_cups'] . "</td>
+            <td align='center'>" . $value['tournaments'] . '</td>';
         echo '</tr>';
+        $i++;
     }
     echo "</div>";
 }
