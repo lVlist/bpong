@@ -12,10 +12,11 @@ if ($login != null){
     $id_game = (int)$_GET['id'];
 
     if($id_game > 0){
-        $edit_view = $conn->query("SELECT $dbt_teams.team, $dbt_games.game, $dbt_qualification.id_team, $dbt_qualification.id_game FROM $dbt_qualification
-        INNER JOIN $dbt_teams ON $dbt_teams.id = $dbt_qualification.id_team
-        RIGHT JOIN $dbt_games ON $dbt_games.id = $dbt_qualification.id_game
-        WHERE $dbt_games.id = $id_game");
+        $edit_view = $conn->query("SELECT T.team, G.game, Q.id_team, Q.id_game, G.bronze, G.telegram
+                            FROM $dbt_qualification AS Q
+                            INNER JOIN $dbt_teams AS T ON T.id = Q.id_team
+                            RIGHT JOIN $dbt_games AS G ON G.id = Q.id_game
+                            WHERE G.id = $id_game");
         $game = $edit_view->fetch_assoc();
 
         /* Редактирование турнира */
@@ -60,6 +61,18 @@ if ($login != null){
             echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST'>
                 <input type='hidden' name='upd_game' value='".$id_game."'>
                 Турнир: <input class='input-team' type='text' name='game' value='".$game['game']."'>  
+                <input type='hidden' name='bronze' value='0'>
+                <input type='checkbox' id='box' name='bronze' value='1' ";
+                if ((int)$game['bronze'] === 1){
+                    echo "checked";
+                }
+                echo "><label for='box'>3-е место</label>
+                <input type='hidden' name='telegram' value='0'>
+                <input type='checkbox' id='box' name='telegram' value='1' ";
+                if ((int)$game['telegram'] === 1){
+                    echo "checked";
+                }
+                echo "><label for='box'>Telegram</label>
                 <input class ='submit -addteam' type='submit' value='ИЗМЕНИТЬ'><br>
             </form>
                 Добавить команду:

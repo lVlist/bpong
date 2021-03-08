@@ -2,6 +2,7 @@ body {
     font-family: Helvetica;
     color: #d8d8d8;
 	background-color: #272a33;
+	min-width: 850px;
 }
 
 *{
@@ -69,7 +70,7 @@ td{
 	background-color: #353A46;
 	border: 2px solid #1E232F;
 	min-height: 20px;
-	width: 50%;
+	width: 210px;
 	padding: 1px 5px;
 	color: #d8d8d8;;
 }

@@ -29,7 +29,9 @@ if ($_POST['new_game']) {
 if ($_POST['upd_game']) {
     $id_game = $_POST['upd_game'];
     $game = $_POST['game'];
-    $conn->query("UPDATE `{$dbt_games}` SET `game`= '{$game}' WHERE (`id`= {$id_game})");
+    $bronze = (int)$_POST['bronze'];
+    $telegram = (int)$_POST['telegram'];
+    $conn->query("UPDATE `{$dbt_games}` SET `game`= '{$game}', `bronze`= '{$bronze}', `telegram`= '{$telegram}' WHERE (`id`= {$id_game})");
     header('Location: ../admin/create.php?id='.$id_game);
     exit;
 }
