@@ -1,5 +1,6 @@
 <?php
 require_once('../conf/dbconfig.php');
+require_once('../conf/config.php');
 require_once('func.php');
 
 $s1 = (int)$_POST['s1'];
@@ -10,15 +11,10 @@ $round = (int)$_POST['round'];
 $id_q1 = (int)$_POST['id_q1'];
 $id_q2 = (int)$_POST['id_q2'];
 
-$score = $conn->query("SELECT s1 FROM $dbt_q_games WHERE id_game = $id_game AND s1 > 0");
-$game = $conn->query("SELECT game FROM $dbt_games WHERE id = $id_game")->fetch_assoc();
+// получаем статус о telegram
+$telegram = (int)$conn->query("SELECT telegram FROM $dbt_games WHERE id = $id_game")->fetch_object()->telegram;
 
-if ((int)$score->num_rows == 0){
-    $message = "\xE2\x9D\x97\xE2\x9D\x97\xE2\x9D\x97 Начался турнир - ".$game['game']." \xE2\x9D\x97\xE2\x9D\x97\xE2\x9D\x97";
-    sendMessage($message);
-}
-
-if($_POST['s1']){
+if($_POST['s1'] OR $_POST['s2']){
 
     /* Записываем результаты игры */
     if($_POST)
@@ -89,9 +85,84 @@ if($_POST['s1']){
             $stmt->execute();
         }
 
-    //telegram
-    $message = "Квалификация - Тур $round\n".$_POST['t1']." ".$s1.":".$s2." ".$_POST['t2'];
-    sendMessage($message);
+    //Telegram
+    if($telegram === 1) {
+        $game = $conn->query("SELECT game FROM $dbt_games WHERE id = $id_game")->fetch_object()->game;
+        $game_round_check = $conn->query("SELECT ( COUNT(round) - COUNT(s1) ) as game_check 
+                    FROM $dbt_q_games WHERE id_game = $id_game AND round = $round")->fetch_object()->game_check;
+
+        //Результаты матча
+        $message = "<b>" . $game . " - тур $round </b>\n";
+        $message .= $_POST['t1'] . " " . $s1 . ":" . $s2 . " " . $_POST['t2'] . "\n";
+        if ($game_round_check > 0) {
+            $message .= "до окончания тура " . $game_round_check . getNumEnding($game_round_check, array(' игра', ' игры', ' игр'));
+        }
+        sendMessage($token, $chatID, $message);
+
+        //Выводим результаты если тур завершен
+        $finish_round = $conn->query("SELECT IF( COUNT(round) = COUNT(s1), 1, 0 ) as finish
+                    FROM $dbt_q_games WHERE id_game = $id_game AND round = $round")->fetch_object()->finish;
+
+
+        if ((int)$finish_round == 1) {
+            $result_round = $conn->query("SELECT team, result, difference FROM $dbt_qualification Q
+                                        INNER JOIN bpm_teams teams ON Q.id_team = teams.id
+                                        WHERE id_game = $id_game
+                                        ORDER BY result DESC, difference DESC");
+
+
+            $message = "<b>❗" . $game . " - тур $round завершен❗</b>\n";
+            $message .= "M.|O|+/-| Команда \n";
+            $i = 1;
+
+            foreach ($result_round as $value) {
+
+                if ($result_round->num_rows > 9 and $i < 10) {
+                    $rr = "  ";
+                } else {
+                    $rr = "";
+                }
+
+                if ($value['difference'] > 0) {
+                    $pp = "+";
+                } elseif ($value['difference'] == 0) {
+                    $pp = "  ";
+                } else {
+                    if (mb_strlen($value['difference']) == 2) {
+                        $pp = "   ";
+                    } else {
+                        $pp = "  ";
+                    }
+                }
+
+                if (mb_strlen($value['difference']) == 1) {
+                    $ddd = "   ";
+                } elseif (mb_strlen($value['difference']) == 2) {
+                    $ddd = " ";
+                } else {
+                    $ddd = "";
+                }
+
+                $message .= $rr . $i++ . ".|" . $value['result'] . "|" . $ddd . $pp . $value['difference'] . "| " . $value['team'] . "\n";
+            }
+            sendMessage($token, $chatID, $message);
+
+            //Выводим игры следующего тура
+            if ($round == 1 or $round == 2) {
+                $commands = $conn->query("SELECT t1.team as t1, t2.team as t2
+                                        FROM $dbt_q_games AS Q
+                                        INNER JOIN bpm_teams t1 ON t1.id = Q.id_t1
+                                        INNER JOIN bpm_teams t2 ON t2.id = Q.id_t2
+                                        WHERE id_game = $id_game AND Q.round = " . ($round + 1));
+
+                $message = "<b>❗" . $game . " - игры " . ($round + 1) . " тура:❗</b>\n";
+                foreach ($commands as $value) {
+                    $message .= "🍻 " . $value['t1'] . " ⚔ " . $value['t2'] . "\n";
+                }
+                sendMessage($token, $chatID, $message);
+            }
+        }
+    }
 }
 
 if($_POST['table']){
@@ -100,9 +171,11 @@ if($_POST['table']){
     $stmt->bind_param('si',$table, $id_match);
     $stmt->execute();
 
-    //telegram
-    $message = $_POST['t1']." : ".$_POST['t2']."\nиграют за $table столом";
-    sendMessage($message);
+    //Telegram
+    if($telegram === 1) {
+        $message = $_POST['t1'] . " ⚔ " . $_POST['t2'] . "\nиграют за $table столом";
+        sendMessage($token, $chatID, $message);
+    }
 }
 
 $out = json_decode(file_get_contents('php://input'));

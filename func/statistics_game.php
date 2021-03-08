@@ -1,6 +1,13 @@
 <?php
+
 require('../conf/dbconfig.php');
+require_once('../conf/config.php');
+require_once('func.php');
+
 $id_game = $_POST['id'];
+
+// получаем статус о telegram
+$telegram = (int)$conn->query("SELECT telegram FROM $dbt_games WHERE id = $id_game")->fetch_object()->telegram;
 
 // получаем статус о игре за 3-е место
 $bronze = $conn->query("SELECT bronze FROM $dbt_games WHERE id = $id_game")->fetch_assoc();
@@ -202,7 +209,7 @@ else
 	}
 }
 
-$final_bool = 0; //почечаем играла команда в финале или нет 0-нет 1-да
+$final_bool = 0; //почекаем играла команда в финале или нет 0-нет 1-да
 /* Команды квалификации (делаю выборку команд которые не прошли в финал) */
 $qualification_id_teams = $conn->query("SELECT id_team FROM $dbt_qualification
 WHERE id_game = $id_game AND id_team NOT IN (
@@ -219,6 +226,83 @@ foreach($qualification_id_teams as $value){
 	$points = $array_points[$i++];
 	$stmt->execute();
 }
+
+
+//Telegram
+if ($telegram === 1) {
+    $game = $conn->query("SELECT game FROM $dbt_games WHERE id = $id_game")->fetch_object()->game;
+
+    $statistics_game = $conn->query("SELECT team, points FROM $dbt_statistics S
+        INNER JOIN $dbt_teams T ON T.id = S.id_team
+        WHERE S.id_game = $id_game AND T.team != 'ХАЛЯВА'
+        ORDER BY points DESC");
+
+    $message = "<b>" . $game . " - результаты: </b>\n";
+    $i = 1;
+    foreach ($statistics_game as $value) {
+        $message .= $i++ . ". " . $value['team'] . " +" . $value['points'] . "\n";
+    }
+
+    sendMessage($token, $chatID, $message);
+
+    if ($type == 'thu' or $type == 'sat') {
+        $type = 'main';
+    }
+
+    $statistics = $conn->query("SELECT team, points, difference
+            FROM(
+                SELECT team, SUM(points) as points, SUM(difference_cups) as difference
+                FROM {$dbt_statistics}  ST
+                INNER JOIN {$dbt_teams} T ON T.id = ST.id_team
+                INNER JOIN {$dbt_games} AS G ON ST.id_game = G.id
+                WHERE T.team != 'ХАЛЯВА' AND G.type != 'grand' AND T.type = '{$type}' 
+                  AND (YEAR(G.date) = " . date('Y') . ")
+                GROUP BY id_team
+            ) as s
+            ORDER BY points DESC, difference DESC");
+
+
+    $message = "Итоговая таблица: \n";
+    $message .= "M.|O|+/-| Команда \n";
+    $i = 1;
+    foreach ($statistics as $value) {
+
+        if ($statistics->num_rows > 9 and $i < 10) {
+            $rr = "  ";
+        } else {
+            $rr = "";
+        }
+
+        if (mb_strlen($value['points']) == 1) {
+            $pp = "    ";
+        } elseif (mb_strlen($value['points']) == 2) {
+            $pp = "  ";
+        } else {
+            $pp = "";
+        }
+
+        if (mb_strlen($value['difference']) == 1) {
+            $ddd = "    ";
+        } elseif (mb_strlen($value['difference']) == 2) {
+            $ddd = "  ";
+        } else {
+            $ddd = "";
+        }
+
+        if ($value['difference'] > 0) {
+            $dd = "+";
+        } elseif ($value['difference'] == 0) {
+            $dd = "  ";
+        } else {
+            $dd = "   ";
+        }
+
+        $message .= $rr . $i++ . ".|" . $pp . $value['points'] . "|" . $ddd . $dd . $value['difference'] . "| " . $value['team'] . "\n";
+
+    }
+    sendMessage($token, $chatID, $message);
+}
+
 
 header('Location: ../admin/statistics.php?id='.$id_game);
 exit;

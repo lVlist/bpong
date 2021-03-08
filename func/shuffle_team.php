@@ -1,7 +1,12 @@
 <?php
 require('../conf/dbconfig.php');
+require('../conf/config.php');
+require_once('func.php');
 
 $id_game = $_POST['start_game'];
+
+// получаем статус о telegram
+$telegram = (int)$conn->query("SELECT telegram FROM $dbt_games WHERE id = $id_game")->fetch_object()->telegram;
 
 /* Получаем массив команд для рандома */
 $teams = $conn->query("SELECT id_team FROM $dbt_qualification WHERE id_game = $id_game");
@@ -61,6 +66,7 @@ for ($i=1;$i<=$quantity_round;$i++){
             $t2 = $round_team[1][$c];
             $round = $i;
             $stmt->execute(); //запись в базу
+
         }
     }else{
         do{
@@ -82,5 +88,29 @@ for ($i=1;$i<=$quantity_round;$i++){
         $array_team[1][] .= $round_team[1][$c];
     }
 }
+
+//Telegram
+if($telegram === 1){
+
+    //Инфа что начался новый туринр
+    $game = $conn->query("SELECT game FROM $dbt_games WHERE id = $id_game")->fetch_object()->game;
+
+    $message = "‼ <b>Начался турнир - ".$game."</b> ‼";
+    sendMessage($token, $chatID, $message);
+
+//Тур 1 кто с кем играет
+    $commands = $conn->query("SELECT t1.team as t1, t2.team as t2
+FROM $dbt_q_games AS Q
+INNER JOIN $dbt_teams t1 ON t1.id = Q.id_t1
+INNER JOIN $dbt_teams t2 ON t2.id = Q.id_t2
+WHERE id_game = $id_game AND Q.round = 1");
+
+    $message = "<b>❗" . $game . " - игры 1 тура:❗</b>\n";
+    foreach ($commands as $value){
+        $message .= "🍻 " . $value['t1'] ." ⚔ " . $value['t2'] . "\n";
+    }
+    sendMessage($token, $chatID, $message);
+}
+
 header('Location: ../admin/qualification.php?id='.$id_game);
 exit;

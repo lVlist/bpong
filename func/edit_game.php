@@ -10,14 +10,17 @@ if ($_POST['new_game']) {
     $date = date('Y-m-d');
     $type = $_POST['type'];
     $bronze = (int) $_POST['bronze'];
-    $game = $conn->prepare("INSERT INTO {$dbt_games} (`game`, `type`, `bronze`, `date`) VALUES (?,?,?,?)");
-    $game->bind_param('ssis', $new_game, $type, $bronze, $date);
+    $telegram = (int) $_POST['telegram'];
+    $game = $conn->prepare("INSERT INTO {$dbt_games} (`date`, `game`, `type`, `bronze`, `telegram`) VALUES (?,?,?,?,?)");
+    $game->bind_param('sssss',$date, $new_game, $type, $bronze, $telegram);
     $game->execute();
     $id_game = $game->insert_id;
+
     if ('grand' == $type) {
         header('Location: ../admin/create_grand.php?id='.$id_game.'&type=32');
         exit;
     }
+
     header('Location: ../admin/create.php?id='.$id_game);
     exit;
 }

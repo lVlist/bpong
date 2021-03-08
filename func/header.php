@@ -87,6 +87,9 @@ function menuAdmin()
                                                         echo "checked";
                                                     }
                                                 echo "><label for='box'>Матч за 3-е место</label>
+                                        <input type='hidden' name='telegram' value='0'>
+                                        <input type='checkbox' id='box' name='telegram' value='1' checked>
+                                        <label for='box'>Telegram</label>
                                     </center>
                                     <input class='submit' type='submit' value='СОЗДАТЬ'>
                                 </form>

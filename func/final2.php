@@ -1,7 +1,12 @@
 <?php
 /* Финал 12-24 */
 require('../conf/dbconfig.php');
+require('../conf/config.php');
+require_once('func.php');
 $id_game = $_GET['id'];
+
+// получаем статус о telegram
+$telegram = (int)$conn->query("SELECT telegram FROM $dbt_games WHERE id = $id_game")->fetch_object()->telegram;
 
 $game_bronze = $conn->query("SELECT bronze FROM $dbt_games WHERE id = $id_game");
 $bronze = $game_bronze->fetch_assoc();
@@ -136,6 +141,58 @@ if($_POST['limit_val1'] && count($_POST) == $_GET['limit']){
         $round = $round+1;
         $block = 1;
         $stmt->execute();
+    }
+
+    //Telegram
+    if($telegram === 1) {
+        //Инфа что начался новый туринр
+        $game = $conn->query("SELECT game FROM $dbt_games WHERE id = $id_game")->fetch_object()->game;
+
+        $message = "‼ <b>" . $game . " - начался финал</b> ‼";
+        sendMessage($token, $chatID, $message);
+
+        /* Получаем id последнего раунда */
+        $id_last_round = $conn->query("SELECT F.round FROM $dbt_final F
+                        WHERE F.id_game = $id_game ORDER BY F.round DESC LIMIT 1");
+        $last_round = $id_last_round->fetch_assoc();
+
+        $arr_rounds = ["🏆 ФИНАЛ 🏆", "1/2 финала", "1/4 финала", "1/8 финала", "1/16 финала", "1/32 финала", "1/64 финала"];
+
+        if ((int)$bronze['bronze'] === 1) {
+            $arr_final = ["🥉 Финал - игра за 3-е место 🥉"];
+            for ($i = 1; $i <= $last_round['round'] - 1; $i++) {
+                array_unshift($arr_final, $arr_rounds[$i - 1]);
+            }
+        } else {
+            $arr_final = [];
+            for ($i = 1; $i <= $last_round['round']; $i++) {
+                array_unshift($arr_final, $arr_rounds[$i - 1]);
+            }
+        }
+
+        //Тур 1 кто с кем играет
+        $commands = $conn->query("SELECT t1.team as t1, t2.team as t2 FROM $dbt_final F
+                                INNER JOIN $dbt_teams AS t1 ON t1.id = F.id_t1
+                                INNER JOIN $dbt_teams AS t2 ON t2.id = F.id_t2
+                                WHERE id_game = $id_game AND F.round = 1
+                                ORDER BY block");
+
+        $message = "<b>❗" . $game . " - игры " . $arr_final[0] . ":❗</b>\n";
+        foreach ($commands as $value) {
+            $message .= "🍻 " . $value['t1'] . " ⚔ " . $value['t2'] . "\n";
+        }
+        sendMessage($token, $chatID, $message);
+
+        $commands = $conn->query("SELECT t1.team as t1 FROM $dbt_final F
+                                INNER JOIN $dbt_teams AS t1 ON t1.id = F.id_t1
+                                WHERE id_game = $id_game AND F.round = 2
+                                ORDER BY block");
+
+        $message = "<b>❗" . $game . " - команды прошедшие в " . $arr_final[1] . ":❗</b>\n";
+        foreach ($commands as $value) {
+            $message .= "🍻 " . $value['t1'] . "\n";
+        }
+        sendMessage($token, $chatID, $message);
     }
 
     header('Location: ../admin/final.php?id='.$id_game);
