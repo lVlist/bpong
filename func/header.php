@@ -97,7 +97,7 @@ function menuAdmin()
                         </div>";
         echo "<li><a href='http://".$_SERVER['HTTP_HOST']."/admin/teams.php'>КОМАНДЫ</a></li>";
         echo "<li><a href='http://".$_SERVER['HTTP_HOST']."/admin/score.php'>ОЧКИ</a></li>";
-        echo "<li><a href='http://".$_SERVER['HTTP_HOST']."/admin/qualification.php'>ТЕКУЩИЙ ТУРНИР</a></li>";
+        echo "<li><a href='http://".$_SERVER['HTTP_HOST']."/admin/telegram.php'>ТЕЛЕГРАМ</a></li>";
     }
     echo '</ul>
 </div>';
