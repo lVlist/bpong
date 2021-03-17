@@ -122,6 +122,8 @@ if ($_POST['changeTeam']) {
     }
     $conn->query("UPDATE `{$dbt_q_games}` SET `id_t1`= '{$id_team}' WHERE (`id_t1`= {$change_team}) AND (`id_game`= {$id_game})");
     $conn->query("UPDATE `{$dbt_q_games}` SET `id_t2`= '{$id_team}' WHERE (`id_t2`= {$change_team}) AND (`id_game`= {$id_game})");
+    $conn->query("UPDATE `{$dbt_final}` SET `id_t1`= '{$id_team}' WHERE (`id_t1`= {$change_team}) AND (`id_game`= {$id_game})");
+    $conn->query("UPDATE `{$dbt_final}` SET `id_t2`= '{$id_team}' WHERE (`id_t2`= {$change_team}) AND (`id_game`= {$id_game})");
     $conn->query("UPDATE `{$dbt_qualification}` SET `id_team`= '{$id_team}' WHERE (`id_team`= {$change_team}) AND (`id_game`= {$id_game})");
     $conn->query("UPDATE `{$dbt_statistics}` SET `id_team`= '{$id_team}' WHERE (`id_team`= {$change_team}) AND (`id_game`= {$id_game})");
     header('Location: ../admin/create.php?id='.$id_game);
