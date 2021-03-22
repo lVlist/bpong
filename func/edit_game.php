@@ -5,7 +5,7 @@ require 'func.php';
 session_start();
 
 // Записываем  название турнира
-if ($_POST['new_game']) {
+if (isset($_POST['new_game'])) {
     $new_game = $_POST['new_game'];
     $date = date('Y-m-d');
     $type = $_POST['type'];
@@ -26,7 +26,7 @@ if ($_POST['new_game']) {
 }
 
 // Обновление названия турнира
-if ($_POST['upd_game']) {
+if (isset($_POST['upd_game'])) {
     $id_game = $_POST['upd_game'];
     $game = $_POST['game'];
     $bronze = (int)$_POST['bronze'];
@@ -37,7 +37,7 @@ if ($_POST['upd_game']) {
 }
 
 // Создание команды и запись в турнир
-if ($_POST['new_team']) {
+if (isset($_POST['new_team'])) {
     $id_game = $_POST['id_game'];
 
     //определяем тип команды
@@ -75,7 +75,7 @@ if ($_POST['new_team']) {
 }
 
 // Добавление команды в турнир
-if ($_POST['add_team']) {
+if (isset($_POST['add_team'])) {
     $id_game = $_POST['id_game'];
     $id_team = $_POST['add_team'];
     $team = $conn->query("SELECT Q.id_team FROM {$dbt_qualification} Q WHERE Q.id_game = {$id_game}");
@@ -100,7 +100,7 @@ if ($_POST['add_team']) {
 }
 
 // Замена команды в турнире
-if ($_POST['changeTeam']) {
+if (isset($_POST['changeTeam'])) {
     $id_team = $_POST['id_team'];
     $id_game = $_POST['id_game'];
     $change_team = $_POST['change_team'];
@@ -131,7 +131,7 @@ if ($_POST['changeTeam']) {
 }
 
 // Удаление команды из турнира
-if ($_POST['del_team']) {
+if (isset($_POST['del_team'])) {
     $id_game = $_POST['id_game'];
     $id_team = $_POST['del_team'];
     $check_team = $conn->query("SELECT r1 FROM {$dbt_qualification} WHERE id_game = {$id_game} AND id_team = {$id_team}")->fetch_assoc();
@@ -156,7 +156,7 @@ if ($_POST['del_team']) {
 }
 
 // Удаление игры
-if ($_POST['del_game']) {
+if (isset($_POST['del_game'])) {
     $id_game = (int)$_POST['del_game'];
     $conn->query("DELETE FROM `{$dbt_qualification}` WHERE (`id_game` = {$id_game})");
     $conn->query("DELETE FROM `{$dbt_q_games}` WHERE (`id_game` = {$id_game})");
@@ -167,7 +167,7 @@ if ($_POST['del_game']) {
 }
 
 // Удаление гранд фианала
-if ($_POST['del_grand']) {
+if (isset($_POST['del_grand'])) {
 
     $id_game = (int)$_POST['del_grand'];
     $conn->query("DELETE FROM `{$dbt_grand}` WHERE (`id_game` = {$id_game})");
@@ -178,7 +178,7 @@ if ($_POST['del_grand']) {
 }
 
 // Создание команды и запись в турнир
-if ($_POST['new_team_grand']) {
+if (isset($_POST['new_team_grand'])) {
     $id_game = $_POST['id_game'];
     $type_grand = $_POST['type'];
     $type = 'main';
@@ -207,7 +207,7 @@ if ($_POST['new_team_grand']) {
 }
 
 // Добавление команды в турнир
-if ($_POST['add_team_grand']) {
+if (isset($_POST['add_team_grand'])) {
     $id_game = $_POST['id_game'];
     $type_grand = $_POST['type'];
     $id_team = $_POST['add_team_grand'];

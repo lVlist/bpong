@@ -165,7 +165,7 @@ if($_POST['s1'] OR $_POST['s2']){
     }
 }
 
-if($_POST['table']){
+if(isset($_POST['table'])){
     $table = $_POST['table'];
     $stmt = $conn->prepare("UPDATE `$dbt_q_games` SET `table`=? WHERE (`id`=?)"); 
     $stmt->bind_param('si',$table, $id_match);

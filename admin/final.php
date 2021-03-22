@@ -177,7 +177,7 @@ echo '</div>';
 
 // ---------------Модальное окно------------------
 
-$id_match = $_GET['id_match'];
+$id_match = $_GET['id_match'] ?? 0;
 
 $grand = $conn->query("SELECT id, s1, s2 FROM {$dbt_final_score} WHERE id_match = {$id_match} AND id_game = {$id_game}");
 
@@ -187,15 +187,15 @@ echo "<div id='finalEdit' class='modalGrand'>
     <form action='http://".$_SERVER['HTTP_HOST']."/func/final_game.php' method='POST'>
         <input type='hidden' name='id_match' value='".$id_match."'>
         <input type='hidden' name='id_game'  value='".$id_game."'>
-        <input type='hidden' name='round'  value='".$_GET['round']."'>
-        <input type='hidden' name='block'  value='".$_GET['block']."'>
-        <input type='hidden' name='position'  value='".$_GET['position']."'>
-        <input type='hidden' name='next_block'  value='".$_GET['next_block']."'>
-        <input type='hidden' name='next_block_position'  value='".$_GET['next_block_position']."'>
-        <input type='hidden' name='id_t1'  value='".$_GET['id_t1']."'>
-        <input type='hidden' name='id_t2'  value='".$_GET['id_t2']."'>
-        <input type='hidden' name='t1'  value='".$_GET['t1']."'>
-        <input type='hidden' name='t2'  value='".$_GET['t2']."'>
+        <input type='hidden' name='round'  value='" . ($_GET['round'] ?? 0) . "'>
+        <input type='hidden' name='block'  value='".  ($_GET['block'] ?? 0) . "'>
+        <input type='hidden' name='position'  value='" . ($_GET['position'] ?? 0) . "'>
+        <input type='hidden' name='next_block'  value='" . ($_GET['next_block'] ?? 0) . "'>
+        <input type='hidden' name='next_block_position'  value='" . ($_GET['next_block_position'] ?? 0) . "'>
+        <input type='hidden' name='id_t1'  value='". ($_GET['id_t1'] ?? 0) . "'>
+        <input type='hidden' name='id_t2'  value='". ($_GET['id_t2'] ?? 0) . "'>
+        <input type='hidden' name='t1'  value='". ($_GET['t1'] ?? 0) . "'>
+        <input type='hidden' name='t2'  value='". ($_GET['t2'] ?? 0) . "'>
 
         <table>
         <tr>

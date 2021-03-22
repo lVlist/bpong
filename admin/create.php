@@ -5,6 +5,7 @@ require_once('../func/header.php');
 menu();
 menuAdmin();
 $login = getUserLogin();
+$mes = $_GET['mes'] ?? '';
 
 echo "<div id='main'>";
 if ($login != null){
@@ -22,9 +23,9 @@ if ($login != null){
         /* Редактирование турнира */
         echo "<div id='create-block'>";
         
-            if($_GET['mes'] == 'even'){
+            if($mes == 'even'){
                 echo "<p style='color:red'>В турнире нечетное количество команд!</p>";
-            }elseif($_GET['mes'] == 'point'){
+            }elseif($mes == 'point'){
                 echo "<p style='color:red'>Команда принимает участие в турнире!</p>";
             }
             
@@ -79,14 +80,14 @@ if ($login != null){
                 <input type='text' class='team input-team' placeholder='Название команды' autocomplete='off'>
                 <input type='hidden' id='game' value='".$id_game."'>
                 <div class='search_create'></div>";
-                if($_GET['mes'] == 'err'){
+                if($mes == 'err'){
                     echo "<p style='color:red'>Данная команда уже зарегистрирована в турнире!!</p>";
-                }elseif($_GET['mes'] == 'team'){
+                }elseif($mes == 'team'){
                     echo "<p style='color:red'>Команда с таким названием существует!!</p>";
                 }
 
             /* Замена команды */
-            if($_POST['change_team'] != NULL){            
+            if(isset($_POST['change_team'])){
                 echo "<br><br><br>Заменить <b>{$_POST['team']}</b> на:<br>";
                 echo "Выберите команду:
                 <input type='text'  class='change_team input-team' placeholder='Название команды' autocomplete='off'>

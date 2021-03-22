@@ -10,6 +10,8 @@ $telegram = (int)$conn->query("SELECT telegram FROM $dbt_games WHERE id = $id_ga
 
 /* Получаем массив команд для рандома */
 $teams = $conn->query("SELECT id_team FROM $dbt_qualification WHERE id_game = $id_game");
+
+$teams_id = [];
 foreach($teams as $value){
     $teams_id[] .= $value['id_team']; //массив команд для рандома
 }
@@ -54,11 +56,11 @@ function checkTeam($round_current, $round_old){
 }
 
 /* Рандомим команды */
-$array_team = NULL;
+$array_team = [];
 $quantity_round = 3; //количество раундов
 
 for ($i=1;$i<=$quantity_round;$i++){
-    if($array_team === NULL){
+    if(empty($array_team)){
         shuffle($teams_id);
         $round_team = array_chunk($teams_id, $count);
         for($c=0;$c<=$count-1;$c++){
@@ -87,6 +89,7 @@ for ($i=1;$i<=$quantity_round;$i++){
         $array_team[0][] .= $round_team[0][$c];
         $array_team[1][] .= $round_team[1][$c];
     }
+
 }
 
 //Telegram

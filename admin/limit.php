@@ -5,6 +5,7 @@ require_once('../func/header.php');
 menu();
 menuAdmin();
 $login = getUserLogin();
+$type = $_GET['type'] ?? '';
 
 echo "<div id='main'>";
 if($login != null){
@@ -21,14 +22,14 @@ if($login != null){
         ORDER BY Q.result DESC, Q.difference DESC");
 
         echo "<div id='block'>";
-        if ($_GET['msg']) {
+        if (isset($_GET['msg'])) {
             echo "<p style='color:red'>Было выбранно " . $_GET['msg'] . " команд из " . $_GET['limit'] . "</p>";
         }
 
 
-            if ($_GET['type'] === 'random'){
+            if ($type === 'random'){
                 echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/final_random.php?id=".$id_game."&limit=".$limit."&final=3' method='POST'>";
-            }elseif($_GET['type'] !== 'random' AND ($limit === 12 OR $limit === 24)){
+            }elseif($type !== 'random' AND ($limit === 12 OR $limit === 24)){
                 echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/final2.php?id=".$id_game."&limit=".$limit."&final=3' method='POST'>";
             }else{
                 echo "<form action='http://".$_SERVER['HTTP_HOST']."/func/final.php?id=".$id_game."&limit=".$limit."&final=3' method='POST'>";

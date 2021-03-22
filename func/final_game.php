@@ -48,7 +48,7 @@ if(isset($_POST)){
 
     
 
-    if($_POST['us1'] && $_POST['us2'])
+    if(isset($_POST['us1']) && isset($_POST['us2']))
     {
         
         
