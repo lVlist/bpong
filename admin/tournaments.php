@@ -179,7 +179,7 @@ echo "<div id='grandDelete' class='modalGrand'>
 <div><a href='http://".$_SERVER['HTTP_HOST']."/admin/tournaments.php?year=".date('Y')."#close' title='Закрыть' class='close'>x</a>
     <h3>Вы действительно хотите удалить турнир?</h3><br>
         <center><form action='http://".$_SERVER['HTTP_HOST']."/func/edit_game.php' method='POST' style='float: right;'>
-                            <input type='hidden' name='del_grand' value='".$_GET['id_game']."'>
+                            <input type='hidden' name='del_grand' value='". ($_GET['id_game'] ?? 0)."'>
                             <input class ='submit -addteam' type='submit' style='font-size: 13pt;' value='удалить'>
                             </form><br><br></center>
 </div>

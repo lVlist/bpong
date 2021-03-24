@@ -12,9 +12,12 @@ echo "<div id='main'>";
 
 
     echo "<div id='create-block'>";
-        if($_GET['mes'] == 'no_del'){
-            echo "<p style='color:red'>Команда принимает участие в турнире, сначала удалите её из турнира!</p>";
+        if(isset($_GET['mes'])){
+            if($_GET['mes'] == 'no_del'){
+                echo "<p style='color:red'>Команда принимает участие в турнире, сначала удалите её из турнира!</p>";
+            }
         }
+
         echo "Команда:
         <input type='text' name='team' placeholder='Название команды' class='edit_team input-team' autocomplete='off'>
         <div class='search_teams'></div>";

@@ -63,7 +63,7 @@ if(isset($_POST)){
         }
     }
     
-    if($_POST['is1'] && $_POST['is2'])
+    if(isset($_POST['is1']) && isset($_POST['is2']))
     {
         $i=0;
         foreach ($_POST['is1'] as $value)
@@ -171,10 +171,10 @@ if(isset($_POST)){
 
     //Telegram
     if($telegram === 1) {
-        if ($_POST['is1']) {
+        if (isset($_POST['is1'])) {
             $score1 = $_POST['is1'];
             $score2 = $_POST['is2'];
-        } else if ($_POST['us1']) {
+        } else if (isset($_POST['us1'])) {
             $score1 = $_POST['us1'];
             $score2 = $_POST['us2'];
         }

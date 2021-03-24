@@ -37,6 +37,7 @@ $count = count($teams_id)/2;
 /* Проверяем играла ли команда в другом туре */
 function checkTeam($round_current, $round_old){
     global $count;
+    $bool = false;
     for($i=0;$i<=$count-1;$i++){
         $count_old = count($round_old[0]);
         for($j=0;$j<=$count_old-1;$j++){
@@ -56,7 +57,7 @@ function checkTeam($round_current, $round_old){
 }
 
 /* Рандомим команды */
-$array_team = [];
+
 $quantity_round = 3; //количество раундов
 
 for ($i=1;$i<=$quantity_round;$i++){
@@ -86,8 +87,14 @@ for ($i=1;$i<=$quantity_round;$i++){
     
     /* Записываем прошлый тур в массив */
     for($c=0;$c<=$count-1;$c++){
-        $array_team[0][] .= $round_team[0][$c];
-        $array_team[1][] .= $round_team[1][$c];
+        if($c === 0){
+            $array_team[0][] = $round_team[0][$c];
+            $array_team[1][] = $round_team[1][$c];
+        }else{
+            $array_team[0][] .= $round_team[0][$c];
+            $array_team[1][] .= $round_team[1][$c];
+        }
+
     }
 
 }

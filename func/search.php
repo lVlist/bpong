@@ -146,7 +146,7 @@ if(!empty($_POST["change_team"]))
 if(!empty($_POST["edit_team"]))
 { //Принимаем данные
     $referal = "{$_POST['edit_team']}%";
-    $type = $_POST['type_game'];
+    isset($_POST['type_game']) ? $type = $_POST['type_game'] : $type = "";
 
     $stmt = $conn -> prepare("SELECT * from $dbt_teams WHERE id != 1 AND team LIKE (?)");
     $stmt->bind_param("s", $referal);

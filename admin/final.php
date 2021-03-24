@@ -204,7 +204,7 @@ echo "<div id='finalEdit' class='modalGrand'>
             </td>
         </tr>
         <tr>
-            <td>".$_GET['t1']."</td>
+            <td>". ($_GET['t1'] ?? "") ."</td>
             <td>
                 <div id='profile'> ";
                         if($grand){
@@ -227,7 +227,7 @@ echo "<div id='finalEdit' class='modalGrand'>
             </td>
         </tr>
         <tr>
-            <td>'.$_GET['t2']."</td>
+            <td>'. ($_GET['t2'] ?? "") ."</td>
             <td>
                 <div id='profile2'>";
                     if($grand){

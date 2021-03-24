@@ -16,12 +16,10 @@ if ($login != null){
     <textarea name='telegram' rows='10' cols='50'></textarea>
     <center><input class ='submit -addteam' type='submit' value='ОТПРАВИТЬ'></center>";
 
-    if($_POST['telegram']){
+    if(isset($_POST['telegram'])){
         $message = $_POST['telegram'];
         sendMessage($token, $chatID, $message);
-
     }
-    
 
     echo "</div>";
 }else{

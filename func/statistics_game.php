@@ -229,7 +229,7 @@ foreach($qualification_id_teams as $value){
 
 
 //Telegram
-if ($telegram === 1) {
+/*if ($telegram === 1) {
     $game = $conn->query("SELECT game FROM $dbt_games WHERE id = $id_game")->fetch_object()->game;
 
     $statistics_game = $conn->query("SELECT team, points FROM $dbt_statistics S
@@ -301,7 +301,7 @@ if ($telegram === 1) {
 
     }
     sendMessage($token, $chatID, $message);
-}
+}*/
 
 
 header('Location: ../admin/statistics.php?id='.$id_game);

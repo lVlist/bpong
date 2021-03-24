@@ -6,7 +6,7 @@ session_start();
 
 // Записываем  название турнира
 if (isset($_POST['new_game'])) {
-    $new_game = $_POST['new_game'];
+    $new_game = trim($_POST['new_game']);
     $date = date('Y-m-d');
     $type = $_POST['type'];
     $bronze = (int) $_POST['bronze'];
@@ -28,7 +28,7 @@ if (isset($_POST['new_game'])) {
 // Обновление названия турнира
 if (isset($_POST['upd_game'])) {
     $id_game = $_POST['upd_game'];
-    $game = $_POST['game'];
+    $game = trim($_POST['game']);
     $bronze = (int)$_POST['bronze'];
     $telegram = (int)$_POST['telegram'];
     $conn->query("UPDATE `{$dbt_games}` SET `game`= '{$game}', `bronze`= '{$bronze}', `telegram`= '{$telegram}' WHERE (`id`= {$id_game})");
@@ -39,6 +39,7 @@ if (isset($_POST['upd_game'])) {
 // Создание команды и запись в турнир
 if (isset($_POST['new_team'])) {
     $id_game = $_POST['id_game'];
+
 
     //определяем тип команды
     $types = $conn->query("SELECT type FROM {$dbt_games} Q WHERE Q.id = {$id_game}")->fetch_assoc();
@@ -58,7 +59,7 @@ if (isset($_POST['new_team'])) {
     }
 
     //Создаем команду
-    $team = htmlspecialchars_decode($_POST['new_team'], ENT_HTML5);
+    $team = trim(htmlspecialchars_decode($_POST['new_team'], ENT_HTML5));
     $team = $conn->real_escape_string($team);
     $date = date('Y-m-d');
     $conn->query("INSERT INTO {$dbt_teams} (date, team, type) VALUES ('{$date}','{$team}', '{$type}')");

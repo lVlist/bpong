@@ -77,8 +77,8 @@ function checkAuth($login, $password)
 
 function getUserLogin()
 {
-    $loginFromCookie = $_COOKIE['login'];
-    $passwordFromCookie = $_COOKIE['password'];
+    $loginFromCookie = $_COOKIE['login'] ?? '';
+    $passwordFromCookie = $_COOKIE['password'] ?? '';
 
     if (checkAuth($loginFromCookie, $passwordFromCookie)) {
         return $loginFromCookie;

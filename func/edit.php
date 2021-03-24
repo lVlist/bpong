@@ -105,10 +105,33 @@ if($_POST['s1'] OR $_POST['s2']){
 
 
         if ((int)$finish_round == 1) {
-            $result_round = $conn->query("SELECT team, result, difference FROM $dbt_qualification Q
-                                        INNER JOIN bpm_teams teams ON Q.id_team = teams.id
-                                        WHERE id_game = $id_game
-                                        ORDER BY result DESC, difference DESC");
+//            $result_round = $conn->query("SELECT team, result, difference FROM $dbt_qualification Q
+//                                        INNER JOIN $dbt_teams teams ON Q.id_team = teams.id
+//                                        WHERE id_game = $id_game
+//                                        ORDER BY result DESC, difference DESC");
+
+            $result_round = $conn->query("SELECT team, 
+                                                    CASE
+                                                        WHEN {$round} = 1 
+                                                            THEN r1
+                                                        WHEN {$round} = 2 
+                                                            THEN r1 + r2
+                                                        WHEN {$round} = 3 
+                                                            THEN result
+                                                    END AS result,
+                                                    
+                                                    CASE
+                                                        WHEN {$round} = 1 
+                                                            THEN d1
+                                                        WHEN {$round} = 2 
+                                                            THEN d1 + d2
+                                                        WHEN {$round} = 3 
+                                                            THEN difference
+                                                    END AS difference                                    
+                                                FROM $dbt_qualification Q
+                                                INNER JOIN $dbt_teams teams ON Q.id_team = teams.id
+                                                WHERE id_game = $id_game
+                                                ORDER BY result DESC, difference DESC");
 
 
             $message = "<b>❗" . $game . " - тур $round завершен❗</b>\n";
@@ -151,8 +174,8 @@ if($_POST['s1'] OR $_POST['s2']){
             if ($round == 1 or $round == 2) {
                 $commands = $conn->query("SELECT t1.team as t1, t2.team as t2
                                         FROM $dbt_q_games AS Q
-                                        INNER JOIN bpm_teams t1 ON t1.id = Q.id_t1
-                                        INNER JOIN bpm_teams t2 ON t2.id = Q.id_t2
+                                        INNER JOIN $dbt_teams t1 ON t1.id = Q.id_t1
+                                        INNER JOIN $dbt_teams t2 ON t2.id = Q.id_t2
                                         WHERE id_game = $id_game AND Q.round = " . ($round + 1));
 
                 $message = "<b>❗" . $game . " - игры " . ($round + 1) . " тура:❗</b>\n";
@@ -179,7 +202,7 @@ if(isset($_POST['table'])){
 }
 
 $out = json_decode(file_get_contents('php://input'));
-if($out[0] == 'del_input'){
+if(isset($out[0]) == 'del_input'){
     $conn->query("DELETE FROM `{$dbt_final_score}` WHERE `id` = {$out[1]}");
     exit;
 }

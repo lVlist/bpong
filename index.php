@@ -6,11 +6,14 @@ menu();
 menuAdmin();
 
 $login = getUserLogin();
-if ($_GET['year'] === 'FULL') {
-    $year = '';
-} elseif (isset($_GET['year'])) {
-    $year = (int)$_GET['year'];
-    $year = 'AND (YEAR(G.date) = ' . $year . ')';
+
+if (isset($_GET['year'])) {
+    if ($_GET['year'] === 'FULL') {
+        $year = '';
+    } else {
+        $year = (int)$_GET['year'];
+        $year = 'AND (YEAR(G.date) = ' . $year . ')';
+    }
 } else {
     $year = $conn->query("SELECT YEAR(date) as year FROM $dbt_games ORDER BY date DESC LIMIT 1")->fetch_assoc();
     $year = $year['year'];
